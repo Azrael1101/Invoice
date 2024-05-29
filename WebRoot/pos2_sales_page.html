@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<link rel="stylesheet" href="./css/pos2.css">
+<link rel="stylesheet" href="./css/ccsreset.css">
+
+<body onload="onloadInitial()">
+    <script type="text/javascript" src="js\pos2_sale_page_keydown.js"></script>
+    <script type="text/javascript" src="js\pos2_constructor.js"></script>
+    <div class="first_block">
+        <div class="second_1_block">
+            <div class="third_1_block">
+                <div class="head_Item_item2" id="navbartop">
+                    <div class="navbartop-left">應付<span>1212</span></div>
+
+                    <div class="navbartop-center">已付<span>1212</span></div>
+                    <div class="navbartop-right">餘額<span>1212</span></div>
+                </div>
+                <div class="cc d-flex">
+                    <ul class="d-flex head_Item_top head_Item_left">
+                        <div class="column_item_group">
+                            <li class="d-flex">
+                                <div class="text">單別</div>
+
+                                <div class="input">
+                                    <input id="orderNo" type="text" value="SOP">
+                                </div>
+                            </li>
+                            <li class="d-flex">
+                                <div class="text">店別</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+                            <li class="d-flex">
+                                <div class="text">發票條碼</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+                        </div>
+                        <div class="column_item_group">
+
+                            <li class="d-flex">
+                                <div class="text">單號</div>
+                                <div class="input">
+                                    <input id="orderTypeCode" type="text" value="">
+                                </div>
+
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">機號</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">統一發票</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+                        </div>
+                        <div class="column_item_group">
+
+
+                            <li class="d-flex">
+                                <div class="text">headId</div>
+                                <div class="input">
+                                    <input id="headId" type="text" value="">
+                                </div>
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">收銀員</div>
+                                <div class="input">
+                                    <input id="superintendentCode" type="text" value="T96085">
+                                </div>
+
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">交易序號</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+
+                            </li>
+                        </div>
+                        <div class="column_item_group">
+                            <li class="d-flex">
+                                <div class="text">事業體代號</div>
+                                <div class="input">
+                                    <input id="brandCode" type="text" value="T2">
+                                </div>
+
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">交易日期</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+
+                            <li class="d-flex">
+                                <div class="text">客戶代碼</div>
+                                <div class="input">
+                                    <input type="text">
+                                </div>
+
+                            </li>
+
+
+
+
+                        </div>
+
+
+                        <!-- <div class="column_item_group-1">
+                            <div class="btn">相關訊息</div>
+                            <div class="btn">客戶資料</div>
+
+                        </div> -->
+
+                    </ul>
+
+                </div>
+
+
+
+            </div>
+            <div class="third_2_block">
+                <div class="table_scroll">
+
+                    <div class="table ">
+                        <!-- <div class="zz"></div> -->
+                        <div class="table-tr xxx">
+                            <div class="table-th">NO</div>
+                            <div class="table-th">貨號</div>
+                            <div class="table-th">品名</div>
+                            <div class="table-th">數量</div>
+                            <div class="table-th">售價</div>
+                            <div class="table-th">小計</div>
+                            <div class="table-th">原售價</div>
+                            <div class="table-th">淨額</div>
+                            <div class="table-th">折扣</div>
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+                        <div class="table-tr">
+                            <div class="table-td">1</div>
+                            <div class="table-td">00000000</div>
+                            <div class="table-td">美茶</div>
+                            <div class="table-td">1</div>
+                            <div id="unit_price" class="table-td">900</div>
+                            <div id="total_count" class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div class="table-td">900</div>
+                            <div id="discount" class="table-td">0</div>
+                            <!-- /////3/ -->
+                        </div>
+
+
+                        <div class="table-tr xxx">
+                            <div class="table-th">小計</div>
+                            <div class="table-th"></div>
+                            <div class="table-th"></div>
+                            <div class="table-th">2</div>
+                            <div class="table-th">75</div>
+                            <div class="table-th">75</div>
+                            <div class="table-th">75</div>
+                            <div class="table-th">75</div>
+                            <div class="table-th">0</div>
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+                </div>
+
+
+
+               
+                <input class="barcode" id="barcode" type="text">
+
+
+            </div>
+
+
+
+        </div>
+        <div class="second_2_block">
+            <div class="third_3_block">
+
+                <div class="Card">
+                    <div class="CardInner">
+                        <!-- <label>Search for your favourite food</label> -->
+                        <div class="container">
+                            <div class="Icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="#657789" stroke-width="3" stroke-linecap="round"
+                                    stroke-linejoin="round" class="feather feather-search">
+                                    <circle cx="11" cy="11" r="8" />
+                                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                                </svg>
+                            </div>
+                            <div class="InputContainer">
+                                <input class="input1" placeholder="請輸入您查詢的商品" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="wrapper">
+                    <div class="buttonWrapper">
+                        <button class="tab-button active" style="border-top-left-radius: 10px;"
+                            data-id="home">信用卡未付款清單</button>
+                        <button class="tab-button" data-id="about">匯率</button>
+                        <button class="tab-button" style="border-top-right-radius: 10px;"
+                            data-id="contact">其他付款</button>
+                    </div>
+                    <div class="contentWrapper">
+                        <div class="content active" id="home">
+                        <div class="d-flex">
+
+                            <li>選</li>
+                            <li>序號</li>
+                            <li>營業員</li>
+                            <li>金額</li>
+
+                        </div>
+
+
+                        <div>
+                            <p> 本次交易金額</p>
+                            <p> 累計結清金額</p>
+                            <p> 累計結清筆數</p>
+
+                        </div>
+                        <div>
+
+                           <button>清除訂單</button>
+                        </div>
+
+
+                    </div>
+                        <div class="content" id="about">
+                            <p> 原價：<span>1000</span></p>
+                            <hr>
+                            <p> 台幣：<span>1000</span></p>
+                            <hr>
+                            <p>人民幣：<span>1000</span></p>
+                            <hr>
+                            <p> 日幣：<span>1000</span></p>
+                            <hr>
+                            <p> 美元：<span>1000</span></p>
+                       
+
+                        </div>
+                        <div class="content" id="contact">
+                            
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+                <div class="box"><span>價格</span><span>$</span>
+                    <h1 id="total"></h1>
+                </div>
+            </div>
+            <div class="third_4_block">
+                <div class="box" onclick="">折讓</div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <script src="./js/posTabBar.js"></script>
+
+</body>
+
+</html>

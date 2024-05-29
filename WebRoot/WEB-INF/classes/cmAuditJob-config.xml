@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    <!-- ====================cmTransaction轉 SQL SERVER==================================-->
+    <bean id="FWCmTransactionExportJob" class="tw.com.tm.erp.batch.CmTransactionExportJob">
+    	<property name="customsWarehouseCode" value="FW"/>
+        <property name="opUser" value="SYSTEM"/>
+    </bean>
+    <bean id="FDCmTransactionExportJob" class="tw.com.tm.erp.batch.CmTransactionExportJob">
+    	<property name="customsWarehouseCode" value="FD"/>
+        <property name="opUser" value="SYSTEM"/>
+    </bean>
+    <bean id="FACmTransactionExportJob" class="tw.com.tm.erp.batch.CmTransactionExportJob">
+    	<property name="customsWarehouseCode" value="FA"/>
+        <property name="opUser" value="SYSTEM"/>
+    </bean>
+    <bean id="HDCmTransactionExportJob" class="tw.com.tm.erp.batch.CmTransactionExportJob">
+    	<property name="customsWarehouseCode" value="HD"/>
+        <property name="opUser" value="SYSTEM"/>
+    </bean>
+    
+    <bean id="FWCmTransactionExportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="FWCmTransactionExportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    <bean id="FDCmTransactionExportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="FDCmTransactionExportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    <bean id="FACmTransactionExportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="FACmTransactionExportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    <bean id="HDCmTransactionExportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="HDCmTransactionExportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="FWCmTransactionExportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="FWCmTransactionExportBean"/> 
+        <property name="cronExpression" value="00 00 11 * * ?"/>
+    </bean>
+    <bean id="FDCmTransactionExportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="FDCmTransactionExportBean"/> 
+        <property name="cronExpression" value="00 40 11 * * ?"/>
+    </bean>
+    <bean id="FACmTransactionExportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="FACmTransactionExportBean"/> 
+        <property name="cronExpression" value="00 00 12 * * ?"/>
+    </bean>
+    <bean id="HDCmTransactionExportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="HDCmTransactionExportBean"/> 
+        <property name="cronExpression" value="00 20 11 * * ?"/>
+    </bean>
+    
+    <bean id="VDCmTransactionExportJob" class="tw.com.tm.erp.batch.CmTransactionExportJob">
+    	<property name="customsWarehouseCode" value="VD"/>
+        <property name="opUser" value="SYSTEM"/>
+    </bean>
+    <bean id="VDCmTransactionExportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="VDCmTransactionExportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    <bean id="VDCmTransactionExportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="VDCmTransactionExportBean"/> 
+        <property name="cronExpression" value="00 50 10 * * ?"/>
+    </bean>
+    <!-- ======================================================-->
+    <bean id="t2CmAuditSchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+        <property name="triggers">
+            <list>
+                <ref bean="FWCmTransactionExportJobTrigger"/>
+                <ref bean="FDCmTransactionExportJobTrigger"/>
+                <ref bean="FACmTransactionExportJobTrigger"/>
+                <ref bean="HDCmTransactionExportJobTrigger"/>
+                <ref bean="VDCmTransactionExportJobTrigger"/>
+            </list>
+        </property>
+    </bean>   
+</beans>

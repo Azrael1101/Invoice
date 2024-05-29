@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+    <!-- ======================調撥匯入===================================== -->
+   
+    <bean id="T1BSPOSMoveImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="T92457"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSMOVImportData"/>
+    </bean>
+    
+    <bean id="T1GSPOSMoveImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="T92457"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSMOVImportData"/>
+    </bean>
+    
+    <bean id="T1HCPOSMoveImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="T92457"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSMOVImportData"/>
+    </bean>
+    
+	<bean id="T1BSPOSMoveImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSPOSMoveImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSPOSMoveImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSPOSMoveImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCPOSMoveImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCPOSMoveImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSPOSMoveImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSPOSMoveImportBean"/> 
+        <property name="cronExpression" value="00 15 01 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSPOSMoveImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSPOSMoveImportBean"/> 
+        <property name="cronExpression" value="00 30 01 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCPOSMoveImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCPOSMoveImportBean"/> 
+        <property name="cronExpression" value="00 45 01 * * ?"/>
+    </bean>
+
+    <!-- ======================業績匯入===================================== -->
+    
+    <bean id="T1BSSOPImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSImportData"/>
+    </bean>
+    
+    <bean id="T1GSSOPImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSImportData"/>
+    </bean>
+    
+    <bean id="T1HCSOPImportJob" class="tw.com.tm.erp.batch.POSImportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="function" value="tw.com.tm.erp.importdb.POSImportData"/>
+    </bean>
+    
+    <bean id="T1BSSOPImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSSOPImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSSOPImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSSOPImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCSOPImportBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCSOPImportJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSSOPImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSSOPImportBean"/> 
+        <property name="cronExpression" value="00 55 01 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSSOPImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSSOPImportBean"/> 
+        <property name="cronExpression" value="00 15 02 * * ?"/>
+    </bean> 
+    
+    <bean id="T1HCSOPImportJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCSOPImportBean"/> 
+        <property name="cronExpression" value="00 30 02 * * ?"/>
+    </bean>   
+
+    <!-- ======================商品匯出===================================== --> 
+    
+    <bean id="T1BSExportGoodslstJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="3"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportGoodslstJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="3"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportGoodslstJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="3"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1BSExportGoodslstBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportGoodslstJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportGoodslstBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportGoodslstJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportGoodslstBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportGoodslstJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSExportGoodslstJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportGoodslstBean"/> 
+        <property name="cronExpression" value="00 35 02 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportGoodslstJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportGoodslstBean"/> 
+        <property name="cronExpression" value="00 45 02 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportGoodslstJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportGoodslstBean"/> 
+        <property name="cronExpression" value="00 55 02 * * ?"/>
+    </bean>
+
+     <!-- ====================調撥匯出============================== -->
+
+    <bean id="T1BSExportMovementJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="5"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportMovementJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="5"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportMovementJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="5"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1BSExportMovementBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportMovementJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportMovementBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportMovementJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportMovementBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportMovementJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+   
+    <bean id="T1BSExportMovementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportMovementBean"/> 
+        <property name="cronExpression" value="00 00 03 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportMovementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportMovementBean"/> 
+        <property name="cronExpression" value="00 10 03 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportMovementJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportMovementBean"/> 
+        <property name="cronExpression" value="00 20 03 * * ?"/>
+    </bean>
+
+    <!-- ===================庫存匯出============================-->
+    
+    <bean id="T1BSExportGdsqtyJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="2"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportGdsqtyJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="2"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportGdsqtyJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="2"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1BSExportGdsqtyBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportGdsqtyJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportGdsqtyBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportGdsqtyJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportGdsqtyBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportGdsqtyJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSExportGdsqtyJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportGdsqtyBean"/> 
+        <property name="cronExpression" value="00 45 03 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportGdsqtyJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportGdsqtyBean"/> 
+        <property name="cronExpression" value="00 15 04 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportGdsqtyJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportGdsqtyBean"/> 
+        <property name="cronExpression" value="00 55 04 * * ?"/>
+    </bean>  
+
+    <!-- ===================促銷匯出==============================-->   
+
+    <bean id="T1BSExportPromJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="4"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportPromJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="4"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportPromJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="4"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1BSExportPromBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportPromJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportPromBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportPromJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportPromBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportPromJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSExportPromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportPromBean"/> 
+        <property name="cronExpression" value="00 35 04 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportPromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportPromBean"/> 
+        <property name="cronExpression" value="00 45 04 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportPromJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportPromBean"/> 
+        <property name="cronExpression" value="00 55 04 * * ?"/>
+    </bean>
+
+    <!-- ===================客戶匯出==============================-->   
+
+    <bean id="T1BSExportCustomerJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="0"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportCustomerJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="0"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportCustomerJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="0"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1BSExportCustomerBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportCustomerJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportCustomerBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportCustomerJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportCustomerBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportCustomerJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+   
+    <bean id="T1BSExportCustomerJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportCustomerBean"/> 
+        <property name="cronExpression" value="00 00 05 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportCustomerJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportCustomerBean"/> 
+        <property name="cronExpression" value="00 10 05 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportCustomerJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportCustomerBean"/> 
+        <property name="cronExpression" value="00 20 05 * * ?"/>
+    </bean> 
+
+    <!-- ===================專櫃人員匯出==============================-->   
+    
+    <bean id="T1BSExportEcrsalesJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="1"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1GSExportEcrsalesJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="1"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+    
+    <bean id="T1HCExportEcrsalesJob" class="tw.com.tm.erp.batch.POSExportJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="functionCode" value="1"/>
+        <property name="dataDate"><null/></property>
+        <property name="dataDateEnd"><null/></property>
+    </bean>
+   
+    <bean id="T1BSExportEcrsalesBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSExportEcrsalesJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSExportEcrsalesBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSExportEcrsalesJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCExportEcrsalesBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCExportEcrsalesJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSExportEcrsalesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSExportEcrsalesBean"/> 
+        <property name="cronExpression" value="00 25 05 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSExportEcrsalesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSExportEcrsalesBean"/> 
+        <property name="cronExpression" value="00 35 05 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCExportEcrsalesJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCExportEcrsalesBean"/> 
+        <property name="cronExpression" value="00 45 05 * * ?"/>
+    </bean>
+
+    <!-- ===================日結==============================-->   
+
+    <bean id="T3CODailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T3CO"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+    
+    <bean id="T3CUDailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T3CU"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+    
+    <bean id="T1BSDailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T1BS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+    
+    <bean id="T1GSDailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T1GS"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+    
+    <bean id="T1HCDailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T1HC"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+    
+    <bean id="T3PEDailyBalanceJob" class="tw.com.tm.erp.batch.DailyBalanceJob"> 
+        <property name="brandCode" value="T3PE"/>
+        <property name="opUser" value="SYSTEM"/>
+        <property name="dailyBalanceManager" ref="dailyBalanceManager"/>
+    </bean>
+        
+    <bean id="T3CODailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T3CODailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T3CUDailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T3CUDailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1BSDailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1BSDailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1GSDailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1GSDailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T1HCDailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T1HCDailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="T3PEDailyBalanceBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="T3PEDailyBalanceJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+       
+    <bean id="T3CODailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T3CODailyBalanceBean"/> 
+        <property name="cronExpression" value="00 00 06 * * ?"/>
+    </bean>
+    
+    <bean id="T3CUDailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T3CUDailyBalanceBean"/> 
+        <property name="cronExpression" value="00 20 06 * * ?"/>
+    </bean>
+    
+    <bean id="T1BSDailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1BSDailyBalanceBean"/> 
+        <property name="cronExpression" value="00 50 06 * * ?"/>
+    </bean>
+    
+    <bean id="T1GSDailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1GSDailyBalanceBean"/> 
+        <property name="cronExpression" value="00 10 07 * * ?"/>
+    </bean>
+    
+    <bean id="T1HCDailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T1HCDailyBalanceBean"/> 
+        <property name="cronExpression" value="00 30 07 * * ?"/>
+    </bean>
+    
+    <bean id="T3PEDailyBalanceJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="T3PEDailyBalanceBean"/> 
+        <property name="cronExpression" value="00 20 07 * * ?"/>
+    </bean>   
+
+    <!-- ======================偉盟員工檔匯入===================================== -->
+
+    <bean id="EmployeeDataParseJob" class="tw.com.tm.erp.batch.EmployeeDataParseJob"/> 
+    <bean id="EmployeeDataParseBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="EmployeeDataParseJob"/> 
+        <property name="targetMethod" value="execute"/> 
+        <property name="concurrent" value="true"/> 
+    </bean> 
+    <bean id="EmployeeDataParseTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean" > 
+         <property name="jobDetail" ref="EmployeeDataParseBean"/>
+         <property name="cronExpression" value="00 30 12,21 * * ?"/>
+    </bean>
+  
+    <!-- ===================店櫃依照預計啟用日，自動更新狀態==============================-->
+
+    <bean id="ShopCodeJob" class="tw.com.tm.erp.batch.BuShopJob"> 
+    </bean>
+    
+    <bean id="ShopCodeBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="ShopCodeJob" /> 
+        <property name="targetMethod" value="execute"/>
+        <property name="concurrent" value="true"/>
+    </bean>
+    
+    <bean id="ShopCodeTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean"> 
+        <property name="jobDetail" ref="ShopCodeBean"/> 
+        <property name="cronExpression" value="00 00 22 * * ?"/>
+    </bean>
+    <!-- ======================================================-->  
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+        <property name="triggers">
+            <list>
+                <ref bean="T1BSPOSMoveImportJobTrigger"/>
+                <ref bean="T1GSPOSMoveImportJobTrigger"/> 
+                <ref bean="T1HCPOSMoveImportJobTrigger"/>              
+                <ref bean="T1BSSOPImportJobTrigger"/>
+                <ref bean="T1GSSOPImportJobTrigger"/> 
+                <ref bean="T1HCSOPImportJobTrigger"/>                              
+                <ref bean="T1BSExportGoodslstJobTrigger"/>
+                <ref bean="T1GSExportGoodslstJobTrigger"/>
+                <ref bean="T1HCExportGoodslstJobTrigger"/>                               
+                <ref bean="T1BSExportMovementJobTrigger"/> 
+                <ref bean="T1GSExportMovementJobTrigger"/>
+                <ref bean="T1HCExportMovementJobTrigger"/>                                             
+                <ref bean="T1BSExportGdsqtyJobTrigger"/>
+                <ref bean="T1GSExportGdsqtyJobTrigger"/>
+                <ref bean="T1HCExportGdsqtyJobTrigger"/>                                             
+                <ref bean="T1BSExportPromJobTrigger"/>
+                <ref bean="T1GSExportPromJobTrigger"/>
+                <ref bean="T1HCExportPromJobTrigger"/>                               
+                <ref bean="T1BSExportCustomerJobTrigger"/>
+                <ref bean="T1GSExportCustomerJobTrigger"/>
+                <ref bean="T1HCExportCustomerJobTrigger"/>                              
+                <ref bean="T1BSExportEcrsalesJobTrigger"/>
+                <ref bean="T1GSExportEcrsalesJobTrigger"/>
+                <ref bean="T1HCExportEcrsalesJobTrigger"/>                               
+                <ref bean="T3CODailyBalanceJobTrigger"/>
+                <ref bean="T3CUDailyBalanceJobTrigger"/>
+                <ref bean="EmployeeDataParseTrigger"/>
+                <ref bean="T1BSDailyBalanceJobTrigger"/>
+                <ref bean="T1GSDailyBalanceJobTrigger"/>
+                <ref bean="T1HCDailyBalanceJobTrigger"/>
+                <ref bean="T3PEDailyBalanceJobTrigger"/>  
+                <ref bean="ShopCodeTrigger"/>                   
+            </list>
+        </property>
+    </bean>   
+</beans>

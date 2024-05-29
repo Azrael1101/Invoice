@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+
+    <!-- DAO Bean -->
+    <bean id="imMovementHeadDAO" class="tw.com.tm.erp.hbm.dao.ImMovementHeadDAO"/>
+    <bean id="imMovementItemDAO" class="tw.com.tm.erp.hbm.dao.ImMovementItemDAO"/>
+    <bean id="imMovementFileDAO" class="tw.com.tm.erp.hbm.dao.ImMovementFileDAO"/>
+    <bean id="imPromotionDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionDAO"/>
+	<bean id="imPromotionItemDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionItemDAO"/>
+	<bean id="imPromotionShopDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionShopDAO"/>
+	<bean id="imPromotionCustomerDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionCustomerDAO"/>
+	<bean id="imPromotionFileDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionFileDAO"/>
+	<bean id="imDeliveryHeadDAO" class="tw.com.tm.erp.hbm.dao.ImDeliveryHeadDAO"/>
+	<bean id="imDeliveryLineDAO" class="tw.com.tm.erp.hbm.dao.ImDeliveryLineDAO"/>
+	<bean id="imCategoryHeadDAO" class="tw.com.tm.erp.hbm.dao.ImCategoryHeadDAO"/>
+	<bean id="imWarehouseTypeDAO" class="tw.com.tm.erp.hbm.dao.ImWarehouseTypeDAO"/>
+	<bean id="imTransationDAO" class="tw.com.tm.erp.hbm.dao.ImTransationDAO"/>
+	<bean id="imItemDAO" class="tw.com.tm.erp.hbm.dao.ImItemDAO"/>
+	<bean id="imItemImageDAO" class="tw.com.tm.erp.hbm.dao.ImItemImageDAO"/>
+	<bean id="imItemComposeDAO" class="tw.com.tm.erp.hbm.dao.ImItemComposeDAO"/>
+	<bean id="imItemPriceDAO" class="tw.com.tm.erp.hbm.dao.ImItemPriceDAO"/>
+	<bean id="imItemPriceOnHandViewDAO" class="tw.com.tm.erp.hbm.dao.ImItemPriceOnHandViewDAO"/>
+	<bean id="imOnHandDAO" class="tw.com.tm.erp.hbm.dao.ImOnHandDAO"/>
+	<bean id="imWarehouseDAO" class="tw.com.tm.erp.hbm.dao.ImWarehouseDAO"/>
+	<bean id="imCategoryLineDAO" class="tw.com.tm.erp.hbm.dao.ImCategoryLineDAO"/>
+	<bean id="imLocationDAO" class="tw.com.tm.erp.hbm.dao.ImLocationDAO"/>
+	<bean id="imPriceAdjustmentDAO" class="tw.com.tm.erp.hbm.dao.ImPriceAdjustmentDAO"/>
+	<bean id="imPriceListDAO" class="tw.com.tm.erp.hbm.dao.ImPriceListDAO"/>
+	<bean id="imPromotionViewDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionViewDAO"/>
+	<bean id="imItemPriceViewDAO" class="tw.com.tm.erp.hbm.dao.ImItemPriceViewDAO"/>
+	<bean id="imWarehouseQuantityViewDAO" class="tw.com.tm.erp.hbm.dao.ImWarehouseQuantityViewDAO"/>
+	<bean id="imOnHandViewDAO" class="tw.com.tm.erp.hbm.dao.ImOnHandViewDAO"/>
+	<bean id="imWarehouseDao" class="tw.com.tm.erp.hbm.dao.ImWarehouseDAO"/>
+    <bean id="imItemCurrentPriceViewDAO" class="tw.com.tm.erp.hbm.dao.ImItemCurrentPriceViewDAO"/>
+    <bean id="imItemOnHandViewDAO" class="tw.com.tm.erp.hbm.dao.ImItemOnHandViewDAO"/>
+    <bean id="imReceiveExpenseDAO" class="tw.com.tm.erp.hbm.dao.ImReceiveExpenseDAO"/>
+    <bean id="imReceiveHeadDAO" class="tw.com.tm.erp.hbm.dao.ImReceiveHeadDAO"/>
+    <bean id="imReceiveInvoiceDAO" class="tw.com.tm.erp.hbm.dao.ImReceiveInvoiceDAO"/>
+    <bean id="imReceiveItemDAO" class="tw.com.tm.erp.hbm.dao.ImReceiveItemDAO"/>
+    <bean id="imItemCategoryDAO" class="tw.com.tm.erp.hbm.dao.ImItemCategoryDAO"/>
+    <bean id="imWarehouseEmployeeDAO" class="tw.com.tm.erp.hbm.dao.ImWarehouseEmployeeDAO"/>
+    <bean id="imDistributionHeadDAO" class="tw.com.tm.erp.hbm.dao.ImDistributionHeadDAO"/>
+    <bean id="imDistributionLineDAO" class="tw.com.tm.erp.hbm.dao.ImDistributionLineDAO"/>
+    <bean id="imDistributionItemDAO" class="tw.com.tm.erp.hbm.dao.ImDistributionItemDAO"/>
+    <bean id="imDistributionShopDAO" class="tw.com.tm.erp.hbm.dao.ImDistributionShopDAO"/>
+    <bean id="imAdjustmentHeadDAO" class="tw.com.tm.erp.hbm.dao.ImAdjustmentHeadDAO"/>
+    <bean id="imInventoryCountsHeadDAO" class="tw.com.tm.erp.hbm.dao.ImInventoryCountsHeadDAO"/>
+    <bean id="imInventoryCountsLineDAO" class="tw.com.tm.erp.hbm.dao.ImInventoryCountsLineDAO"/>
+    <bean id="imLetterOfCreditHeadDAO" class="tw.com.tm.erp.hbm.dao.ImLetterOfCreditHeadDAO"/>
+    <bean id="imLetterOfCreditLineDAO" class="tw.com.tm.erp.hbm.dao.ImLetterOfCreditLineDAO"/>
+    <bean id="imLetterOfCreditAlterDAO" class="tw.com.tm.erp.hbm.dao.ImLetterOfCreditAlterDAO"/>
+    <bean id="imMonthlyBalanceHeadDAO" class="tw.com.tm.erp.hbm.dao.ImMonthlyBalanceHeadDAO"/>
+    <bean id="imMonthlyBalanceLineDAO" class="tw.com.tm.erp.hbm.dao.ImMonthlyBalanceLineDAO"/>
+    <bean id="imAdjustmentLineDAO" class="tw.com.tm.erp.hbm.dao.ImAdjustmentLineDAO"/>
+    <bean id="imItemEanPriceViewDAO" class="tw.com.tm.erp.hbm.dao.ImItemEanPriceViewDAO"/>
+    <bean id="imItemEancodeDAO" class="tw.com.tm.erp.hbm.dao.ImItemEancodeDAO"/>
+    <bean id="imItemDiscountDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountDAO"/>
+    <bean id="imItemSerialDAO" class="tw.com.tm.erp.hbm.dao.ImItemSerialDAO"/>
+    <bean id="imPickingDAO" class="tw.com.tm.erp.hbm.dao.ImPickingDAO"/>
+    <bean id="imItemBarcodeHeadDAO" class="tw.com.tm.erp.hbm.dao.ImItemBarcodeHeadDAO"/>
+    <bean id="imItemBarcodeLineDAO" class="tw.com.tm.erp.hbm.dao.ImItemBarcodeLineDAO"/>
+    <bean id="imReplenishHeadDAO" class="tw.com.tm.erp.hbm.dao.ImReplenishHeadDAO"/>
+    <bean id="imReplenishDisplayDAO" class="tw.com.tm.erp.hbm.dao.ImReplenishDisplayDAO"/>
+    <bean id="imReplenishLimitionDAO" class="tw.com.tm.erp.hbm.dao.ImReplenishLimitionDAO"/>
+    <bean id="imReplenishCalendarDAO" class="tw.com.tm.erp.hbm.dao.ImReplenishCalendarDAO"/>
+    <bean id="imItemDiscountHeadDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountHeadDAO"/>
+    <bean id="imItemDiscountModDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountModDAO"/>
+    <bean id="imItemDiscountLineDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountLineDAO"/>
+    <bean id="imItemDiscountModHeadDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountModHeadDAO"/>
+    <bean id="imItemDiscountModLineDAO" class="tw.com.tm.erp.hbm.dao.ImItemDiscountModLineDAO"/>
+    <bean id="imTransferDAO" class="tw.com.tm.erp.hbm.dao.ImTransferDAO"/>
+    <bean id="imSysLogDAO" class="tw.com.tm.erp.hbm.dao.ImSysLogDAO"/>
+    <bean id="soBonusDAO" class="tw.com.tm.erp.hbm.dao.SoBonusDAO"/>
+    <bean id="imPromotionReCombineDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionReCombineDAO"/>
+    <bean id="imPromotionReCombineModDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionReCombineModDAO"/>
+    <bean id="imDeliveryDetailCountViewDAO" class="tw.com.tm.erp.hbm.dao.ImDeliveryDetailCountViewDAO"/>
+    <bean id="imPromotionFullDAO" class="tw.com.tm.erp.hbm.dao.ImPromotionFullDAO"/>
+    <bean id="imItemCategoryLevelDAO" class="tw.com.tm.erp.hbm.dao.ImItemCategoryLevelDAO"/>
+    <bean id="imItemCategoryNodeDAO" class="tw.com.tm.erp.hbm.dao.ImItemCategoryNodeDAO"/>
+    
+    
+    <!-- Service Bean -->
+    <bean id="imDeliveryService"       		class="tw.com.tm.erp.hbm.service.ImDeliveryService"/>
+    <bean id="imDeliveryMainService"       	class="tw.com.tm.erp.hbm.service.ImDeliveryMainService"/>
+    <bean id="imDeliveryLineService"       	class="tw.com.tm.erp.hbm.service.ImDeliveryLineService"/>
+	<bean id="imPriceAdjustmentService" 	class="tw.com.tm.erp.hbm.service.ImPriceAdjustmentService"/>
+	<bean id="imPriceListService" 			class="tw.com.tm.erp.hbm.service.ImPriceListService"/>
+	<bean id="imInventoryCountsBatchCreateService" class="tw.com.tm.erp.hbm.service.ImInventoryCountsBatchCreateService"/>
+	<bean id="imItemPriceService"      		class="tw.com.tm.erp.hbm.service.ImItemPriceService"/>
+	<bean id="imItemPriceOnHandViewService" class="tw.com.tm.erp.hbm.service.ImItemPriceOnHandViewService"/>
+	<bean id="imItemService"           		class="tw.com.tm.erp.hbm.service.ImItemService"/>
+	<bean id="imOnHandService"         		class="tw.com.tm.erp.hbm.service.ImOnHandService"/>
+	<bean id="imPromotionService"      		class="tw.com.tm.erp.hbm.service.ImPromotionService"/>
+	<bean id="imPromotionItemService"      	class="tw.com.tm.erp.hbm.service.ImPromotionItemService"/>
+	<bean id="imPromotionViewService"  		class="tw.com.tm.erp.hbm.service.ImPromotionViewService"/>
+    <bean id="imWarehouseService"      		class="tw.com.tm.erp.hbm.service.ImWarehouseService"/>
+    <bean id="imItemOnHandViewService" 		class="tw.com.tm.erp.hbm.service.ImItemOnHandViewService"/>
+    <bean id="imMovementService"       		class="tw.com.tm.erp.hbm.service.ImMovementService"/>
+    <bean id="imMovementMainService"       		class="tw.com.tm.erp.hbm.service.ImMovementMainService"/>
+    <bean id="imReceiveExpenseService" class="tw.com.tm.erp.hbm.service.ImReceiveExpenseService"/>
+    <bean id="imReceiveHeadService" class="tw.com.tm.erp.hbm.service.ImReceiveHeadService"/>
+    <bean id="imReceiveInvoiceService" class="tw.com.tm.erp.hbm.service.ImReceiveInvoiceService"/>
+    <bean id="imReceiveItemService" class="tw.com.tm.erp.hbm.service.ImReceiveItemService"/>
+    <bean id="imItemCategoryService" class="tw.com.tm.erp.hbm.service.ImItemCategoryService"/>
+    <bean id="imWarehouseTypeService" class="tw.com.tm.erp.hbm.service.ImWarehouseTypeService"/>
+    <bean id="imWarehouseEmployeeService" class="tw.com.tm.erp.hbm.service.ImWarehouseEmployeeService"/>
+    <bean id="imDistributionHeadService" class="tw.com.tm.erp.hbm.service.ImDistributionHeadService"/>
+    <bean id="imDistributionLineService" class="tw.com.tm.erp.hbm.service.ImDistributionLineService"/>
+    <bean id="imAdjustmentHeadService" class="tw.com.tm.erp.hbm.service.ImAdjustmentHeadService"/>
+    <bean id="imAdjustmentLineService" class="tw.com.tm.erp.hbm.service.ImAdjustmentLineService"/>
+    <bean id="imInventoryCountsService" class="tw.com.tm.erp.hbm.service.ImInventoryCountsService"/>
+    <bean id="imInventoryCountsLineService" class="tw.com.tm.erp.hbm.service.ImInventoryCountsLineService"/>
+    <bean id="imTransationService" class="tw.com.tm.erp.hbm.service.ImTransationService"/>
+    <bean id="imLetterOfCreditService" class="tw.com.tm.erp.hbm.service.ImLetterOfCreditService"/>
+    <bean id="imMonthlyBalanceService" class="tw.com.tm.erp.hbm.service.ImMonthlyBalanceService"/>
+    <bean id="imItemEanPriceViewService" class="tw.com.tm.erp.hbm.service.ImItemEanPriceViewService"/>
+    <bean id="imReceiveAdjustmentService" class="tw.com.tm.erp.hbm.service.ImReceiveAdjustmentService"/>
+    <bean id="imGeneralAdjustmentService" class="tw.com.tm.erp.hbm.service.ImGeneralAdjustmentService"/>
+    <bean id="imReceiveHeadMainService" class="tw.com.tm.erp.hbm.service.ImReceiveHeadMainService"/>
+    <bean id="imReceiveItemMainService" class="tw.com.tm.erp.hbm.service.ImReceiveItemMainService"/>
+    <bean id="imReceiveExpenseMainService" class="tw.com.tm.erp.hbm.service.ImReceiveExpenseMainService"/>
+    <bean id="imPriceAdjustmentMainService" class="tw.com.tm.erp.hbm.service.ImPriceAdjustmentMainService"/>
+    <bean id="generateBarCodeService" class="tw.com.tm.erp.hbm.service.GenerateBarCodeService"/>
+    <bean id="imPromotionMainService" class="tw.com.tm.erp.hbm.service.ImPromotionMainService"/>
+    <bean id="imInventoryCountService" class="tw.com.tm.erp.utils.sp.ImInventoryCountService"/>
+    <bean id="imItemBarcodeHeadService" class="tw.com.tm.erp.hbm.service.ImItemBarcodeHeadService"/>
+    <bean id="imReplenishCalendarService" class="tw.com.tm.erp.hbm.service.ImReplenishCalendarService"/>
+    <bean id="imReplenishService" class="tw.com.tm.erp.hbm.service.ImReplenishService"/>
+    <bean id="imItemDiscountModService" class="tw.com.tm.erp.hbm.service.ImItemDiscountModService"/>
+    <bean id="imItemDiscountService" class="tw.com.tm.erp.hbm.service.ImItemDiscountService"/>
+    <bean id="imTransferService" class="tw.com.tm.erp.hbm.service.ImTransferService"/>
+    <bean id="soBonusService" class="tw.com.tm.erp.hbm.service.SoBonusService"/>
+    <bean id="imPromotionReCombineMainService" class="tw.com.tm.erp.hbm.service.ImPromotionReCombineMainService"/>
+    <bean id="customsUploadSettingService" class="tw.com.tm.erp.hbm.service.CustomsUploadSettingService"/>
+    <bean id="imPromotionFullService" class="tw.com.tm.erp.hbm.service.ImPromotionFullService"/>
+    <bean id="imItemCategoryLevelService" class="tw.com.tm.erp.hbm.service.ImItemCategoryLevelService"/>
+    
+    <!-- Action Bean -->
+    <bean id="imPromotionAction" class="tw.com.tm.erp.action.ImPromotionAction"/>
+    <bean id="imPriceAdjustmentAction" class="tw.com.tm.erp.action.ImPriceAdjustmentAction"/>
+    <bean id="imMovementAction" class="tw.com.tm.erp.action.ImMovementAction"/>
+    <bean id="imMovementMainAction" class="tw.com.tm.erp.action.ImMovementMainAction"/>
+    <bean id="imAdjustmentHeadAction" class="tw.com.tm.erp.action.ImAdjustmentHeadAction"/>
+    <bean id="imInventoryCountsAction" class="tw.com.tm.erp.action.ImInventoryCountsAction"/>
+    <bean id="imInventoryCountsBatchCreateAction" class="tw.com.tm.erp.action.ImInventoryCountsBatchCreateAction"/>
+    <bean id="imLetterOfCreditAction" class="tw.com.tm.erp.action.ImLetterOfCreditAction"/>
+    <bean id="imDeliveryAction" class="tw.com.tm.erp.action.ImDeliveryAction"/>
+    <bean id="imItemAction" class="tw.com.tm.erp.action.ImItemAction"/>
+    <bean id="imReceiveAdjustmentAction" class="tw.com.tm.erp.action.ImReceiveAdjustmentAction"/>
+    <bean id="imGeneralAdjustmentAction" class="tw.com.tm.erp.action.ImGeneralAdjustmentAction"/>
+    <bean id="imReceiveMainAction" class="tw.com.tm.erp.action.ImReceiveMainAction"/>
+    <bean id="imWarehouseAction" class="tw.com.tm.erp.action.ImWarehouseAction"/>
+    <bean id="imDistributionAction" class="tw.com.tm.erp.action.ImDistributionAction"/>
+    <bean id="imPromotionMainAction" class="tw.com.tm.erp.action.ImPromotionMainAction"/>
+    <bean id="imItemBarcodeHeadAction" class="tw.com.tm.erp.action.ImItemBarcodeHeadAction"/>
+    <bean id="imReplenishAction" class="tw.com.tm.erp.action.ImReplenishAction"/>
+    <bean id="imItemDiscountModAction" class="tw.com.tm.erp.action.ImItemDiscountModAction"/>
+    <bean id="imItemDiscountAction" class="tw.com.tm.erp.action.ImItemDiscountAction"/>
+    <bean id="imTransferAction" class="tw.com.tm.erp.action.ImTransferAction"/>
+    <bean id="soBonusAction" class="tw.com.tm.erp.action.SoBonusAction"/>
+    <bean id="imReceiveExpenseAction" class="tw.com.tm.erp.action.ImReceiveExpenseAction"/>
+    <bean id="customsControlAction" class="tw.com.tm.erp.action.CustomsControlAction"/>
+    <bean id="imPromotionReCombineMainAction" class="tw.com.tm.erp.action.ImPromotionReCombineMainAction"/>
+    <bean id="imItemOnHandViewAction" class="tw.com.tm.erp.action.ImItemOnHandViewAction"/>
+    <bean id="customsUploadSettingAction" class="tw.com.tm.erp.action.CustomsUploadSettingAction"/>
+    <bean id="imPromotionFullAction" class="tw.com.tm.erp.action.ImPromotionFullAction"/>
+    <bean id="imItemCategoryLevelAction" class="tw.com.tm.erp.action.ImItemCategoryLevelAction"/>
+    
+</beans>

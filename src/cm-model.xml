@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+
+    <!-- DAO Bean -->
+    <bean id="uploadControlDAO" class="tw.com.tm.erp.hbm.dao.UploadControlDAO"/>
+    <bean id="customsContorlDAO" class="tw.com.tm.erp.hbm.dao.CustomsContorlDAO"/>
+    <bean id="cmDeclarationContainerDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationContainerDAO"/>
+    <bean id="cmDeclarationHeadDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationHeadDAO"/>
+    <bean id="cmDeclarationItemDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationItemDAO"/>
+    <bean id="cmDeclarationVehicleDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationVehicleDAO"/>
+    <bean id="cmDeclarationOnHandDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationOnHandDAO"/>
+    <bean id="cmMovementHeadDAO" class="tw.com.tm.erp.hbm.dao.CmMovementHeadDAO"/>
+    <bean id="cmMovementLineDAO" class="tw.com.tm.erp.hbm.dao.CmMovementLineDAO"/>
+    <bean id="cmDeclarationLogDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationLogDAO"/>
+    <bean id="cmDeclarationOnHandViewDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationOnHandViewDAO"/>
+    <bean id="cmDeclarationViewDAO" class="tw.com.tm.erp.hbm.dao.CmDeclarationViewDAO"/>
+    <bean id="cmD8TransactionDAO" class="tw.com.tm.erp.hbm.dao.CmD8TransactionDAO">
+    	<property name="dataSource" ref="dataSource"/>
+	    <property name="dataSourceFW" ref="dataSourceFW"/>
+	    <property name="dataSourceFD" ref="dataSourceFD"/>
+	    <property name="dataSourceFA" ref="dataSourceFA"/>
+    </bean>
+    <bean id="fPGoodsDAO" class="tw.com.tm.erp.hbm.dao.FPGoodsDAO">
+	    <property name="dataSource" ref="dataSource"/>
+	    <property name="dataSourceFW" ref="dataSourceFW"/>
+	    <property name="dataSourceFD" ref="dataSourceFD"/>
+    </bean>
+    <!-- 運送單 -->
+    <bean id="cmTransferDAO" class="tw.com.tm.erp.hbm.dao.CmTransferDAO"/>
+	<!-- 鎖報單 -->
+	<bean id="cmBlockDeclarationHeadDAO" class="tw.com.tm.erp.hbm.dao.CmBlockDeclarationHeadDAO"/>
+    <bean id="cmBlockDeclarationItemDAO" class="tw.com.tm.erp.hbm.dao.CmBlockDeclarationItemDAO"/>
+
+    <!-- Service Bean -->
+    <bean id="uploadControlService" class="tw.com.tm.erp.hbm.service.UploadControlService"/>
+    <bean id="cmDeclarationContainerService" class="tw.com.tm.erp.hbm.service.CmDeclarationContainerService"/>
+    <bean id="cmDeclarationHeadService" class="tw.com.tm.erp.hbm.service.CmDeclarationHeadService"/>
+    <bean id="cmDeclarationItemService" class="tw.com.tm.erp.hbm.service.CmDeclarationItemService"/>
+    <bean id="cmDeclarationVehicleService" class="tw.com.tm.erp.hbm.service.CmDeclarationVehicleService"/>
+    <bean id="cmDeclarationLogService" class="tw.com.tm.erp.hbm.service.CmDeclarationLogService"/>
+    <bean id="cmMovementService" class="tw.com.tm.erp.hbm.service.CmMovementService"/>
+    <bean id="cmDeclarationOnHandService" class="tw.com.tm.erp.hbm.service.CmDeclarationOnHandService"/>
+    <bean id="cmDeclarationOnHandExtentionService" class="tw.com.tm.erp.hbm.service.CmDeclarationOnHandExtentionService"/>
+    <bean id="cmTransactionService" class="tw.com.tm.erp.hbm.service.CmTransactionService"/>
+    <bean id="cmTransferService" class="tw.com.tm.erp.hbm.service.CmTransferService"/>
+    <bean id="cmBlockDeclarationService" class="tw.com.tm.erp.hbm.service.CmBlockDeclarationService"/>
+
+    <!-- Action bean -->
+    <bean id="uploadControlAction" class="tw.com.tm.erp.action.UploadControlAction"/>
+    <bean id="cmMovementAction" class="tw.com.tm.erp.action.CmMovementAction"/>
+    <bean id="cmDeclarationAction" class="tw.com.tm.erp.action.CmDeclarationAction"/>
+    <bean id="cmDeclarationLogAction" class="tw.com.tm.erp.action.CmDeclarationLogAction"/>
+    <bean id="cmTransferAction" class="tw.com.tm.erp.action.CmTransferAction"/>
+    <bean id="cmBlockDeclarationAction" class="tw.com.tm.erp.action.CmBlockDeclarationAction"/>
+
+</beans>

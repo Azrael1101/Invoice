@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+ 
+    <!-- DAO Bean -->
+    <bean id="buAdminSubDAO" class="tw.com.tm.erp.hbm.dao.BuAdminSubDAO"/>
+    <bean id="buCustomerModDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerModDAO"/>
+    <bean id="buCountryDAO" class="tw.com.tm.erp.hbm.dao.BuCountryDAO"/>
+    <bean id="buCompanyDAO" class="tw.com.tm.erp.hbm.dao.BuCompanyDAO"/>
+	<bean id="buCurrencyDAO" class="tw.com.tm.erp.hbm.dao.BuCurrencyDAO"/>
+    <bean id="buCommonPhraseHeadDAO" class="tw.com.tm.erp.hbm.dao.BuCommonPhraseHeadDAO"/>
+    <bean id="buOrganizationDAO" class="tw.com.tm.erp.hbm.dao.BuOrganizationDAO"/>
+    <bean id="buCustomerDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerDAO"/>
+    <bean id="buBranchDAO" class="tw.com.tm.erp.hbm.dao.BuBranchDAO"/>
+    <bean id="buEmployeeDAO" class="tw.com.tm.erp.hbm.dao.BuEmployeeDAO"/>
+    <bean id="buEmployeeBrandDAO" class="tw.com.tm.erp.hbm.dao.BuEmployeeBrandDAO"/>
+    <bean id="buEmployeeWithAddressViewDAO" class="tw.com.tm.erp.hbm.dao.BuEmployeeWithAddressViewDAO"/>
+    <bean id="buExchangeRateDAO" class="tw.com.tm.erp.hbm.dao.BuExchangeRateDAO"/>
+    <bean id="buCustomerWithAddressViewDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerWithAddressViewDAO"/>
+    <bean id="buSupplierWithAddressViewDAO" class="tw.com.tm.erp.hbm.dao.BuSupplierWithAddressViewDAO"/>
+	<bean id="buCommonPhraseLineDAO" class="tw.com.tm.erp.hbm.dao.BuCommonPhraseLineDAO"/>
+	<bean id="buAuthruleParamaterDAO" class="tw.com.tm.erp.hbm.dao.BuAuthruleParamaterDAO"/>
+	<bean id="buOrderTypeDAO" class="tw.com.tm.erp.hbm.dao.BuOrderTypeDAO"/>
+	<bean id="buOrderTypeApprovalDAO" class="tw.com.tm.erp.hbm.dao.BuOrderTypeApprovalDAO"/>
+	<bean id="buAddressBookDAO" class="tw.com.tm.erp.hbm.dao.BuAddressBookDAO"/>
+	<bean id="buSupplierDAO" class="tw.com.tm.erp.hbm.dao.BuSupplierDAO"/>
+	<bean id="buBrandDAO" class="tw.com.tm.erp.hbm.dao.BuBrandDAO"/>
+	<bean id="buPaymentTermDAO" class="tw.com.tm.erp.hbm.dao.BuPaymentTermDAO"/>
+	<bean id="buShopDAO" class="tw.com.tm.erp.hbm.dao.BuShopDAO"/>
+	<bean id="buShopEmployeeDAO" class="tw.com.tm.erp.hbm.dao.BuShopEmployeeDAO"/>
+	<bean id="buShopMachineDAO" class="tw.com.tm.erp.hbm.dao.BuShopMachineDAO"/>
+	<bean id="buLocationDAO" class="tw.com.tm.erp.hbm.dao.BuLocationDAO"/>
+  	<bean id="buLocationAreaDAO" class="tw.com.tm.erp.hbm.dao.BuLocationAreaDAO"/>
+  	<bean id="buShopTargetDAO" class="tw.com.tm.erp.hbm.dao.BuShopTargetDAO"/>
+  	<bean id="buEmployeeWithCustomerViewDAO" class="tw.com.tm.erp.hbm.dao.BuEmployeeWithCustomerViewDAO"/>
+  	<bean id="buGoalHeadDAO" class="tw.com.tm.erp.hbm.dao.BuGoalHeadDAO"/>
+  	<bean id="buGoalPercentLineDAO" class="tw.com.tm.erp.hbm.dao.BuGoalPercentLineDAO"/>
+  	<bean id="buGoalEmployeeLineDAO" class="tw.com.tm.erp.hbm.dao.BuGoalEmployeeLineDAO"/>
+  	<bean id="buGoalDeployHeadDAO" class="tw.com.tm.erp.hbm.dao.BuGoalDeployHeadDAO"/>
+  	<bean id="buGoalDeployLineDAO" class="tw.com.tm.erp.hbm.dao.BuGoalDeployLineDAO"/>
+  	<bean id="buCustomerCardDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerCardDAO"/>
+  	<bean id="buCustomerCardEventDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerCardEventDAO"/>
+    <bean id="buShopSetTlementDAO" class="tw.com.tm.erp.hbm.dao.BuShopSetTlementDAO"/>
+  	<bean id="buEmployeeAwardDAO" class="tw.com.tm.erp.hbm.dao.BuEmployeeAwardDAO"/>
+  	<bean id="buFlightScheduleDAO" class="tw.com.tm.erp.hbm.dao.BuFlightScheduleDAO"/>
+  	<bean id="buPurchaseHeadDAO" class="tw.com.tm.erp.hbm.dao.BuPurchaseHeadDAO"/>
+	<bean id="buPurchaseLineDAO" class="tw.com.tm.erp.hbm.dao.BuPurchaseLineDAO"/>
+  	<bean id="buGoalAchevementDAO" class="tw.com.tm.erp.hbm.dao.BuGoalAchevementDAO"/>
+  	<bean id="buBatchConfigDAO" class="tw.com.tm.erp.hbm.dao.BuBatchConfigDAO"/>
+  	<bean id="buGoalCommissionExceptionDAO" class="tw.com.tm.erp.hbm.dao.BuGoalCommissionExceptionDAO"/>
+  	<bean id="buGoalCommissionDAO" class="tw.com.tm.erp.hbm.dao.BuGoalCommissionDAO"/>
+  	<bean id="buGoalItemDiscountDAO" class="tw.com.tm.erp.hbm.dao.BuGoalItemDiscountDAO"/>
+  	<bean id="buTruckDAO" class="tw.com.tm.erp.hbm.dao.BuTruckDAO"/>
+  	<bean id="buGoalAchevementService" class="tw.com.tm.erp.hbm.service.BuGoalAchevementService"/>
+  	<bean id="buGoalCommissionService" class="tw.com.tm.erp.hbm.service.BuGoalCommissionService"/>
+	<bean id="buGoalItemDiscountService" class="tw.com.tm.erp.hbm.service.BuGoalItemDiscountService"/>
+	<bean id="buGoalAchevementAction" class="tw.com.tm.erp.action.BuGoalAchevementAction"/>
+	<bean id="buSupplierModDAO" class="tw.com.tm.erp.hbm.dao.BuSupplierModDAO"/>
+	<bean id="prItemDAO" class="tw.com.tm.erp.hbm.dao.PrItemDAO"/>
+	<bean id="adTaskReviewViewDAO" class="tw.com.tm.erp.hbm.dao.AdTaskReviewViewDAO"/>
+	<bean id="buDeleteLogDAO" class="tw.com.tm.erp.hbm.dao.BuDeleteLogDAO"/>
+	<bean id="prSupplierDAO" class="tw.com.tm.erp.hbm.dao.PrSupplierDAO"/>
+	<bean id="shopSetDAO" class="tw.com.tm.erp.hbm.dao.ShopSetDAO"/>
+  	<bean id="buPosBtnConfigDAO" class="tw.com.tm.erp.hbm.dao.BuPosBtnConfigDAO"/>
+  	<bean id="buCustomerCouponRecordDAO" class="tw.com.tm.erp.hbm.dao.BuCustomerCouponRecordDAO"/>
+  	<bean id="bumOrganizationTreeDAO" class="tw.com.tm.erp.hbm.dao.BumOrganizationTreeDAO"/>
+  	
+    <!-- Service Bean -->
+    <bean id="buCustomerModService" class="tw.com.tm.erp.hbm.service.BuCustomerModService"/>
+    <bean id="buAddressBookService" class="tw.com.tm.erp.hbm.service.BuAddressBookService"/>
+    <bean id="buBrandService" class="tw.com.tm.erp.hbm.service.BuBrandService"/>
+    <bean id="buCommonPhraseService" class="tw.com.tm.erp.hbm.service.BuCommonPhraseService"/>
+    <bean id="buCustomerWithAddressViewService" class="tw.com.tm.erp.hbm.service.BuCustomerWithAddressViewService"/>
+	<bean id="buEmployeeWithAddressViewService" class="tw.com.tm.erp.hbm.service.BuEmployeeWithAddressViewService" />
+	<bean id="buSupplierWithAddressViewService" class="tw.com.tm.erp.hbm.service.BuSupplierWithAddressViewService" />
+    <bean id="buBasicDataService" class="tw.com.tm.erp.hbm.service.BuBasicDataService"/>
+    <bean id="buOrderTypeService" class="tw.com.tm.erp.hbm.service.BuOrderTypeService"/>
+    <bean id="buLocationService" class="tw.com.tm.erp.hbm.service.BuLocationService"/>  
+	<bean id="buLocationAreaService" class="tw.com.tm.erp.hbm.service.BuLocationAreaService"/>
+	<bean id="buShopService" class="tw.com.tm.erp.hbm.service.BuShopService"/>
+	<bean id="buShopMachineService" class="tw.com.tm.erp.hbm.service.BuShopMachineService"/>
+	<bean id="buEmployeeBrandService" class="tw.com.tm.erp.hbm.service.BuEmployeeBrandService"/>
+	<bean id="buEmployeeService" class="tw.com.tm.erp.hbm.service.BuEmployeeService"/>
+	<bean id="buGoalService" class="tw.com.tm.erp.hbm.service.BuGoalService"/>
+	<bean id="buShopSetTlementService" class="tw.com.tm.erp.hbm.service.BuShopSetTlementService"/>
+    <bean id="buPurchaseService" class="tw.com.tm.erp.hbm.service.BuPurchaseService"/>
+    <bean id="buPurchaseServiceSub" class="tw.com.tm.erp.hbm.service.BuPurchaseServiceSub"/>
+	<bean id="buSupplierModService" class="tw.com.tm.erp.hbm.service.BuSupplierModService"/>
+	<bean id="competenceService" class="tw.com.tm.erp.hbm.service.CompetenceService"/>
+	<bean id="buShopMainService" class="tw.com.tm.erp.hbm.service.BuShopMainService"/>
+	<bean id="buTruckService" class="tw.com.tm.erp.hbm.service.BuTruckService"/>
+	<bean id="buEmployeeAwardService" class="tw.com.tm.erp.hbm.service.BuEmployeeAwardService"/>
+	<bean id="buFlightScheduleService" class="tw.com.tm.erp.hbm.service.BuFlightScheduleService"/>
+	<bean id="buShopTargetService" class="tw.com.tm.erp.hbm.service.BuShopTargetService"/>
+	<bean id="buCompanyService" class="tw.com.tm.erp.hbm.service.BuCompanyService"/>
+	<bean id="prSupplierService" class="tw.com.tm.erp.hbm.service.PrSupplierService"/>
+	<bean id="shopSetService" class="tw.com.tm.erp.hbm.service.ShopSetService"/>
+	<bean id="bumOrganizationService" class="tw.com.tm.erp.hbm.service.BumOrganizationService"/>
+	
+<!-- Action Bean -->
+	<bean id="buCustomerModAction" class="tw.com.tm.erp.action.BuCustomerModAction"/>
+    <bean id="buCommonPhraseAction" class="tw.com.tm.erp.action.BuCommonPhraseAction"/>
+    <bean id="buEmployeeAction" class="tw.com.tm.erp.action.BuEmployeeAction"/>
+    <bean id="buAddressBookAction" class="tw.com.tm.erp.action.BuAddressBookAction"/>
+    <bean id="buLocationAction" class="tw.com.tm.erp.action.BuLocationAction"/>
+    <bean id="buBasicDataAction" class="tw.com.tm.erp.action.BuBasicDataAction"/>
+    <bean id="buGoalAction" class="tw.com.tm.erp.action.BuGoalAction"/>
+    <bean id="buShopSetTlementAction" class="tw.com.tm.erp.action.BuShopSetTlementAction"/>
+    <bean id="buSupplierModAction" class="tw.com.tm.erp.action.BuSupplierModAction"/>
+ 	<bean id="buPurchaseAction" class="tw.com.tm.erp.action.BuPurchaseAction"/>
+	<bean id="buShopAction" class="tw.com.tm.erp.action.BuShopAction"/>
+    <bean id="buGoalCommissionAction" class="tw.com.tm.erp.action.BuGoalCommissionAction"/>
+    <bean id="buGoalItemDiscountAction" class="tw.com.tm.erp.action.BuGoalItemDiscountAction"/>
+    <bean id="buTruckAction" class="tw.com.tm.erp.action.BuTruckAction"/>
+    <bean id="buGoalCommissionExceptionAction" class="tw.com.tm.erp.action.BuGoalCommissionExceptionAction"/>
+    <bean id="buFlightScheduleAction" class="tw.com.tm.erp.action.BuFlightScheduleAction"/>
+    <bean id="buCompanyAction" class="tw.com.tm.erp.action.BuCompanyAction"/>
+    <bean id="prSupplierAction" class="tw.com.tm.erp.action.PrSupplierAction"/>
+    <bean id="shopSetAction" class="tw.com.tm.erp.action.ShopSetAction"/>
+    <bean id="bumOrganizationAction" class="tw.com.tm.erp.action.BumOrganizationAction"/>
+    
+    
+    
+    
+</beans>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tw.com.tm.erp.hbm.bean.SoReceiptLine" table="so_receipt_line" schema="erp">
+        <id name="lineId" type="java.lang.Long">
+            <column name="line_id"  />
+        </id>
+        <many-to-one name="soReceiptHead" class="tw.com.tm.erp.hbm.bean.SoReceiptHead" fetch="select" cascade="all">
+            <column name="head_id"/>
+        </many-to-one>
+        
+        <property name="receiptPrefix" type="java.lang.String">
+            <column name="receipt_prefix"  />
+		</property> 
+        <property name="receiptSerialNumberBegin" type="java.lang.String">
+            <column name="receipt_serial_number_begin"  />
+        </property>
+        <property name="receiptSerialNumberEnd" type="java.lang.String">
+            <column name="receipt_serial_number_end"  />
+        </property>
+        <property name="receiptQuantity" type="java.lang.String">
+            <column name="receipt_quantity"  />
+        </property>
+		<property name="posMachineCode" type="java.lang.String">
+            <column name="pos_machine_code"  />
+        </property>
+        <property name="shopCode" type="java.lang.String">
+            <column name="shop_code"  />
+        </property>
+        <property name="receiptSerialNumberNextVal" type="java.lang.String">
+            <column name="receipt_serial_number_next_val"  />
+        </property>
+    </class>
+</hibernate-mapping>

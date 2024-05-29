@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    
+    default-autowire="byName" default-lazy-init="true">
+
+    <!-- DAO Bean -->
+	<bean id="siMenuDAO" class="tw.com.tm.erp.hbm.dao.SiMenuDAO"/>
+	<bean id="siFunctionDAO" class="tw.com.tm.erp.hbm.dao.SiFunctionDAO"/>	
+	<bean id="siFunctionObjectDAO" class="tw.com.tm.erp.hbm.dao.SiFunctionObjectDAO"/>	
+	<bean id="siGroupDAO" class="tw.com.tm.erp.hbm.dao.SiGroupDAO"/>
+	<bean id="siGroupMenuDAO" class="tw.com.tm.erp.hbm.dao.SiGroupMenuDAO"/>	
+	<bean id="siGroupObjectDAO" class="tw.com.tm.erp.hbm.dao.SiGroupObjectDAO"/>
+	<bean id="siUsersGroupDAO" class="tw.com.tm.erp.hbm.dao.SiUsersGroupDAO"/>
+	<bean id="siSystemLogDAO" class="tw.com.tm.erp.hbm.dao.SiSystemLogDAO"/>
+	<bean id="siPosLogDAO" class="tw.com.tm.erp.hbm.dao.SiPosLogDAO"/>	
+	<bean id="siMenuLogDAO" class="tw.com.tm.erp.hbm.dao.SiMenuLogDAO"/>	  
+	<bean id="siProgramLogDAO" class="tw.com.tm.erp.hbm.dao.SiProgramLogDAO"/>
+	<bean id="siResendDAO" class="tw.com.tm.erp.hbm.dao.SiResendDAO"/>
+	<bean id="erpDAO" class="tw.com.tm.erp.hbm.dao.ErpDAO"/>
+		
+    <!-- Service Bean -->
+  <bean id="siMenuService" class="tw.com.tm.erp.hbm.service.SiMenuService"/>	
+	<bean id="siGroupObjectService" class="tw.com.tm.erp.hbm.service.SiGroupObjectService"/>
+	<bean id="siGroupMenuService" class="tw.com.tm.erp.hbm.service.SiGroupMenuService"/>
+	<bean id="siSystemLogService" class="tw.com.tm.erp.hbm.service.SiSystemLogService"/>
+	<bean id="siPosLogService" class="tw.com.tm.erp.hbm.service.SiPosLogService"/>
+	<bean id="siProgramLogService" class="tw.com.tm.erp.hbm.service.SiProgramLogService"/>
+	<bean id="siGroupService" class="tw.com.tm.erp.hbm.service.SiGroupService"/>
+	<bean id="siUsersGroupService" class="tw.com.tm.erp.hbm.service.SiUsersGroupService"/>
+	<bean id="siResendService" class="tw.com.tm.erp.hbm.service.SiResendService"/>
+	<bean id="islandUploadService" class="tw.com.tm.erp.hbm.service.IslandUploadService"/>
+	<bean id="siMenuMainService" class="tw.com.tm.erp.hbm.service.SiMenuMainService"/>
+	
+	<bean id="siFunctionService" class="tw.com.tm.erp.hbm.service.SiFunctionService"/>
+  <bean id="siFunctionObjectService" class="tw.com.tm.erp.hbm.service.SiFunctionObjectService"/>
+    <!-- Action Bean -->
+  <bean id="siProgramLogAction" class="tw.com.tm.erp.action.SiProgramLogAction"/>
+  <bean id="siGroupAction" class="tw.com.tm.erp.action.SiGroupAction"/>
+  <bean id="siFunctionAction" class="tw.com.tm.erp.action.SiFunctionAction"/>
+  <bean id="siMenuAction" class="tw.com.tm.erp.action.SiMenuAction"/>
+  <bean id="siMenuMainAction" class="tw.com.tm.erp.action.SiMenuMainAction"/>
+  
+</beans> 

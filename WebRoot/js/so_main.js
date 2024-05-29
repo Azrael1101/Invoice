@@ -1,0 +1,1815 @@
+﻿/*
+	initial 
+*/
+var afterSavePageProcess = "";
+var afterSavePaymentPageProcess = "";
+var vnA_Detail = 2;
+var vnB_Detail = 4;
+
+function detailInitial(){
+    var statusTmp = document.forms[0]["#form.status"].value;
+    var orderTypeCodeTmp = document.forms[0]["#form.orderTypeCode"].value;
+    var orderNoTmp = document.forms[0]["#form.orderNo"].value;
+    var processId = document.forms[0]["#processId"].value;
+    var taxCode = document.forms[0]["#taxCode"].value;
+    var branchCode = document.forms[0]["#branchCode"].value;
+    var pos = false;
+    var hideExport = "HIDDEN";
+    if(branchCode == "true"){
+    	hideExport = "";
+    }
+    
+	var varCanGridDelete = false;
+	var varCanGridAppend = false;
+	var varCanGridModify = false;
+	if(orderTypeCodeTmp == "SOP"){
+		pos = true;
+	    if(statusTmp == "SAVE" || statusTmp == "UNCONFIRMED"){
+		    varCanGridDelete = true;
+		    varCanGridAppend = true;
+		    varCanGridModify = true;		
+	    }
+	}else{
+	    if((statusTmp == "SAVE" && orderNoTmp.indexOf("TMP") != -1) || ((statusTmp == "SAVE" || statusTmp == "REJECT") && processId != null && processId != 0)){
+		    varCanGridDelete = true;
+		    varCanGridAppend = true;
+		    varCanGridModify = true;		
+	    }	
+	}
+	// set column
+    vat.item.make(vnA_Detail, "indexNo", 					{type:"IDX" , view: "fixed", desc:"序號"});
+	vat.item.make(vnA_Detail, "itemCode", 					{type:"TEXT", size:15, view: "fixed", maxLen:20, desc:"品號", onchange:"changeItemData(1)"});
+	vat.item.make(vnA_Detail, "itemCName", 					{type:"TEXT", size:18, view: "fixed", maxLen:20, desc:"品名", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "warehouseCode", 				{type:"TEXT", size: 6, view: "", maxLen:12, desc:"庫別", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "warehouseName", 				{type:"TEXT", size:10, view: "", maxLen:20, desc:"庫名", mode:"HIDDEN"});
+	vat.item.make(vnA_Detail, "originalForeignUnitPrice", 	{type:"NUMB", size: 8, view: "", maxLen:12, desc:"原幣<br>單價", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "originalUnitPrice", 			{type:"NUMB", size: 8, view: "", maxLen:12, desc:"本幣<br>單價", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "actualForeignUnitPrice", 	{type:"NUMB", size: 8, view: "", maxLen:12, desc:"原幣<br>折扣後單價", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "actualUnitPrice", 			{type:"NUMB", size: 8, view: "", maxLen:12, desc:"本幣<br>折扣後單價", mode:"", onchange:"changeItemData(2)"});
+	vat.item.make(vnA_Detail, "currentOnHandQty", 			{type:"NUMB", size: 8, view: "", maxLen:12, desc:"庫存量", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "quantity", 					{type:"NUMB", size: 8, view: "", maxLen: 8, desc:"數量", onchange:"changeItemData(2)"});
+	vat.item.make(vnA_Detail, "originalForeignSalesAmt", 	{type:"NUMB", size: 8, view: "shift", maxLen:20, desc:"原幣<br>金額", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "originalSalesAmount", 		{type:"NUMB", size: 8, view: "shift", maxLen:20, desc:"本幣<br>金額", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "actualForeignSalesAmt", 		{type:"NUMB", size: 8, view: "shift", maxLen:20, desc:"原幣<br>折扣後金額", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "actualSalesAmount", 			{type:"NUMB", size: 8, view: "shift", maxLen:20, desc:"本幣<br>折扣後金額", mode:"READONLY"});
+	vat.item.make(vnA_Detail, "deductionForeignAmount", 	{type:"NUMB", size: 1, view: "shift", maxLen: 8, desc:"原幣<br>折讓金額", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "deductionAmount", 			{type:"NUMB", size: 1, view: "shift", maxLen: 8, desc:"本幣<br>折讓金額", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "discountRate", 				{type:"NUMB", size: 1, view: "shift", maxLen: 8, desc:"折扣率", mode: "READONLY"});
+	vat.item.make(vnA_Detail, "taxType", 					{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"稅別", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "taxRate", 					{type:"NUMB", size: 1, view: "shift", maxLen: 8, desc:"稅率", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "isTax", 						{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"是否含稅", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "promotionCode", 				{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"活動代號", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "discountType", 				{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"活動折扣類型", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "discount", 					{type:"NUMB", size: 1, view: "shift", maxLen: 1, desc:"活動折扣", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "vipPromotionCode", 			{type:"TEXT", size: 1, view: "shift", maxLen: 20, desc:"VIP類別代號", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "vipDiscountType", 			{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"VIP折扣類型", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "vipDiscount", 				{type:"NUMB", size: 1, view: "shift", maxLen: 1, desc:"VIP折扣", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "watchSerialNo", 				{type:"TEXT", size: 1, view: "shift", maxLen: 20, desc:"手錶序號", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "depositCode", 				{type:"TEXT", size: 1, view: "shift", maxLen: 8, desc:"訂金單代號", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "isUseDeposit", 				{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"訂金支付", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "isServiceItem", 				{type:"TEXT", size: 1, view: "shift", maxLen: 1, desc:"服務性商品", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "taxAmount", 					{type:"NUMB", size: 1, view: "shift", maxLen: 1, desc:"稅額", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "importCost", 				{type:"TEXT", size: 1, view: "shift", maxLen: 20, desc:"進貨成本", mode: "READONLY"});
+	vat.item.make(vnA_Detail, "importCurrencyCode", 		{type:"TEXT", size: 1, view: "shift", maxLen: 20, desc:"進貨幣別", mode: "HIDDEN"});
+	vat.item.make(vnA_Detail, "importDeclNo", 				{type:"TEXT", size: 16, view: "shift", maxLen: 20, desc:"原進口<br>報單單號", mode: hideExport});
+	vat.item.make(vnA_Detail, "importDeclDate", 			{type:"DATE", size: 10, view: "shift", maxLen: 20, desc:"原進口<br>報單日期", mode: hideExport});
+	vat.item.make(vnA_Detail, "importDeclSeq", 				{type:"NUMB", size: 1, view: "shift", maxLen: 4, desc:"原進口<br>報單項次", mode: hideExport});
+	vat.item.make(vnA_Detail, "lotNo", 						{type:"TEXT", size: 16, view: "shift", maxLen: 20, desc:"批號", mode: hideExport});
+	vat.item.make(vnA_Detail, "usedIdentification", 		{type:"TEXT", size:10, view: "shift", maxLen: 20, desc:"使用身份", mode:"HIDDEN"});
+	vat.item.make(vnA_Detail, "usedCardId", 				{type:"TEXT", size: 5, view: "shift", maxLen: 20, desc:"使用卡號", mode:pos?"READONLY":"HIDDEN", eChange:"changeCardId()"});
+	vat.item.make(vnA_Detail, "usedCardType", 				{type:"TEXT", size: 5, view: "shift", maxLen: 20, desc:"使用卡別", mode:pos?"READONLY":"HIDDEN"});
+	vat.item.make(vnA_Detail, "usedDiscountRate", 			{type:"NUMB", size: 5, view: "shift", maxLen: 20, desc:"使用折扣率", mode:pos?"READONLY":"HIDDEN"});
+	vat.item.make(vnA_Detail, "itemDiscountType", 			{type:"TEXT", size: 5, view: "shift", maxLen: 20, desc:"商品折扣類型", mode:pos?"READONLY":"HIDDEN"});
+	vat.item.make(vnA_Detail, "lineId", 					{type:"ROWID"});
+	vat.item.make(vnA_Detail, "isLockRecord", 				{type:"CHECK", desc:"鎖定", mode:"HIDDEN"});
+	vat.item.make(vnA_Detail, "isDeleteRecord", 			{type:"DEL", desc:"刪除"});
+	vat.item.make(vnA_Detail, "message", 					{type:"MSG", desc:"訊息"});
+	vat.item.make(vnA_Detail, "advanceInput", 				{type:"BUTTON", view: "fixed", desc:"進階輸入", value:"進階輸入", src:"images/button_advance_input.gif", eClick:"advanceInput()"});
+
+	vat.block.pageLayout(vnA_Detail, {	pageSize: 10,
+	                            canGridDelete:varCanGridDelete,
+								canGridAppend:varCanGridAppend,
+								canGridModify:varCanGridModify,														
+							    beginService: "",
+								closeService: "",
+							    itemMouseinService  : "",
+								itemMouseoutService : "",
+							    appendBeforeService : "kweSoPageAppendBeforeMethod()",
+							    appendAfterService  : "kweSoPageAppendAfterMethod()",
+								deleteBeforeService : "",
+								deleteAfterService  : "",
+								loadBeforeAjxService: "loadBeforeAjxService()",
+								loadSuccessAfter    : "kweSoPageLoadSuccess()",
+								loadFailureAfter    : "",
+								eventService        : "changeRelationData()",   
+								saveBeforeAjxService: "saveBeforeAjxService()",
+								saveSuccessAfter    : "saveSuccessAfter()",
+								saveFailureAfter    : ""
+														});
+	vat.block.pageDataLoad(vnA_Detail, vnCurrentPage = 1);	
+}
+
+function kweSoPageSaveMethod(){
+						
+}		  								
+
+function kweSoPageSaveSuccess(){
+	// alert("更新成功");
+}
+
+function loadBeforeAjxService(){
+	var processString = "process_object_name=soSalesOrderMainService&process_object_method_name=getAJAXPageData" + 
+	                    "&headId=" + document.forms[0]["#form.headId"].value + 
+	                    "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+	                    "&orderTypeCode=" + document.forms[0]["#form.orderTypeCode"].value +
+	                    "&shopCode=" + document.forms[0]["#form.shopCode"].value +  
+	                    "&defaultWarehouseCode=" + document.forms[0]["#form.defaultWarehouseCode"].value + 
+	                    "&taxType=" + document.forms[0]["#form.taxType"].value +
+	                    "&taxRate=" + document.forms[0]["#form.taxRate"].value +
+	                    "&discountRate=" + document.forms[0]["#form.discountRate"].value +
+	                    "&vipPromotionCode=" + document.forms[0]["#form.vipPromotionCode"].value +
+	                    "&promotionCode=" + document.forms[0]["#form.promotionCode"].value +                   
+	                    "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+	                    "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +
+	                    "&customerType=" + document.forms[0]["#form.customerType"].value +
+	                    "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +
+	                    "&priceType=" + document.forms[0]["#priceType"].value +
+	                    "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value + 
+	                    "&formStatus=" + document.forms[0]["#form.status"].value + 
+	                    "&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value;
+																					
+	return processString;											
+}
+
+/*
+	判斷是否要關閉LINE
+*/
+function checkEnableLine() {
+	/*var formStatus = document.forms[0]["#form.status"].value;
+	if (formStatus !== null && (formStatus == 'SAVE' || formStatus == 'REJECT' || formStatus == 'UNCONFIRMED')) {
+		vat.form.item.enable("vatDetailDiv");	//LINE 設定為Enable
+		return true;
+	} else {
+		vat.form.item.disable("vatDetailDiv");  //LINE 設定為ReadOnly
+		return false;
+	}*/
+	return true;
+}
+
+/*
+	取得SAVE要執行的JS FUNCTION
+*/
+function saveBeforeAjxService() {
+
+    var vItemCode = vat.item.getGridValueByName("isDeleteRecord", "1").replace(/^\s+|\s+$/, '').toUpperCase();
+	var processString = "";
+	if (checkEnableLine()) {
+		processString = "process_object_name=soSalesOrderMainService&process_object_method_name=updateAJAXPageLinesData" + "&headId=" + document.forms[0]["#form.headId"].value + "&status=" + document.forms[0]["#form.status"].value;
+	}
+	return processString;
+}		  								
+
+/*
+	取得存檔成功後要執行的JS FUNCTION
+*/
+function saveSuccessAfter() {
+    if ("saveHandler" == afterSavePageProcess) {	
+        doActualSaveHandler();
+    } else if ("submitHandler" == afterSavePageProcess) {
+		doActualSubmitHandler();
+	} else if ("submitBgHandler" == afterSavePageProcess) {
+	    doActualSubmitBgHandler();
+    } else if ("voidHandler" == afterSavePageProcess) {
+		doActualVoidHandler();
+	} else if ("copyHandler" == afterSavePageProcess) {
+		doActualCopyHandler();
+	} else if ("executeExport" == afterSavePageProcess) {
+		exportFormData();
+	} else if("executeExtendItem" == afterSavePageProcess){
+		execExtendItemInfo();
+		changeItemData(2);
+	} else if ("totalCount" == afterSavePageProcess) {
+		var processString = "process_object_name=soSalesOrderMainService&process_object_method_name=executeCountTotalAmount" + 
+	                "&headId=" + document.forms[0]["#form.headId"].value + 
+	                "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+	                "&orderTypeCode=" + document.forms[0]["#form.orderTypeCode"].value +
+	                "&shopCode=" + document.forms[0]["#form.shopCode"].value +  
+	                "&priceType=" + document.forms[0]["#priceType"].value +     
+	                "&customerCode=" + document.forms[0]["#customerCode_var"].value +
+	                "&searchCustomerType=" + document.forms[0]["#searchCustomerType"].value +        
+	                "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+	                "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +        
+	                "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value + 
+	                "&formStatus=" + document.forms[0]["#form.status"].value +
+	                "&taxType=" + document.forms[0]["#form.taxType"].value +
+	                "&taxRate=" + document.forms[0]["#form.taxRate"].value +
+	                "&exportCommissionRate=" + document.forms[0]["#form.exportCommissionRate"].value +
+	                "&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value ;
+		vat.ajax.startRequest(processString, function () {
+		    if (vat.ajax.handleState()) {
+		    //本幣
+			    document.forms[0]["#form.totalOriginalSalesAmount"].value = vat.ajax.getValue("TotalOriginalSalesAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalDeductionAmount"].value = vat.ajax.getValue("TotalDeductionAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.taxAmount"].value = vat.ajax.getValue("TaxAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalOtherExpense"].value = vat.ajax.getValue("TotalOtherExpense", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.expenseLocalAmount"].value = vat.ajax.getValue("ExpenseLocalAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalActualSalesAmount"].value = vat.ajax.getValue("TotalActualSalesAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalNoneTaxSalesAmount"].value = vat.ajax.getValue("TotalNoneTaxSalesAmount", vat.ajax.xmlHttp.responseText);
+				
+			//原幣
+				document.forms[0]["#form.originalTotalFrnSalesAmt"].value = vat.ajax.getValue("OriginalTotalFrnSalesAmt", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalDeductionForeignAmount"].value = vat.ajax.getValue("TotalDeductionForeignAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalForeignOtherExpense"].value = vat.ajax.getValue("TotalForeignOtherExpense", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.expenseForeignAmount"].value = vat.ajax.getValue("ExpenseForeignAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.actualTotalFrnSalesAmt"].value = vat.ajax.getValue("ActualTotalFrnSalesAmt", vat.ajax.xmlHttp.responseText);
+					
+				document.forms[0]["#form.totalItemQuantity"].value = vat.ajax.getValue("TotalItemQuantity", vat.ajax.xmlHttp.responseText);								
+			}
+		});	
+    }else if ("changeRelationData" == afterSavePageProcess) {
+        var processString = "process_object_name=soSalesOrderMainService&process_object_method_name=updateItemRelationData" + 
+	                "&headId=" + document.forms[0]["#form.headId"].value + 
+	                "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+	                "&orderTypeCode=" + document.forms[0]["#form.orderTypeCode"].value +
+	                "&shopCode=" + document.forms[0]["#form.shopCode"].value +  
+	                "&defaultWarehouseCode=" + document.forms[0]["#form.defaultWarehouseCode"].value + 
+	                "&taxType=" + document.forms[0]["#form.taxType"].value +
+	                "&taxRate=" + document.forms[0]["#form.taxRate"].value +
+	                "&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value +
+	                "&discountRate=" + document.forms[0]["#form.discountRate"].value +
+	                "&vipPromotionCode=" + document.forms[0]["#form.vipPromotionCode"].value +
+	                "&promotionCode=" + document.forms[0]["#form.promotionCode"].value +                   
+	                "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+	                "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +
+	                "&customerType=" + document.forms[0]["#form.customerType"].value +
+	                "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +
+	                "&priceType=" + document.forms[0]["#priceType"].value +
+	                "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value + 
+	                "&formStatus=" + document.forms[0]["#form.status"].value;
+	    vat.ajax.startRequest(processString, function () {
+		    if (vat.ajax.handleState()) {
+			    vat.block.pageRefresh(2);
+		     }
+		});	
+    }
+	
+	afterSavePageProcess = "";
+}
+
+/*
+	暫存 SAVE HEAD && LINE
+*/
+function doSaveHandler() {
+    if (confirm("是否確認暫存?")) {		
+	    //save line
+	    afterSavePageProcess = "saveHandler";
+		vat.block.pageSearch(2);				
+	}
+}
+
+/*
+	送出SUBMIT HEAD && LINE
+*/
+function doSubmitHandler() {
+	if (confirm("是否確認送出?")) {		
+		//save line
+		afterSavePageProcess = "submitHandler";	
+		vat.block.pageSearch(2);
+	}
+}
+
+/*
+	背景送出SUBMIT HEAD && LINE
+*/
+function doSubmitBgHandler() {
+	if (confirm("是否確認背景送出?")) {		
+		//save line
+		afterSavePageProcess = "submitBgHandler";	
+		vat.block.pageSearch(2);
+	}
+}
+
+/*
+	作廢VOID HEAD && LINE
+*/
+function doVoidHandler() {
+	if (confirm("是否確認作廢?")) {		
+		//save line
+		afterSavePageProcess = "voidHandler";	
+		vat.block.pageSearch(2);			
+	}
+}
+
+/*
+	COPY HEAD && LINE
+*/
+function doCopyHandler() {
+	if (confirm("是否進行複製?")) {		
+		//save line
+		afterSavePageProcess = "copyHandler";
+		vat.block.pageSearch(2);		
+	}
+}
+
+/*
+	AntiConfirm
+*/
+function doAntiConfirmHandler() {
+	if (confirm("是否執行反確認?")) {		
+        execSubmitAction("UNCONFIRMED");		
+	}
+}
+
+/*
+	顯示合計的頁面
+*/
+function showTotalCountPage() {
+    //save line
+    afterSavePageProcess = "totalCount";
+    doPageDataSave();	
+}
+
+/*
+	匯出
+*/
+function doExport() {
+	//save line
+	afterSavePageProcess = "executeExport";
+	doPageDataSave();	
+}
+
+/*
+	匯入
+*/
+function doImport() {
+	//save line
+	afterSavePaymentPageProcess = "executeImport";
+	vat.block.pageSearch(vnB_Detail);	
+}
+
+/*
+	暫存 SAVE HEAD && LINE
+*/
+function doActualSaveHandler() { 
+    afterSavePaymentPageProcess = "saveHandler";		
+    vat.block.pageSearch(vnB_Detail);
+}
+
+/*
+	送出SUBMIT HEAD && LINE
+*/
+function doActualSubmitHandler() {
+    afterSavePaymentPageProcess = "submitHandler";	
+	vat.block.pageSearch(vnB_Detail);	
+}
+
+/*
+	背景送出SUBMIT HEAD && LINE
+*/
+function doActualSubmitBgHandler() {
+    afterSavePaymentPageProcess = "submitBgHandler";
+    vat.block.pageSearch(vnB_Detail);	
+}
+
+/*
+	作廢VOID HEAD && LINE
+*/
+function doActualVoidHandler() {
+    afterSavePaymentPageProcess = "voidHandler";
+	vat.block.pageSearch(vnB_Detail);	
+}
+
+/*
+	COPY HEAD && LINE
+*/
+function doActualCopyHandler() {
+    afterSavePaymentPageProcess = "copyHandler";
+	vat.block.pageSearch(vnB_Detail);	
+}
+
+/*
+	展報單
+*/
+function doExtendItemInfo() {
+    if (confirm("是否執行取報單程序?")) {      
+        //save line
+        afterSavePageProcess = "executeExtendItem"; 
+        vat.block.pageSearch(2);
+    }
+}
+function doPageDataSave(){
+    vat.block.pageSearch(vnA_Detail);
+    vat.block.pageSearch(vnB_Detail);
+}
+
+function doPageRefresh(){
+    vat.block.pageRefresh(vnA_Detail);
+    vat.block.pageRefresh(vnB_Detail);
+}
+
+function doPageDataSaveForItem(){
+    vat.block.pageRefresh(vnA_Detail);
+    vat.block.pageSearch(vnB_Detail);
+}
+
+function doPageDataSaveForPayment(){
+    vat.block.pageRefresh(vnB_Detail);
+    vat.block.pageSearch(vnA_Detail);
+}
+
+function advanceInput(){
+    
+    var nItemLine = vat.item.getGridLine();
+    var vItemCode = vat.item.getGridValueByName("itemCode", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+    var vWarehouseCode = vat.item.getGridValueByName("warehouseCode", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();	
+	var vOriginalUnitPrice = vat.item.getGridValueByName("originalUnitPrice", nItemLine).replace(/^\s+|\s+$/, '');
+	var vActualUnitPrice = vat.item.getGridValueByName("actualUnitPrice", nItemLine).replace(/^\s+|\s+$/, '');
+	var vCurrentOnHandQty = vat.item.getGridValueByName("currentOnHandQty", nItemLine).replace(/^\s+|\s+$/, '');
+	var vQuantity = vat.item.getGridValueByName("quantity", nItemLine).replace(/^\s+|\s+$/, '');
+	var vOriginalSalesAmount = vat.item.getGridValueByName("originalSalesAmount", nItemLine).replace(/^\s+|\s+$/, '');
+	var vActualSalesAmount = vat.item.getGridValueByName("actualSalesAmount", nItemLine).replace(/^\s+|\s+$/, '');	
+	var vTaxType = vat.item.getGridValueByName("taxType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vTaxRate = vat.item.getGridValueByName("taxRate", nItemLine).replace(/^\s+|\s+$/, '');
+	var vDeductionAmount = vat.item.getGridValueByName("deductionAmount", nItemLine).replace(/^\s+|\s+$/, '');
+	var vDiscountRate = vat.item.getGridValueByName("discountRate", nItemLine).replace(/^\s+|\s+$/, '');
+	var vPromotionCode = vat.item.getGridValueByName("promotionCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vDiscountType = vat.item.getGridValueByName("discountType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vDiscount = vat.item.getGridValueByName("discount", nItemLine).replace(/^\s+|\s+$/, '');
+	var vVipPromotionCode = vat.item.getGridValueByName("vipPromotionCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vVipDiscountType = vat.item.getGridValueByName("vipDiscountType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vVipDiscount = vat.item.getGridValueByName("vipDiscount", nItemLine).replace(/^\s+|\s+$/, '');	
+	var vWatchSerialNo = vat.item.getGridValueByName("watchSerialNo", nItemLine).replace(/^\s+|\s+$/, '');
+	var vDepositCode = vat.item.getGridValueByName("depositCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vIsUseDeposit = vat.item.getGridValueByName("isUseDeposit", nItemLine).replace(/^\s+|\s+$/, '');
+	var vIsServiceItem = vat.item.getGridValueByName("isServiceItem", nItemLine).replace(/^\s+|\s+$/, '');
+	var vTaxAmount = vat.item.getGridValueByName("taxAmount", nItemLine).replace(/^\s+|\s+$/, '');
+	var vImportCost = vat.item.getGridValueByName("importCost", nItemLine).replace(/^\s+|\s+$/, '');
+	var vImportCurrencyCode = vat.item.getGridValueByName("importCurrencyCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vImportDeclNo = vat.item.getGridValueByName("importDeclNo", nItemLine).replace(/^\s+|\s+$/, '');
+	var vImportDeclDate = vat.item.getGridValueByName("importDeclDate", nItemLine).replace(/^\s+|\s+$/, '');
+	var vImportDeclSeq = vat.item.getGridValueByName("importDeclSeq", nItemLine).replace(/^\s+|\s+$/, '');
+	var vUsedIdentification = vat.item.getGridValueByName("usedIdentification", nItemLine).replace(/^\s+|\s+$/, '');
+	var vUsedCardId = vat.item.getGridValueByName("usedCardId", nItemLine).replace(/^\s+|\s+$/, '');
+	var vUsedCardType = vat.item.getGridValueByName("usedCardType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vUsedDiscountRate = vat.item.getGridValueByName("usedDiscountRate", nItemLine).replace(/^\s+|\s+$/, '');
+	var vItemDiscountType = vat.item.getGridValueByName("itemDiscountType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vLineId = vat.item.getGridValueByName("lineId", nItemLine).replace(/^\s+|\s+$/, '');	
+	var obj = document.getElementById("vatBeginDiv");
+	if (obj){
+		obj.filters[0].enabled = true;
+		obj.filters[0].opacity = 0.60; 
+	}
+	
+	var returnData = window.showModalDialog(
+		"So_SalesOrder:advanceInput:20091005.page"+
+		"?headId=" + document.forms[0]["#form.headId"].value +
+		"&brandCode=" + document.forms[0]["#form.brandCode"].value +
+        "&priceType=" + document.forms[0]["#priceType"].value + 
+        "&shopCode=" + document.forms[0]["#form.shopCode"].value +
+        "&customerType=" + document.forms[0]["#form.customerType"].value +
+        "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +
+        "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +
+        "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+        "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value +
+        "&status=" + document.forms[0]["#form.status"].value +
+        "&itemIndexNo=" + nItemLine +                        
+        "&itemCode=" + vItemCode +
+        "&warehouseCode=" + vWarehouseCode +
+        "&originalUnitPrice=" + vOriginalUnitPrice +
+        "&actualUnitPrice=" + vActualUnitPrice +
+        "&currentOnHandQty=" + vCurrentOnHandQty +
+        "&quantity=" + vQuantity +
+        "&originalSalesAmount=" + vOriginalSalesAmount +
+        "&actualSalesAmount=" + vActualSalesAmount +
+        "&taxType=" + vTaxType +
+        "&taxRate=" + vTaxRate +
+        "&deductionAmount=" + vDeductionAmount +
+        "&discountRate=" + vDiscountRate +
+        "&promotionCode=" + vPromotionCode +
+        "&discountType=" + vDiscountType +
+        "&discount=" + vDiscount +
+        "&vipPromotionCode=" + vVipPromotionCode +
+        "&vipDiscountType=" + vVipDiscountType +
+        "&vipDiscount=" + vVipDiscount +
+        "&watchSerialNo=" + vWatchSerialNo +  
+        "&depositCode=" + vDepositCode +  
+        "&isUseDeposit=" + vIsUseDeposit +  
+        "&isServiceItem=" + vIsServiceItem +
+        "&taxAmount=" + vTaxAmount +
+        "&orderTypeCode=" + document.forms[0]["#form.orderTypeCode"].value +
+        "&orderNo=" + document.forms[0]["#form.orderNo"].value +
+		"&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value +
+        "&processId=" + document.forms[0]["#processId"].value +
+        "&importDeclNo=" + vImportDeclNo +
+        "&importDeclDate=" + vImportDeclDate +
+        "&importDeclSeq=" + vImportDeclSeq +
+        "&usedIdentification=" + vUsedIdentification +
+        "&usedCardId=" + vUsedCardId +
+        "&usedCardType=" + vUsedCardType +
+        "&usedDiscountRate=" + vUsedDiscountRate +
+        "&itemDiscountType=" + vItemDiscountType +
+        "&lineId=" + vLineId,"",
+		"dialogHeight:600px;dialogWidth:1060px;dialogTop:100px;dialogLeft:100px;status:no;");
+		
+		if(typeof returnData !== "undefined" && returnData !== null && returnData !== ""){
+		    var returnDataArray = returnData.split("{#}");
+		    vat.item.setGridValueByName("itemCode", nItemLine, returnDataArray[0]);	    
+		    vat.item.setGridValueByName("itemCName", nItemLine, returnDataArray[1]); 
+            vat.item.setGridValueByName("warehouseCode", nItemLine, returnDataArray[2]); 
+            vat.item.setGridValueByName("warehouseName", nItemLine, returnDataArray[3]); 
+            vat.item.setGridValueByName("originalUnitPrice", nItemLine, returnDataArray[4]); 
+            vat.item.setGridValueByName("actualUnitPrice", nItemLine, returnDataArray[5]); 
+            vat.item.setGridValueByName("currentOnHandQty", nItemLine, returnDataArray[6]); 
+            vat.item.setGridValueByName("quantity", nItemLine, returnDataArray[7]); 
+            vat.item.setGridValueByName("originalSalesAmount", nItemLine, returnDataArray[8]); 
+            vat.item.setGridValueByName("actualSalesAmount", nItemLine, returnDataArray[9]);  
+            vat.item.setGridValueByName("deductionAmount", nItemLine, returnDataArray[10]);
+            vat.item.setGridValueByName("discountRate", nItemLine, returnDataArray[11]);
+            vat.item.setGridValueByName("taxType", nItemLine, returnDataArray[12]);
+            vat.item.setGridValueByName("taxRate", nItemLine, returnDataArray[13]);    
+            vat.item.setGridValueByName("promotionCode", nItemLine, returnDataArray[14]);
+            vat.item.setGridValueByName("discountType", nItemLine, returnDataArray[15]);
+            vat.item.setGridValueByName("discount", nItemLine, returnDataArray[16]);
+            vat.item.setGridValueByName("vipPromotionCode", nItemLine, returnDataArray[17]);
+            vat.item.setGridValueByName("vipDiscountType", nItemLine, returnDataArray[18]);
+            vat.item.setGridValueByName("vipDiscount", nItemLine, returnDataArray[19]);
+            vat.item.setGridValueByName("watchSerialNo", nItemLine, returnDataArray[20]);           
+            vat.item.setGridValueByName("depositCode", nItemLine, returnDataArray[21]);
+            vat.item.setGridValueByName("isUseDeposit", nItemLine, returnDataArray[22]);          
+            vat.item.setGridValueByName("isServiceItem", nItemLine, returnDataArray[23]);
+            vat.item.setGridValueByName("taxAmount", nItemLine, returnDataArray[24]);
+            vat.item.setGridValueByName("originalForeignUnitPrice", nItemLine, returnDataArray[25]);
+            vat.item.setGridValueByName("originalForeignSalesAmt", nItemLine, returnDataArray[26]);
+            vat.item.setGridValueByName("deductionForeignAmount", nItemLine, returnDataArray[27]);
+            vat.item.setGridValueByName("actualForeignUnitPrice", nItemLine, returnDataArray[28]);
+            vat.item.setGridValueByName("actualForeignSalesAmt", nItemLine, returnDataArray[29]);
+            vat.item.setGridValueByName("importCost", nItemLine, returnDataArray[30]);
+            vat.item.setGridValueByName("importCurrencyCode", nItemLine, returnDataArray[31]);
+            vat.item.setGridValueByName("importDeclNo", nItemLine, returnDataArray[32]);
+            vat.item.setGridValueByName("importDeclDate", nItemLine, returnDataArray[33]);
+            vat.item.setGridValueByName("importDeclSeq", nItemLine, returnDataArray[34]);
+            vat.item.setGridValueByName("usedIdentification", nItemLine, returnDataArray[35]);
+            vat.item.setGridValueByName("usedCardId", nItemLine, returnDataArray[36]);
+            vat.item.setGridValueByName("usedCardType", nItemLine, returnDataArray[37]);
+            //!!!!!
+            vat.item.setGridValueByName("usedDiscountRate", nItemLine, returnDataArray[11]);
+            //!!!!!
+            vat.item.setGridValueByName("itemDiscountType", nItemLine, returnDataArray[39]);
+		}
+		
+	obj.filters[0].enabled = false;
+}
+
+function kweSoPageLoadSuccess(){
+	// alert("載入成功");	
+}
+
+function kweSoPageAppendBeforeMethod(){
+	// return confirm("你確定要新增嗎?"); 
+	return true;
+}
+
+
+
+function kweSoPageAppendAfterMethod(){
+	// return alert("新增完畢");
+}
+
+function changeTaxRate(){
+    if(document.forms[0]["#form.taxType"].value == "1" || document.forms[0]["#form.taxType"].value == "2"){
+        document.forms[0]["#form.taxRate"].value = "0.0";
+    }else if(document.forms[0]["#form.taxType"].value == "3"){
+        document.forms[0]["#form.taxRate"].value = "5.0";
+    }else{
+        document.forms[0]["#form.taxRate"].value = "";
+    }
+}
+
+function changeExchangeRate(){
+    vat.ajax.XHRequest(
+       {
+           post:"process_object_name=soSalesOrderMainService"+
+                    "&process_object_method_name=getExchangeRate"+
+                    "&currencyCode=" + document.forms[0]["#form.currencyCode"].value,
+           find: function changeExchangeRateRequestSuccess(oXHR){ 
+               document.forms[0]["#form.exportExchangeRate"].value =  vat.ajax.getValue("ExportExchangeRate", oXHR.responseText);
+           }   
+       });
+}
+
+
+function changeSuperintendent(){
+    document.forms[0]["#form.superintendentCode"].value = document.forms[0]["#form.superintendentCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#form.superintendentCode"].value !== ""){
+       vat.ajax.XHRequest(
+       {
+           post:"process_object_name=buEmployeeWithAddressViewService"+
+                    "&process_object_method_name=findbyBrandCodeAndEmployeeCodeForAJAX"+
+                    "&brandCode=" + document.forms[0]["#form.brandCode"].value + 
+                    "&employeeCode=" + document.forms[0]["#form.superintendentCode"].value,
+           find: function changeSuperintendentRequestSuccess(oXHR){ 
+               document.forms[0]["#form.superintendentCode"].value =  vat.ajax.getValue("EmployeeCode", oXHR.responseText);
+               document.forms[0]["#form.superintendentName"].value =  vat.ajax.getValue("EmployeeName", oXHR.responseText);
+           }   
+       });
+    }else{
+        document.forms[0]["#form.superintendentName"].value = "";
+    }
+}
+
+function changeCasherCode(){
+    document.forms[0]["#form.casherCode"].value = document.forms[0]["#form.casherCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#form.casherCode"].value !== ""){
+       vat.ajax.XHRequest(
+       {
+           post:"process_object_name=buEmployeeWithAddressViewService"+
+                    "&process_object_method_name=findbyBrandCodeAndEmployeeCodeForAJAX"+
+                    "&brandCode=" + document.forms[0]["#form.brandCode"].value + 
+                    "&employeeCode=" + document.forms[0]["#form.casherCode"].value,
+           find: function changeCasherCodeRequestSuccess(oXHR){ 
+               document.forms[0]["#form.casherCode"].value =  vat.ajax.getValue("EmployeeCode", oXHR.responseText);
+               document.forms[0]["#form.casherName"].value =  vat.ajax.getValue("EmployeeName", oXHR.responseText);
+           }   
+       });
+    }else{
+        document.forms[0]["#form.casherName"].value = "";
+    }
+}
+
+function changeCustomerCode(){
+    afterSavePageProcess = "totalCount";
+    vat.block.pageSearch(2);
+    document.forms[0]["#customerCode_var"].value = document.forms[0]["#customerCode_var"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#customerCode_var"].value !== ""){
+        vat.ajax.XHRequest(
+       {
+           post:"process_object_name=buCustomerWithAddressViewService"+
+                    "&process_object_method_name=findCustomerByTypeForAJAX"+
+                    "&brandCode=" + document.forms[0]["#form.brandCode"].value + 
+                    "&customerCode=" + document.forms[0]["#customerCode_var"].value +
+                    "&searchCustomerType=" + document.forms[0]["#searchCustomerType"].value +
+                    "&isEnable=",
+           find: function changeCustomerCodeRequestSuccess(oXHR){ 
+               document.forms[0]["#customerCode_var"].value = vat.ajax.getValue("CustomerCode_var", oXHR.responseText);
+               document.forms[0]["#form.customerCode"].value = vat.ajax.getValue("CustomerCode", oXHR.responseText);
+               document.forms[0]["#form.contactPerson"].value = vat.ajax.getValue("ContactPerson", oXHR.responseText);        
+               document.forms[0]["#form.contactTel"].value = vat.ajax.getValue("ContactTel", oXHR.responseText);      
+               document.forms[0]["#form.receiver"].value = vat.ajax.getValue("Receiver", oXHR.responseText);
+               document.forms[0]["#form.countryCode"].value = vat.ajax.getValue("CountryCode", oXHR.responseText);
+               document.forms[0]["#form.currencyCode"].value = vat.ajax.getValue("CurrencyCode", oXHR.responseText);
+               document.forms[0]["#form.paymentTermCode"].value = vat.ajax.getValue("PaymentTermCode", oXHR.responseText);
+               document.forms[0]["#form.invoiceCity"].value = vat.ajax.getValue("InvoiceCity", oXHR.responseText);     
+               document.forms[0]["#form.invoiceArea"].value = vat.ajax.getValue("InvoiceArea", oXHR.responseText);
+               document.forms[0]["#form.invoiceZipCode"].value = vat.ajax.getValue("InvoiceZipCode", oXHR.responseText);
+               document.forms[0]["#form.invoiceAddress"].value = vat.ajax.getValue("InvoiceAddress", oXHR.responseText);
+               document.forms[0]["#form.shipCity"].value = vat.ajax.getValue("ShipCity", oXHR.responseText);
+               document.forms[0]["#form.shipArea"].value = vat.ajax.getValue("ShipArea", oXHR.responseText);
+               document.forms[0]["#form.shipZipCode"].value = vat.ajax.getValue("ShipZipCode", oXHR.responseText);
+               document.forms[0]["#form.shipAddress"].value = vat.ajax.getValue("ShipAddress", oXHR.responseText);
+               document.forms[0]["#form.invoiceTypeCode"].value = vat.ajax.getValue("InvoiceTypeCode", oXHR.responseText);
+//               document.forms[0]["#form.taxType"].value = vat.ajax.getValue("TaxType", oXHR.responseText);
+//               document.forms[0]["#form.taxRate"].value = vat.ajax.getValue("TaxRate", oXHR.responseText);
+               document.forms[0]["#form.guiCode"].value = vat.ajax.getValue("GuiCode", oXHR.responseText);
+               document.forms[0]["#form.customerType"].value = vat.ajax.getValue("CustomerType", oXHR.responseText);
+               document.forms[0]["#form.customerName"].value = vat.ajax.getValue("CustomerName", oXHR.responseText);
+               document.forms[0]["#form.vipTypeCode"].value = vat.ajax.getValue("VipType", oXHR.responseText);
+               if(document.forms[0]["#form.orderTypeCode"].value != "SOP"){
+                   document.forms[0]["#form.vipPromotionCode"].value = vat.ajax.getValue("VipPromotionCode", oXHR.responseText);
+               }else{
+                   document.forms[0]["#form.vipPromotionCode"].value = "";
+               }              
+               changePromotionCode(); 
+           }   
+       });  
+    }else{
+        document.forms[0]["#form.customerCode"].value = "";
+        document.forms[0]["#form.contactPerson"].value = "";        
+        document.forms[0]["#form.contactTel"].value = "";       
+        document.forms[0]["#form.receiver"].value = "";
+        document.forms[0]["#form.countryCode"].value = "";
+        document.forms[0]["#form.currencyCode"].value = "NTD";
+        document.forms[0]["#form.paymentTermCode"].value = "";
+        document.forms[0]["#form.invoiceCity"].value = "";     
+        document.forms[0]["#form.invoiceArea"].value = "";
+        document.forms[0]["#form.invoiceZipCode"].value = "";
+        document.forms[0]["#form.invoiceAddress"].value = "";
+        document.forms[0]["#form.shipCity"].value = "";
+        document.forms[0]["#form.shipArea"].value = "";
+        document.forms[0]["#form.shipZipCode"].value = "";
+        document.forms[0]["#form.shipAddress"].value = "";
+        document.forms[0]["#form.invoiceTypeCode"].value = "";
+        document.forms[0]["#form.taxType"].value = "3";
+        document.forms[0]["#form.taxRate"].value = "5.0";
+        document.forms[0]["#form.guiCode"].value = "";
+        document.forms[0]["#form.customerType"].value = "";
+        document.forms[0]["#form.customerName"].value = "";   
+        document.forms[0]["#form.vipTypeCode"].value = "";
+        document.forms[0]["#form.vipPromotionCode"].value = "";
+        changePromotionCode();     
+    }
+}
+
+function changeShopCode(){
+    document.forms[0]["#form.shopCode"].value = document.forms[0]["#form.shopCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#form.shopCode"].value !== ""){
+       vat.ajax.XHRequest(
+       {
+           post:"process_object_name=soSalesOrderMainService"+
+                    "&process_object_method_name=getShopMachineForAJAX"+
+                    "&shopCode=" + document.forms[0]["#form.shopCode"].value,                  
+           find: function changeShopCodeRequestSuccess(oXHR){ 
+               var tempShopMachine = vat.ajax.getValue("ShopMachine", oXHR.responseText);
+               tempShopMachine = vat.utils.strTwoInputDArray("#form.posMachineCode", "", 'true', tempShopMachine);  
+               vat.formD.itemSelectBind(tempShopMachine);
+               var tempWarehouseCode = vat.ajax.getValue("DefaultWarehouseCode", oXHR.responseText).replace(/^\s+|\s+$/, '');
+               var tempWarehouseManager = vat.ajax.getValue("WarehouseManager", oXHR.responseText).replace(/^\s+|\s+$/, '');
+               if(tempWarehouseCode !== ""){
+                   for (var i = 0; i < document.forms[0]["#form.defaultWarehouseCode"].length; i++) {
+                       if(document.forms[0]["#form.defaultWarehouseCode"][i].value == tempWarehouseCode){
+                           document.forms[0]["#form.defaultWarehouseCode"].value = tempWarehouseCode;
+                           document.forms[0]["#warehouseManager"].value = tempWarehouseManager;
+                           if(document.forms[0]["#warehouseManager"].value == ""){
+                               alert("庫別：" + document.forms[0]["#form.defaultWarehouseCode"].value + "的倉管人員為空值！");
+                           }
+                           break;
+                       }
+                   }
+               }
+           }   
+       });
+    }
+}
+
+function changeDefaultWarehouseCode(){
+    document.forms[0]["#form.defaultWarehouseCode"].value = document.forms[0]["#form.defaultWarehouseCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#form.defaultWarehouseCode"].value !== ""){
+        vat.ajax.XHRequest(
+        {
+           post:"process_object_name=imWarehouseService"+
+                    "&process_object_method_name=findByIdForAJAX"+
+                    "&warehouseCode=" + document.forms[0]["#form.defaultWarehouseCode"].value,
+           find: function changeDefaultWarehouseCodeRequestSuccess(oXHR){ 
+               document.forms[0]["#warehouseManager"].value = vat.ajax.getValue("WarehouseManager", oXHR.responseText);
+               document.forms[0]["#warehouseManager"].value = document.forms[0]["#warehouseManager"].value.replace(/^\s+|\s+$/, '');
+               if(document.forms[0]["#warehouseManager"].value == ""){
+                   alert("庫別：" + document.forms[0]["#form.defaultWarehouseCode"].value + "的倉管人員為空值！");
+               }
+           }
+        });
+    }else{
+        document.forms[0]["#warehouseManager"].value = "";
+    }
+}
+
+function changePromotionCode(){
+    document.forms[0]["#form.promotionCode"].value = document.forms[0]["#form.promotionCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#form.promotionCode"].value !== ""){
+        vat.ajax.XHRequest(
+        {
+           post:"process_object_name=imPromotionViewService"+
+                    "&process_object_method_name=findPromotionCodeByPropertyForAJAX"+
+                    "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+                    "&promotionCode=" + document.forms[0]["#form.promotionCode"].value +
+                    "&priceType=" + document.forms[0]["#priceType"].value + 
+                    "&shopCode=" + document.forms[0]["#form.shopCode"].value +
+                    "&customerType=" + document.forms[0]["#form.customerType"].value +
+                    "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +
+                    "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value,                      
+           find: function changePromotionCodeRequestSuccess(oXHR){ 
+               document.forms[0]["#form.promotionCode"].value =  vat.ajax.getValue("PromotionCode", oXHR.responseText);
+               document.forms[0]["#form.promotionName"].value =  vat.ajax.getValue("PromotionName", oXHR.responseText);
+           }
+        });
+    }else{
+        document.forms[0]["#form.promotionName"].value = "";
+    }
+}
+
+function changeItemData(actionId) {
+	var vOriginalUnitPrice = parseInt(vat.item.getGridValueByName("originalUnitPrice", nItemLine),10);
+	if(isNaN(vOriginalUnitPrice))
+		vOriginalUnitPrice = 0;
+	var vActualUnitPrice = parseInt(vat.item.getGridValueByName("actualUnitPrice", nItemLine),10);
+	if(isNaN(vActualUnitPrice))
+		vActualUnitPrice = 0;
+	var vDeductionAmount = parseInt(vat.item.getGridValueByName("deductionAmount", nItemLine),10);
+	if(isNaN(vDeductionAmount))
+		vDeductionAmount = 0;
+	var vDiscountRate = (vActualUnitPrice+vDeductionAmount)*100/vOriginalUnitPrice;
+	if(isNaN(vDiscountRate))
+		vDiscountRate = 100;
+	vat.item.setGridValueByName("discountRate", nItemLine, vDiscountRate);
+    var nItemLine = vat.item.getGridLine();
+    var vItemCode = vat.item.getGridValueByName("itemCode", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+    var vWarehouseCode = document.forms[0]["#form.defaultWarehouseCode"].value.replace(/^\s+|\s+$/, '').toUpperCase();
+	var vQuantity = vat.item.getGridValueByName("quantity", nItemLine).replace(/^\s+|\s+$/, '');
+	var vPromotionCode = vat.item.getGridValueByName("promotionCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vVipPromotionCode = vat.item.getGridValueByName("vipPromotionCode", nItemLine).replace(/^\s+|\s+$/, '');
+	var vTaxType = vat.item.getGridValueByName("taxType", nItemLine).replace(/^\s+|\s+$/, '');
+	var vTaxRate = vat.item.getGridValueByName("taxRate", nItemLine).replace(/^\s+|\s+$/, '');
+	vat.item.setGridValueByName("itemCode", nItemLine, vItemCode);
+	vat.item.setGridValueByName("warehouseCode", nItemLine, vWarehouseCode);	
+    if(document.forms[0]["#form.defaultWarehouseCode"].value !== ""){
+        if(document.forms[0]["#warehouseManager"].value == ""){
+            alert("主檔頁籤庫別：" + document.forms[0]["#form.defaultWarehouseCode"].value + "的倉管人員為空值！");
+        }else{
+            if(isNaN(vQuantity)){
+               alert("明細資料頁籤中第" + nItemLine + "項明細的數量欄位必須為數值！");
+            }else{
+               vat.ajax.XHRequest(
+               {
+                   post:"process_object_name=soSalesOrderMainService" +
+                            "&process_object_method_name=getAJAXItemData" +
+                            "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+                            "&priceType=" + document.forms[0]["#priceType"].value + 
+                            "&shopCode=" + document.forms[0]["#form.shopCode"].value +
+                            "&customerType=" + document.forms[0]["#form.customerType"].value +
+                            "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +
+                            "&itemIndexNo" + nItemLine +
+                            "&itemCode=" + vItemCode +
+                            "&warehouseCode=" + vWarehouseCode +
+                            "&quantity=" + vQuantity +
+                            "&deductionAmount=" + vDeductionAmount +
+                            "&discountRate=" + vDiscountRate +
+                            "&promotionCode=" + vPromotionCode +
+                            "&vipPromotionCode=" + vVipPromotionCode +                         
+                            "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +
+                            "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+                            "&originalUnitPrice=" + vOriginalUnitPrice +
+                            "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value +
+                            "&taxType=" + vTaxType +
+                            "&taxRate=" + vTaxRate +
+                            "&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value+
+                            "&actionId=" + actionId,
+
+                   find: function changeItemDataRequestSuccess(oXHR){
+                       vat.item.setGridValueByName("itemCode", nItemLine, vat.ajax.getValue("ItemCode", oXHR.responseText));
+                       vat.item.setGridValueByName("itemCName", nItemLine, vat.ajax.getValue("ItemCName", oXHR.responseText)); 
+                       vat.item.setGridValueByName("warehouseCode", nItemLine, vat.ajax.getValue("WarehouseCode", oXHR.responseText)); 
+                       vat.item.setGridValueByName("warehouseName", nItemLine, vat.ajax.getValue("WarehouseName", oXHR.responseText)); 
+                       vat.item.setGridValueByName("originalUnitPrice", nItemLine, vat.ajax.getValue("OriginalUnitPrice", oXHR.responseText)); 
+                       vat.item.setGridValueByName("actualUnitPrice", nItemLine, vat.ajax.getValue("ActualUnitPrice", oXHR.responseText)); 
+                       vat.item.setGridValueByName("currentOnHandQty", nItemLine, vat.ajax.getValue("CurrentOnHandQty", oXHR.responseText)); 
+                       vat.item.setGridValueByName("quantity", nItemLine, vat.ajax.getValue("Quantity", oXHR.responseText)); 
+                       vat.item.setGridValueByName("originalSalesAmount", nItemLine, vat.ajax.getValue("OriginalSalesAmount", oXHR.responseText)); 
+                       vat.item.setGridValueByName("actualSalesAmount", nItemLine, vat.ajax.getValue("ActualSalesAmount", oXHR.responseText));  
+                       vat.item.setGridValueByName("deductionAmount", nItemLine, vat.ajax.getValue("DeductionAmount", oXHR.responseText));
+                       vat.item.setGridValueByName("discountRate", nItemLine, vat.ajax.getValue("DiscountRate", oXHR.responseText));
+                       vat.item.setGridValueByName("taxType", nItemLine, vat.ajax.getValue("TaxType", oXHR.responseText));
+                       vat.item.setGridValueByName("taxRate", nItemLine, vat.ajax.getValue("TaxRate", oXHR.responseText));
+                       vat.item.setGridValueByName("isTax", nItemLine, vat.ajax.getValue("IsTax", oXHR.responseText));
+                       vat.item.setGridValueByName("promotionCode", nItemLine, vat.ajax.getValue("PromotionCode", oXHR.responseText));
+                       vat.item.setGridValueByName("discountType", nItemLine, vat.ajax.getValue("DiscountType", oXHR.responseText));
+                       vat.item.setGridValueByName("discount", nItemLine, vat.ajax.getValue("Discount", oXHR.responseText));
+                       vat.item.setGridValueByName("vipPromotionCode", nItemLine, vat.ajax.getValue("VipPromotionCode", oXHR.responseText));
+                       vat.item.setGridValueByName("vipDiscountType", nItemLine, vat.ajax.getValue("VipDiscountType", oXHR.responseText));
+                       vat.item.setGridValueByName("vipDiscount", nItemLine, vat.ajax.getValue("VipDiscount", oXHR.responseText));     
+                       vat.item.setGridValueByName("isServiceItem", nItemLine, vat.ajax.getValue("IsServiceItem", oXHR.responseText));
+                       vat.item.setGridValueByName("taxAmount", nItemLine, vat.ajax.getValue("TaxAmount", oXHR.responseText));
+                       vat.item.setGridValueByName("originalForeignUnitPrice", nItemLine, vat.ajax.getValue("OriginalForeignUnitPrice", oXHR.responseText));
+                       vat.item.setGridValueByName("actualForeignUnitPrice", nItemLine, vat.ajax.getValue("ActualForeignUnitPrice", oXHR.responseText));
+                       vat.item.setGridValueByName("originalForeignSalesAmt", nItemLine, vat.ajax.getValue("OriginalForeignSalesAmt", oXHR.responseText));
+                       vat.item.setGridValueByName("actualForeignSalesAmt", nItemLine, vat.ajax.getValue("ActualForeignSalesAmt", oXHR.responseText));
+                       vat.item.setGridValueByName("deductionForeignAmount", nItemLine, vat.ajax.getValue("DeductionForeignAmount", oXHR.responseText));
+                       vat.item.setGridValueByName("importCost", nItemLine, vat.ajax.getValue("ImportCost", oXHR.responseText));
+                       vat.item.setGridValueByName("importCurrencyCode", nItemLine, vat.ajax.getValue("ImportCurrencyCode", oXHR.responseText));
+                       vat.item.setGridValueByName("importDeclNo", nItemLine, vat.ajax.getValue("ImportDeclNo", oXHR.responseText));
+                       vat.item.setGridValueByName("importDeclDate", nItemLine, vat.ajax.getValue("ImportDeclDate", oXHR.responseText));
+                       vat.item.setGridValueByName("importDeclItemNo", nItemLine, vat.ajax.getValue("ImportDeclItemNo", oXHR.responseText));
+                       vat.item.setGridValueByName("itemDiscountType", nItemLine, vat.ajax.getValue("ItemDiscountType", oXHR.responseText));
+                   }
+               });          
+            }
+        }
+    }else{
+	    alert("請先選擇主檔頁籤的庫別！");
+	}
+}
+
+function changeactualUnitPrice(){
+	
+	//var vDiscountRate = vat.item.getGridValueByName("discountRate", nItemLine)
+}
+
+
+function changeAdvanceData(actionId){
+	var vOriginalUnitPrice = parseInt(document.forms[0]["#originalUnitPrice"].value,10);
+	if(isNaN(vOriginalUnitPrice))
+		vOriginalUnitPrice = 0;
+	var vActualUnitPrice = parseInt(document.forms[0]["#actualUnitPrice"].value,10);
+	if(isNaN(vActualUnitPrice))
+		vActualUnitPrice = 0;
+	var vDeductionAmount = parseInt(document.forms[0]["#deductionAmount"].value,10);
+	if(isNaN(vDeductionAmount))
+		vDeductionAmount = 0;
+	var vDiscountRate = (vActualUnitPrice+vDeductionAmount)*100/vOriginalUnitPrice;
+	if(isNaN(vDiscountRate))
+		vDiscountRate = 100;
+	document.forms[0]["#discountRate"].value = vDiscountRate;
+    var vItemIndexNo = document.forms[0]["#itemIndexNo"].value;
+    var vBrandCode = document.forms[0]["#brandCode"].value;
+    var vPriceType = document.forms[0]["#priceType"].value;
+    var vShopCode = document.forms[0]["#shopCode"].value;
+    var vCustomerType = document.forms[0]["#customerType"].value;
+    var vVipType = document.forms[0]["#vipType"].value;
+    var vItemCode = document.forms[0]["#itemCode"].value.replace(/^\s+|\s+$/, '');
+    var vWarehouseCode = document.forms[0]["#warehouseCode"].value.replace(/^\s+|\s+$/, '');
+    var vQuantity = document.forms[0]["#quantity"].value.replace(/^\s+|\s+$/, '');
+    //var vDeductionAmount = document.forms[0]["#deductionAmount"].value.replace(/^\s+|\s+$/, '');
+    //var vDiscountRate = document.forms[0]["#discountRate"].value.replace(/^\s+|\s+$/, '');
+    var vPromotionCode= document.forms[0]["#promotionCode"].value.replace(/^\s+|\s+$/, '');
+	var vVipPromotionCode= document.forms[0]["#vipPromotionCode"].value;
+	var vWarehouseManager= document.forms[0]["#warehouseManager"].value;
+	var vWarehouseEmployee= document.forms[0]["#warehouseEmployee"].value;
+    //var vOriginalUnitPrice= document.forms[0]["#originalUnitPrice"].value;
+    var vexportExchangeRate = document.forms[0]["#exportExchangeRate"].value;
+    var vSalesDate= document.forms[0]["#salesDate"].value;
+    var vTaxType= document.forms[0]["#taxType"].value;
+    var vTaxRate= document.forms[0]["#taxRate"].value.replace(/^\s+|\s+$/, ''); 
+    var vServiceItemPrice = document.forms[0]["#serviceItemPrice"].value.replace(/^\s+|\s+$/, '');   
+    if(vTaxType == "1" || vTaxType == "2"){
+        vTaxRate = "0.0";
+    }
+    if(isNaN(vServiceItemPrice)){
+        alert("服務性商品單價必須為數值！");
+    }else if(isNaN(vDeductionAmount)){
+        alert("折讓金額必須為數值！");
+    }else if(isNaN(vDiscountRate)){
+        alert("折扣率必須為數值！");
+    }else if(isNaN(vQuantity)){
+        alert("數量欄位必須為數值！");
+    }else if(isNaN(vTaxRate)){
+        alert("稅率欄位必須為數值！");
+    }else{   
+        vat.ajax.XHRequest(
+        {
+            post:"process_object_name=soSalesOrderMainService" +
+            "&process_object_method_name=getAJAXItemData" +
+            "&brandCode=" + vBrandCode +
+            "&priceType=" + vPriceType + 
+            "&shopCode=" + vShopCode +
+            "&customerType=" + vCustomerType +
+            "&vipType=" + vVipType +
+            "&itemIndexNo" + vItemIndexNo +
+            "&itemCode=" + vItemCode +
+            "&warehouseCode=" + vWarehouseCode +
+            "&quantity=" + vQuantity +
+            "&deductionAmount=" + vDeductionAmount +
+            "&discountRate=" + vDiscountRate +
+            "&promotionCode=" + vPromotionCode +
+            "&vipPromotionCode=" + vVipPromotionCode +                         
+            "&warehouseManager=" + vWarehouseManager +
+            "&warehouseEmployee=" + vWarehouseEmployee +
+            "&originalUnitPrice=" + vServiceItemPrice +
+            "&salesDate=" + vSalesDate +
+            "&taxType=" + vTaxType +
+            "&taxRate=" + vTaxRate +
+         	"&exportExchangeRate=" + vexportExchangeRate +
+            "&actionId=" + actionId,                                                 
+            find: function changeAdvanceItemDataRequestSuccess(oXHR){
+                document.forms[0]["#itemCode"].value = vat.ajax.getValue("ItemCode", oXHR.responseText);
+                document.forms[0]["#itemName"].value = vat.ajax.getValue("ItemCName", oXHR.responseText);
+                document.forms[0]["#warehouseCode"].value = vat.ajax.getValue("WarehouseCode", oXHR.responseText);
+                document.forms[0]["#warehouseName"].value = vat.ajax.getValue("WarehouseName", oXHR.responseText);
+                document.forms[0]["#originalUnitPrice"].value = vat.ajax.getValue("OriginalUnitPrice", oXHR.responseText);              
+                document.forms[0]["#actualUnitPrice"].value = vat.ajax.getValue("ActualUnitPrice", oXHR.responseText);
+                document.forms[0]["#currentOnHandQty"].value = vat.ajax.getValue("CurrentOnHandQty", oXHR.responseText);
+                document.forms[0]["#quantity"].value = vat.ajax.getValue("Quantity", oXHR.responseText);
+                document.forms[0]["#originalSalesAmount"].value = vat.ajax.getValue("OriginalSalesAmount", oXHR.responseText);
+                document.forms[0]["#actualSalesAmount"].value = vat.ajax.getValue("ActualSalesAmount", oXHR.responseText);
+                document.forms[0]["#deductionAmount"].value = vat.ajax.getValue("DeductionAmount", oXHR.responseText);
+                document.forms[0]["#discountRate"].value = vat.ajax.getValue("DiscountRate", oXHR.responseText);     
+                document.forms[0]["#promotionCode"].value = vat.ajax.getValue("PromotionCode", oXHR.responseText);
+                document.forms[0]["#promotionName"].value = vat.ajax.getValue("PromotionName", oXHR.responseText);
+                document.forms[0]["#discount"].value = vat.ajax.getValue("Disct", oXHR.responseText);
+                document.forms[0]["#discountType"].value = vat.ajax.getValue("DiscountType", oXHR.responseText);       
+                document.forms[0]["#vipPromotionCode"].value = vat.ajax.getValue("VipPromotionCode", oXHR.responseText);
+                document.forms[0]["#vipPromotionName"].value = vat.ajax.getValue("VipPromotionName", oXHR.responseText);
+                document.forms[0]["#vipDiscount"].value = vat.ajax.getValue("VipDisct", oXHR.responseText);
+                document.forms[0]["#vipDiscountType"].value = vat.ajax.getValue("VipDiscountType", oXHR.responseText);             
+                document.forms[0]["#taxType"].value = vat.ajax.getValue("TaxType", oXHR.responseText);
+                document.forms[0]["#taxRate"].value = vat.ajax.getValue("TaxRate", oXHR.responseText);
+                document.forms[0]["#isServiceItem"].value = vat.ajax.getValue("IsServiceItem", oXHR.responseText);
+                document.forms[0]["#taxAmount"].value = vat.ajax.getValue("TaxAmount", oXHR.responseText);
+                //document.forms[0]["#originalForeignUnitPrice"].value = vat.ajax.getValue("OriginalForeignUnitPrice", oXHR.responseText);
+                //document.forms[0]["#actualForeignUnitPrice"].value = vat.ajax.getValue("ActualForeignUnitPrice", oXHR.responseText);
+                //document.forms[0]["#originalForeignSalesAmt"].value = vat.ajax.getValue("OriginalForeignSalesAmt", oXHR.responseText);
+                //document.forms[0]["#actualForeignSalesAmt"].value = vat.ajax.getValue("ActualForeignSalesAmt", oXHR.responseText);
+                //document.forms[0]["#deductionForeignAmount"].value = vat.ajax.getValue("DeductionForeignAmount", oXHR.responseText);
+                //document.forms[0]["#taxForeignAmount"].value = vat.ajax.getValue("TaxForeignAmount", oXHR.responseText);
+                //document.forms[0]["#importCost"].value = vat.ajax.getValue("ImportCost", oXHR.responseText);
+                //document.forms[0]["#importCurrencyCode"].value = vat.ajax.getValue("ImportCurrencyCode", oXHR.responseText);
+                //document.forms[0]["#supplierItemCode"].value = vat.ajax.getValue("SupplierItemCode", oXHR.responseText);
+                //document.forms[0]["#standardPurchaseCost"].value = vat.ajax.getValue("StandardPurchaseCost", oXHR.responseText);
+                if(vBrandCode == "T2"){
+	                document.forms[0]["#originalForeignUnitPrice"].value = vat.ajax.getValue("OriginalForeignUnitPrice", oXHR.responseText);
+	                document.forms[0]["#actualForeignUnitPrice"].value = vat.ajax.getValue("ActualForeignUnitPrice", oXHR.responseText);
+	                document.forms[0]["#originalForeignSalesAmt"].value = vat.ajax.getValue("OriginalForeignSalesAmt", oXHR.responseText);
+	                document.forms[0]["#actualForeignSalesAmt"].value = vat.ajax.getValue("ActualForeignSalesAmt", oXHR.responseText);
+	                document.forms[0]["#deductionForeignAmount"].value = vat.ajax.getValue("DeductionForeignAmount", oXHR.responseText);
+	                document.forms[0]["#taxForeignAmount"].value = vat.ajax.getValue("TaxForeignAmount", oXHR.responseText);
+	                document.forms[0]["#importCost"].value = vat.ajax.getValue("ImportCost", oXHR.responseText);
+                	document.forms[0]["#importCurrencyCode"].value = vat.ajax.getValue("ImportCurrencyCode", oXHR.responseText);
+                	document.forms[0]["#supplierItemCode"].value = vat.ajax.getValue("SupplierItemCode", oXHR.responseText);
+                	document.forms[0]["#standardPurchaseCost"].value = vat.ajax.getValue("StandardPurchaseCost", oXHR.responseText);
+                	document.forms[0]["#itemDiscountType"].value = vat.ajax.getValue("ItemDiscountType", oXHR.responseText);
+                }
+                
+                if(document.forms[0]["#isServiceItem"].value !== "Y"){
+                    document.forms[0]["#serviceItemPrice"].value = "";
+                }else{
+                    document.forms[0]["#promotionCode"].value = "";
+                    document.forms[0]["#promotionName"].value = "";
+                    document.forms[0]["#discount"].value = "";
+                    document.forms[0]["#discountType"].value = "";
+                }         
+            }
+        });
+    }
+}
+
+/*
+	進階輸入回傳
+*/
+function advanceDataSave(){
+	var vBrandCode = document.forms[0]["#brandCode"].value.replace(/^\s+|\s+$/, '');
+    //var opener = window.dialogArguments;
+    var vItemCode = document.forms[0]["#itemCode"].value.replace(/^\s+|\s+$/, '');
+    var vItemName = document.forms[0]["#itemName"].value.replace(/^\s+|\s+$/, '');
+    var vWarehouseCode = document.forms[0]["#warehouseCode"].value.replace(/^\s+|\s+$/, '');
+    var vWarehouseName = document.forms[0]["#warehouseName"].value.replace(/^\s+|\s+$/, '');  
+    var vCurrentOnHandQty = document.forms[0]["#currentOnHandQty"].value;
+    var vOriginalUnitPrice = document.forms[0]["#originalUnitPrice"].value;  
+    var vOriginalSalesAmount = document.forms[0]["#originalSalesAmount"].value;
+    var vActualUnitPrice = document.forms[0]["#actualUnitPrice"].value.replace(/^\s+|\s+$/, '');
+    var vActualSalesAmount = document.forms[0]["#actualSalesAmount"].value.replace(/^\s+|\s+$/, '');   
+    var vDiscountRate = document.forms[0]["#discountRate"].value.replace(/^\s+|\s+$/, ''); 
+    var vDeductionAmount = document.forms[0]["#deductionAmount"].value.replace(/^\s+|\s+$/, '');
+    var vPromotionCode= document.forms[0]["#promotionCode"].value.replace(/^\s+|\s+$/, '');
+    var vDiscountType= document.forms[0]["#discountType"].value.replace(/^\s+|\s+$/, '');
+    var vDiscount= document.forms[0]["#discount"].value.replace(/^\s+|\s+$/, '');
+    var vVipPromotionCode= document.forms[0]["#vipPromotionCode"].value;
+    var vVipDiscountType= document.forms[0]["#vipDiscountType"].value.replace(/^\s+|\s+$/, '');
+    var vVipDiscount= document.forms[0]["#vipDiscount"].value.replace(/^\s+|\s+$/, '');   
+    var vQuantity = document.forms[0]["#quantity"].value.replace(/^\s+|\s+$/, '');
+    var vTaxType= document.forms[0]["#taxType"].value;
+    var vTaxRate= document.forms[0]["#taxRate"].value.replace(/^\s+|\s+$/, '');
+    var vWatchSerialNo= document.forms[0]["#watchSerialNo"].value.replace(/^\s+|\s+$/, '');
+    var vDepositCode= document.forms[0]["#depositCode"].value.replace(/^\s+|\s+$/, '');
+    var vIsUseDeposit= document.forms[0]["#isUseDeposit"].value.replace(/^\s+|\s+$/, '');
+    var vIsServiceItem= document.forms[0]["#isServiceItem"].value;
+    var vServiceItemPrice = document.forms[0]["#serviceItemPrice"].value.replace(/^\s+|\s+$/, '');
+    var vTaxAmount= document.forms[0]["#taxAmount"].value; 
+    var vOriginalForeignUnitPrice = "";
+    var vOriginalForeignSalesAmt = "";
+    var vDeductionForeignAmount = "";
+    var vActualForeignUnitPrice = "";
+    var vActualForeignSalesAmt = "";
+    var vImportCost = "";
+    var vImportCurrencyCode = "";
+    var vImportDeclNo = "";
+    var vImportDeclDate = "";
+    var vImportDeclSeq = "";
+    var vUsedIdentification = "";
+	var vUsedCardId = "";
+	var vUsedCardType = "";
+	var vUsedDiscountRate = "";
+	var vItemDiscountType = "";
+    if(vBrandCode == "T2"){
+	    vOriginalForeignUnitPrice = document.forms[0]["#originalForeignUnitPrice"].value.replace(/^\s+|\s+$/, '');
+	    vOriginalForeignSalesAmt = document.forms[0]["#originalForeignSalesAmt"].value.replace(/^\s+|\s+$/, '');
+	    vDeductionForeignAmount = document.forms[0]["#deductionForeignAmount"].value.replace(/^\s+|\s+$/, '');
+	    vActualForeignUnitPrice = document.forms[0]["#actualForeignUnitPrice"].value.replace(/^\s+|\s+$/, '');
+	    vActualForeignSalesAmt = document.forms[0]["#actualForeignSalesAmt"].value.replace(/^\s+|\s+$/, '');
+	    vImportCost = document.forms[0]["#importCost"].value.replace(/^\s+|\s+$/, '');
+	    vImportCurrencyCode = document.forms[0]["#importCurrencyCode"].value.replace(/^\s+|\s+$/, '');
+	    vImportDeclNo = document.forms[0]["#importDeclNo"].value.replace(/^\s+|\s+$/, '');
+	    vImportDeclDate = document.forms[0]["#importDeclDate"].value.replace(/^\s+|\s+$/, '');
+	    vImportDeclSeq = document.forms[0]["#importDeclSeq"].value.replace(/^\s+|\s+$/, '');
+	    vUsedIdentification = document.forms[0]["#usedIdentification"].value.replace(/^\s+|\s+$/, '');
+		vUsedCardId = document.forms[0]["#usedCardId"].value.replace(/^\s+|\s+$/, '');
+		vUsedCardType = document.forms[0]["#usedCardType"].value.replace(/^\s+|\s+$/, '');
+		vUsedDiscountRate = document.forms[0]["#usedDiscountRate"].value.replace(/^\s+|\s+$/, '');
+		vItemDiscountType = document.forms[0]["#itemDiscountType"].value.replace(/^\s+|\s+$/, '');
+    }
+    if(vTaxType == "1" || vTaxType == "2"){
+        vTaxRate = "0.0";
+    }
+    if(isNaN(vServiceItemPrice)){
+        alert("服務性商品單價必須為數值！");
+    }else if(isNaN(vDeductionAmount)){
+        alert("折讓金額必須為數值！");
+    }else if(isNaN(vDiscountRate)){
+        alert("折扣率必須為數值！");
+    }else if(isNaN(vQuantity)){
+        alert("數量欄位必須為數值！");
+    }else if(isNaN(vTaxRate)){
+        alert("稅率欄位必須為數值！");
+    }else if(isNaN(vUsedDiscountRate)){
+        alert("使用折扣率必須為數值！");
+    }else{       
+        window.returnValue = vItemCode + "{#}" + vItemName + "{#}" + vWarehouseCode + "{#}" + vWarehouseName + "{#}" + vOriginalUnitPrice + "{#}" + 
+                             vActualUnitPrice + "{#}" + vCurrentOnHandQty + "{#}" + vQuantity + "{#}" + vOriginalSalesAmount + "{#}" +
+                             vActualSalesAmount + "{#}" + vDeductionAmount + "{#}" + vDiscountRate + "{#}" + vTaxType + "{#}" +
+                             vTaxRate + "{#}" + vPromotionCode + "{#}" + vDiscountType + "{#}" + vDiscount + "{#}" + vVipPromotionCode + "{#}" +
+                             vVipDiscountType + "{#}" + vVipDiscount + "{#}" + vWatchSerialNo + "{#}" + vDepositCode + "{#}" + vIsUseDeposit + "{#}" +
+                             vIsServiceItem + "{#}" + vTaxAmount + "{#}" + vOriginalForeignUnitPrice + "{#}" + vOriginalForeignSalesAmt + "{#}" + 
+    						 vDeductionForeignAmount + "{#}" + vActualForeignUnitPrice + "{#}" + vActualForeignSalesAmt + "{#}" + 
+    						 vImportCost + "{#}" + vImportCurrencyCode + "{#}" + vImportDeclNo + "{#}" + vImportDeclDate + "{#}" + 
+							 vImportDeclSeq + "{#}" + vUsedIdentification + "{#}" + vUsedCardId + "{#}" + vUsedCardType+ "{#}" +
+							 vUsedDiscountRate + "{#}" + vItemDiscountType;
+        //alert("returnValue:" + window.returnValue);
+        window.close();  
+    }
+}
+/*
+	報關AtoB開啟
+*/
+
+function exportDataInput(){
+
+	var returnData = window.showModalDialog(
+		"So_SalesOrder:exportAtoB:20091005.page"+
+		"?latestExportDeclNo=" + document.forms[0]["#form.latestExportDeclNo"].value +
+        "&latestExportDeclDate=" + document.forms[0]["#form.latestExportDeclDate"].value +
+        "&latestExportDeclType=" + document.forms[0]["#form.latestExportDeclType"].value +
+        "&orderTypeCode=" + document.forms[0]["#form.orderTypeCode"].value +
+        "&status=" + document.forms[0]["#form.status"].value,"",
+		"dialogHeight:600px;dialogWidth:1060px;dialogTop:100px;dialogLeft:100px;status:no;");
+	var obj = document.getElementById("vatBeginDiv");
+	if (obj){
+		obj.filters[0].enabled = true;
+		obj.filters[0].opacity = 0.60; 
+	}
+	
+	if(typeof returnData !== "undefined" && returnData !== null && returnData !== ""){
+		    var returnDataArray = returnData.split("{#}");
+		    document.forms[0]["#form.latestExportDeclNo"].value = returnDataArray[0];
+		    document.forms[0]["#form.latestExportDeclDate"].value = returnDataArray[1];
+		    document.forms[0]["#form.latestExportDeclType"].value = returnDataArray[2];
+		}
+	obj.filters[0].enabled = false;
+	
+}
+/*
+	報關AtoB回傳
+*/
+function exportDataSave(){
+    var vLatestExportDeclNo = document.forms[0]["#latestExportDeclNo"].value.replace(/^\s+|\s+$/, '');
+    var vLatestExportDeclDate = document.forms[0]["#latestExportDeclDate"].value.replace(/^\s+|\s+$/, '');
+    var vLatestExportDeclType = document.forms[0]["#latestExportDeclType"].value.replace(/^\s+|\s+$/, '');
+		window.returnValue = vLatestExportDeclNo + "{#}" + vLatestExportDeclDate + "{#}" + vLatestExportDeclType;
+        window.close();  
+}
+/*
+	PICKER 之前要先RUN LINE SAVE
+*/
+function doBeforePicker(){
+    doPageDataSave();
+}
+
+function doAfterCustomerPicker(){
+    var processString = "process_object_name=soSalesOrderMainService&process_object_method_name=executeCountTotalAmount" + 
+	                    "&headId=" + document.forms[0]["#form.headId"].value + 
+	                    "&brandCode=" + document.forms[0]["#form.brandCode"].value +
+	                    "&shopCode=" + document.forms[0]["#form.shopCode"].value +  
+	                    "&priceType=" + document.forms[0]["#priceType"].value +     
+	                    "&customerType=" + document.forms[0]["#form.customerType"].value +
+	                    "&vipType=" + document.forms[0]["#form.vipTypeCode"].value +        
+	                    "&warehouseEmployee=" + document.forms[0]["#warehouseEmployee"].value +
+	                    "&warehouseManager=" + document.forms[0]["#warehouseManager"].value +        
+	                    "&salesDate=" + document.forms[0]["#form.salesOrderDate"].value + 
+	                    "&formStatus=" + document.forms[0]["#form.status"].value +
+						"&exportCommissionRate=" + document.forms[0]["#form.exportCommissionRate"].value +
+	                	"&exportExchangeRate=" + document.forms[0]["#form.exportExchangeRate"].value ;
+    vat.ajax.startRequest(processString, function () {
+	if (vat.ajax.handleState()) {
+	    vat.block.pageRefresh(2);
+	    		//本幣
+			    document.forms[0]["#form.totalOriginalSalesAmount"].value = vat.ajax.getValue("TotalOriginalSalesAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalDeductionAmount"].value = vat.ajax.getValue("TotalDeductionAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.taxAmount"].value = vat.ajax.getValue("TaxAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalOtherExpense"].value = vat.ajax.getValue("TotalOtherExpense", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.expenseLocalAmount"].value = vat.ajax.getValue("ExpenseLocalAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalActualSalesAmount"].value = vat.ajax.getValue("TotalActualSalesAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalNoneTaxSalesAmount"].value = vat.ajax.getValue("TotalNoneTaxSalesAmount", vat.ajax.xmlHttp.responseText);
+				
+				//原幣
+				document.forms[0]["#form.originalTotalFrnSalesAmt"].value = vat.ajax.getValue("OriginalTotalFrnSalesAmt", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalDeductionForeignAmount"].value = vat.ajax.getValue("TotalDeductionForeignAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.totalForeignOtherExpense"].value = vat.ajax.getValue("TotalForeignOtherExpense", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.expenseForeignAmount"].value = vat.ajax.getValue("ExpenseForeignAmount", vat.ajax.xmlHttp.responseText);
+				document.forms[0]["#form.actualTotalFrnSalesAmt"].value = vat.ajax.getValue("ActualTotalFrnSalesAmt", vat.ajax.xmlHttp.responseText);
+					
+				document.forms[0]["#form.totalItemQuantity"].value = vat.ajax.getValue("TotalItemQuantity", vat.ajax.xmlHttp.responseText);				
+	}
+	});
+}
+
+function changeDiscountRate(){
+    var vDiscountRate = document.forms[0]["#form.discountRate"].value.replace(/^\s+|\s+$/, '');
+    if(isNaN(vDiscountRate)){
+        document.forms[0]["#form.discountRate"].value = 100.0;
+    }else if(vDiscountRate == ""){
+        document.forms[0]["#form.discountRate"].value = 100.0;
+    }
+}
+
+function changeCommissionRate(){
+    var vCommissionRate = document.forms[0]["#form.exportCommissionRate"].value.replace(/^\s+|\s+$/, '');
+    if(isNaN(vCommissionRate) || vCommissionRate < 0){
+        document.forms[0]["#form.exportCommissionRate"].value = 0.0;
+    }else if(vCommissionRate == ""){
+        document.forms[0]["#form.exportCommissionRate"].value = 0.0;
+    }
+}
+
+function changeDisplayAmt(){
+   if(document.forms[0]["showAmt"].checked == true){       
+       document.forms[0]["#displayAmt"].value = "N";
+   }else{     
+       document.forms[0]["#displayAmt"].value = "Y";
+   }
+}
+
+function openReportWindow(encryText){
+    var reportUrl = document.forms[0]["#reportUrl"].value;
+    var reportFileName = document.forms[0]["#reportFileName"].value;  
+    var brandCode = document.forms[0]["#form.brandCode"].value;
+    var orderTypeCode = document.forms[0]["#form.orderTypeCode"].value;
+    var orderNo = document.forms[0]["#form.orderNo"].value;
+    var displayAmt = document.forms[0]["#displayAmt"].value;
+    var url = "jsp/SalesOrderReport.jsp?reportUrl=" + reportUrl + "&reportFileName=" + reportFileName + "&crypto=" + encryText + "&prompt0=" + brandCode + "&prompt1=" + orderTypeCode + "&prompt2=" + orderNo + "&prompt3=" + displayAmt;
+    window.open(url,'BI', 'menubar=yes,resizable=yes,scrollbars=yes,status=yes,width=1024,height=768,left=0,top=0');
+}
+
+function changeRelationData(){
+    var statusTmp = document.forms[0]["#form.status"].value;
+    var orderTypeCodeTmp = document.forms[0]["#form.orderTypeCode"].value;
+    var orderNoTmp = document.forms[0]["#form.orderNo"].value;
+    var processId = document.forms[0]["#processId"].value;
+    if(orderTypeCodeTmp == "SOP"){
+	    if(statusTmp == "SAVE" || statusTmp == "UNCONFIRMED"){
+	        afterSavePageProcess = "changeRelationData";
+		    vat.block.pageDataSave(2);		
+	    }
+	}else{
+	    if((statusTmp == "SAVE" && orderNoTmp.indexOf("TMP") != -1) || ((statusTmp == "SAVE" || statusTmp == "REJECT") && processId != null && processId != 0)){
+		    afterSavePageProcess = "changeRelationData";
+		    vat.block.pageDataSave(2);		
+	    }	
+	}
+}
+
+function outlineBlock(){
+  formDataInitial();
+  headerInitial();
+  masterInitial();
+  posDataInitial();
+}
+
+function headerInitial(){
+var vBrandCode = document.forms[0]["#form.brandCode"].value;
+if(vBrandCode == "T2"){
+		vat.block.create(vnB_Header = 0, {
+		id: "vatBlock_Head", generate: false,
+		table:"cellspacing='1' class='default' border='0' cellpadding='2'",
+		title:"銷貨單維護作業", rows:[  
+		 {row_style:"", cols:[
+		 {items:[{name:"#L.orderType", type:"LABEL", value:"單別"}]},	 
+		 {items:[{name:"#F.orderTypeCode", type:"SELECT", bind:"orderTypeCode", back:false, mode:"READONLY", ceap:"#form.orderTypeCode"}]},		 
+		 {items:[{name:"#L.orderNo", type:"LABEL", value:"單號"}]},
+		 {items:[{name:"#F.orderNo", type:"TEXT", bind:"orderNo", back:false, size:20, mode:"READONLY", ceap:"#form.orderNo"},
+		 		 {name:"#F.headId", type:"TEXT", bind:"headId", back:false, size:10, mode:"READONLY", ceap:"#form.headId"}]},
+		 {items:[{name:"#L.salesOrderDate", type:"LABEL", value:"銷貨日期"}]},
+		 {items:[{name:"#F.salesOrderDate", type:"DATE", bind:"salesOrderDate", size:1, ceap:"#form.salesOrderDate"}]},			 
+		 {items:[{name:"#L.brandCode", type:"LABEL", value:"品牌"}]},
+		 {items:[{name:"#F.brandCode", type:"TEXT", bind:"brandCode", back:false, size:8, mode:"READONLY", ceap:"#form.brandCode"},
+		         {name:"#F.brandName", type:"TEXT", bind:"brandName", size:12, mode:"READONLY"}]}, 
+		 {items:[{name:"#L.status", type:"LABEL", value:"狀態"}]},	 		 
+		 {items:[{name:"#F.status", type:"TEXT", bind:"status", size:12, mode:"READONLY"},
+		         {name:"#F.statusName", type:"TEXT", bind:"statusName", size:12, mode:"READONLY"}]}]},
+		 {row_style:"", cols:[
+		 {items:[{name:"#L.customerType", type:"LABEL", value:"客戶代號"}]},
+		 {items:[{name:"#F.searchCustomerType", type:"SELECT", bind:"searchCustomerType", back:false, ceap:"#searchCustomerType"},
+		         {name:"#F.customerCode_var", type:"TEXT", bind:"customerCode_var", back:false, size:15, maxLen:15, ceap:"#customerCode_var"},
+		         {name:"#F.customerName", type:"TEXT", bind:"customerName", size:12, mode:"READONLY", ceap:"#form.customerName"}], td:" colSpan=2"},
+		 {items:[{name:"#F.verificationStatus", type:"TEXT", bind:"verificationStatus", size:1, ceap:"#form.verificationStatus"}]},	 
+		 {items:[{name:"#L.guiCode", type:"LABEL", value:"統一編號"}]},
+		 {items:[{name:"#F.guiCode", type:"TEXT", bind:"guiCode", size:8, maxLen:8, ceap:"#form.guiCode"}]},	 
+		 {items:[{name:"#F.exportDeclNo", type:"TEXT", bind:"exportDeclNo", size:8, maxLen:8, ceap:"#form.exportDeclNo"}]},
+		 {items:[{name:"#F.exportDeclDate", type:"DATE", bind:"exportDeclDate", size:8, maxLen:8, ceap:"#form.exportDeclDate"}]},
+		 {items:[{name:"#F.exportDeclType", type:"TEXT", bind:"exportDeclType", size:8, maxLen:2, ceap:"#form.exportDeclType"}]},
+		 {items:[{name:"#F.latestExportDeclNo", type:"TEXT", bind:"latestExportDeclNo", size:8, maxLen:8, ceap:"#form.latestExportDeclNo"}]},
+		 {items:[{name:"#F.latestExportDeclDate", type:"DATE", bind:"latestExportDeclDate", size:8, maxLen:8, ceap:"#form.latestExportDeclDate"}]},
+		 {items:[{name:"#F.latestExportDeclType", type:"TEXT", bind:"latestExportDeclType", size:8, maxLen:2, ceap:"#form.latestExportDeclType"}]},
+		 {items:[{name:"#L.inputFormEmployee", type:"LABEL", value:"填單人員"}]},
+		 {items:[{name:"#F.inputFormEmployee", type:"TEXT", bind:"inputFormEmployee", mode:"READONLY", size:12}]},	 
+		 {items:[{name:"#L.inputFormDate", type:"LABEL", value:"填單日期"}]},
+	 	 {items:[{name:"#F.inputFormDate", type:"TEXT", bind:"inputFormDate", mode:"READONLY", size:12}]}]}],	 
+		 
+		 beginService:"",
+		 closeService:""			
+		});
+	}else{
+		vat.block.create(vnB_Header = 0, {
+		id: "vatBlock_Head", generate: false,
+		table:"cellspacing='1' class='default' border='0' cellpadding='2'",
+		title:"銷貨單維護作業", rows:[  
+		 {row_style:"", cols:[
+		 {items:[{name:"#L.orderType", type:"LABEL", value:"單別"}]},	 
+		 {items:[{name:"#F.orderTypeCode", type:"SELECT", bind:"orderTypeCode", back:false, mode:"READONLY", ceap:"#form.orderTypeCode"}]},		 
+		 {items:[{name:"#L.orderNo", type:"LABEL", value:"單號"}]},
+		 {items:[{name:"#F.orderNo", type:"TEXT", bind:"orderNo", back:false, size:20, mode:"READONLY", ceap:"#form.orderNo"},
+		 		 {name:"#F.headId", type:"TEXT", bind:"headId", back:false, size:10, mode:"READONLY", ceap:"#form.headId"}]},
+		 {items:[{name:"#L.salesOrderDate", type:"LABEL", value:"銷貨日期"}]},
+		 {items:[{name:"#F.salesOrderDate", type:"DATE", bind:"salesOrderDate", size:1, ceap:"#form.salesOrderDate"}]},			 
+		 {items:[{name:"#L.brandCode", type:"LABEL", value:"品牌"}]},
+		 {items:[{name:"#F.brandCode", type:"TEXT", bind:"brandCode", back:false, size:8, mode:"READONLY", ceap:"#form.brandCode"},
+		         {name:"#F.brandName", type:"TEXT", bind:"brandName", size:12, mode:"READONLY"}]}, 
+		 {items:[{name:"#L.status", type:"LABEL", value:"狀態"}]},	 		 
+		 {items:[{name:"#F.status", type:"TEXT", bind:"status", size:12, mode:"READONLY"},
+		         {name:"#F.statusName", type:"TEXT", bind:"statusName", size:12, mode:"READONLY"}]}]},
+		 {row_style:"", cols:[
+		 {items:[{name:"#L.customerType", type:"LABEL", value:"客戶代號"}]},
+		 {items:[{name:"#F.searchCustomerType", type:"SELECT", bind:"searchCustomerType", back:false, ceap:"#searchCustomerType"},
+		         {name:"#F.customerCode_var", type:"TEXT", bind:"customerCode_var", back:false, size:15, maxLen:15, ceap:"#customerCode_var"},
+		         {name:"#F.customerName", type:"TEXT", bind:"customerName", size:12, mode:"READONLY", ceap:"#form.customerName"}], td:" colSpan=2"},
+		 {items:[{name:"#F.verificationStatus", type:"TEXT", bind:"verificationStatus", size:1, ceap:"#form.verificationStatus"}]},	 
+		 {items:[{name:"#L.guiCode", type:"LABEL", value:"統一編號"}]},
+		 {items:[{name:"#F.guiCode", type:"TEXT", bind:"guiCode", size:8, maxLen:8, ceap:"#form.guiCode"}]},	 
+		 {items:[{name:"#L.inputFormEmployee", type:"LABEL", value:"填單人員"}]},
+		 {items:[{name:"#F.inputFormEmployee", type:"TEXT", bind:"inputFormEmployee", mode:"READONLY", size:12}]},	 
+		 {items:[{name:"#L.inputFormDate", type:"LABEL", value:"填單日期"}]},
+	 	 {items:[{name:"#F.inputFormDate", type:"TEXT", bind:"inputFormDate", mode:"READONLY", size:12}]}]}],	 
+		 
+		 beginService:"",
+		 closeService:""			
+		});
+	}
+}
+
+function masterInitial(){
+vat.block.create(vnB_Master = 1, {
+	id: "vatBlock_Master", generate: false,
+	table:"cellspacing='1' class='default' border='0' cellpadding='2'",
+	rows:[  
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.shopCode", type:"LABEL", value:"專櫃代號"}]},
+	 {items:[{name:"#F.shopCode", type:"SELECT", bind:"shopCode", mode:"READONLY", ceap:"#form.shopCode"}]},	 
+	 {items:[{name:"#L.sufficientQuantityDelivery", type:"LABEL", value:"足量出貨"}]},
+	 {items:[{name:"#F.sufficientQuantityDelivery", type:"RADIO", bind:"sufficientQuantityDelivery", ceap:"#form.sufficientQuantityDelivery"}]},
+	 {items:[{name:"#L.superintendentCode", type:"LABEL", value:"訂單負責人"}]},
+	 {items:[{name:"#F.superintendentCode", type:"TEXT", bind:"superintendentCode", size:10, maxLen:15, ceap:"#form.superintendentCode"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.contactPerson", type:"LABEL", value:"客戶聯絡窗口"}]},
+	 {items:[{name:"#F.contactPerson", type:"TEXT", bind:"contactPerson", size:20, maxLen:20, ceap:"#form.contactPerson"}]},	
+	 {items:[{name:"#L.contactTel", type:"LABEL", value:"客戶聯絡電話"}]},
+	 {items:[{name:"#F.contactTel", type:"TEXT", bind:"contactTel", size:20, maxLen:20, ceap:"#form.contactTel"}]},	 
+	 {items:[{name:"#L.receiver", type:"LABEL", value:"收貨人"}]},
+	 {items:[{name:"#F.receiver"  , type:"TEXT" , bind:"receiver", size:20, maxLen:20, ceap:"#form.receiver"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.customerPoNo", type:"LABEL", value:"原訂單編號"}]},
+	 {items:[{name:"#F.customerPoNo", type:"TEXT", bind:"customerPoNo", size:20, maxLen:20, ceap:"#form.customerPoNo"}]},	
+	 {items:[{name:"#L.quotationCode", type:"LABEL", value:"報價單編號"}]},
+	 {items:[{name:"#F.quotationCode", type:"TEXT", bind:"quotationCode", size:20, maxLen:20, ceap:"#form.quotationCode"}]},	 
+	 {items:[{name:"#L.scheduleShipDate", type:"LABEL", value:"預計出貨日"}]},
+	 {items:[{name:"#F.scheduleShipDate", type:"DATE", bind:"scheduleShipDate", ceap:"#form.scheduleShipDate"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.countryCode", type:"LABEL", value:"國別"}]},
+	 {items:[{name:"#F.countryCode", type:"SELECT", bind:"countryCode", ceap:"#form.countryCode"}]},	
+	 {items:[{name:"#L.currencyCode", type:"LABEL", value:"幣別"}]},
+	 {items:[{name:"#F.currencyCode", type:"SELECT", bind:"currencyCode", ceap:"#form.currencyCode"}
+	 		,{name:"#F.currencyCode", type:"TEXT", bind:"exportExchangeRate", ceap:"#form.exportExchangeRate"}]},	 
+	 {items:[{name:"#L.homeDelivery", type:"LABEL", value:"運送方式"}]},
+	 {items:[{name:"#F.homeDelivery", type:"SELECT", bind:"homeDelivery", ceap:"#form.homeDelivery"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.paymentTermCode", type:"LABEL", value:"付款條件"}]},
+	 {items:[{name:"#F.paymentTermCode", type:"SELECT", bind:"paymentTermCode", ceap:"#form.paymentTermCode"}]},	
+	 {items:[{name:"#L.scheduleCollectionDate", type:"LABEL", value:"付款日"}]},
+	 {items:[{name:"#F.scheduleCollectionDate", type:"DATE", bind:"scheduleCollectionDate", ceap:"#form.scheduleCollectionDate"}]},	 
+	 {items:[{name:"#L.paymentCategory", type:"LABEL", value:"付款方式"}]},
+	 {items:[{name:"#F.paymentCategory", type:"SELECT" , bind:"paymentCategory", ceap:"#form.paymentCategory"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.invoiceAddressTitle", type:"LABEL", value:"發票地址"}]},
+	 {items:[{name:"#L.invoiceCity", type:"LABEL", value:"城市:&nbsp&nbsp;"},
+	 		 {name:"#F.invoiceCity", type:"TEXT" ,  bind:"invoiceCity", size:10, maxLen:10, ceap:"#form.invoiceCity"},
+			 {name:"#L.invoiceArea", type:"LABEL", value:"&nbsp&nbsp&nbsp;鄉鎮區別:&nbsp&nbsp;"},
+	 		 {name:"#F.invoiceArea", type:"TEXT",   bind:"invoiceArea", size:10, maxLen:10, ceap:"#form.invoiceArea"},
+	 		 {name:"#L.invoiceZipCode", type:"LABEL", value:"&nbsp&nbsp&nbsp;郵遞區號:&nbsp&nbsp;"},
+	 		 {name:"#F.invoiceZipCode", type:"TEXT", bind:"invoiceZipCode", size:5, maxLen:5, ceap:"#form.invoiceZipCode"},	 		 
+	 		 {name:"#L.invoiceAddress", type:"LABEL", value:"&nbsp&nbsp&nbsp;地址:&nbsp&nbsp;"},
+ 			 {name:"#F.invoiceAddress", type:"TEXT", bind:"invoiceAddress", size:70, maxLen:200, ceap:"#form.invoiceAddress"}], td:" colSpan=5"}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.shipAddressTitle", type:"LABEL", value:"送貨地址"}]},
+	 {items:[{name:"#L.shipCity", type:"LABEL", value:"城市:&nbsp&nbsp;"},
+	 		 {name:"#F.shipCity", type:"TEXT" ,  bind:"shipCity", size:10, maxLen:10, ceap:"#form.shipCity"},
+			 {name:"#L.shipArea", type:"LABEL", value:"&nbsp&nbsp&nbsp;鄉鎮區別:&nbsp&nbsp;"},
+	 		 {name:"#F.shipArea", type:"TEXT",   bind:"shipArea", size:10, maxLen:10, ceap:"#form.shipArea"},
+	 		 {name:"#L.shipZipCode", type:"LABEL", value:"&nbsp&nbsp&nbsp;郵遞區號:&nbsp&nbsp;"},
+	 		 {name:"#F.shipZipCode", type:"TEXT", bind:"shipZipCode", size:5, maxLen:5, ceap:"#form.shipZipCode"},	 		 
+	 		 {name:"#L.shipAddress", type:"LABEL", value:"&nbsp&nbsp&nbsp;地址:&nbsp&nbsp;"},
+ 			 {name:"#F.shipAddress", type:"TEXT", bind:"shipAddress", size:70, maxLen:100, ceap:"#form.shipAddress"}], td:" colSpan=5"}]},			 
+ 	 {row_style:"", cols:[
+	 {items:[{name:"#L.invoiceTypeCode", type:"LABEL", value:"發票類型"}]},
+	 {items:[{name:"#F.invoiceTypeCode", type:"SELECT", bind:"invoiceTypeCode", ceap:"#form.invoiceTypeCode"}]},	
+	 {items:[{name:"#L.taxType", type:"LABEL", value:"稅別"}]},
+	 {items:[{name:"#F.taxType", type:"SELECT", bind:"taxType", ceap:"#form.taxType"}]},	 
+	 {items:[{name:"#L.taxRate", type:"LABEL", value:"稅率"}]},
+	 {items:[{name:"#F.taxRate", type:"TEXT" , bind:"taxRate", size:8, maxLen:4, ceap:"#form.taxRate"}]}]},	 
+     {row_style:"", cols:[
+	 {items:[{name:"#L.defaultWarehouseCode", type:"LABEL", value:"庫別"}]},
+	 {items:[{name:"#F.defaultWarehouseCode", type:"SELECT", bind:"defaultWarehouseCode", ceap:"#form.defaultWarehouseCode"}]},		 
+	 {items:[{name:"#L.promotionCode", type:"LABEL", value:"活動代號"}]},
+	 {items:[{name:"#F.promotionCode", type:"TEXT" , bind:"promotionCode", size:20, maxLen:20, ceap:"#form.promotionCode"}]}, 
+	 {items:[{name:"#L.discountRate", type:"LABEL", value:"手續費率"}]},
+	 {items:[{name:"#F.discountRate", type:"TEXT" , bind:"exportCommissionRate", size:8, maxLen:4, ceap:"#form.exportCommissionRate"}]},
+	 {items:[{name:"#F.orderDiscountType", type:"SELECT" , bind:"orderDiscountType", ceap:"#form.orderDiscountType"}]},
+	 {items:[{name:"#F.itemCategory", type:"SELECT" , bind:"itemCategory", ceap:"#form.itemCategory"}]}]},
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.remark1", type:"LABEL", value:"備註一"}]},
+	 {items:[{name:"#F.remark1", type:"TEXT", bind:"remark1", size:100, maxLen:100, ceap:"#form.remark1"}], td:" colSpan=3"},
+	 {items:[{name:"#L.discountRate", type:"LABEL", value:"折扣比率"}]},
+	 {items:[{name:"#F.discountRate", type:"TEXT" , bind:"discountRate", size:8, maxLen:4, ceap:"#form.discountRate"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.remark2", type:"LABEL", value:"備註二"}]},
+	 {items:[{name:"#F.remark2", type:"TEXT", bind:"remark2", size:100, maxLen:100, ceap:"#form.remark2"}], td:" colSpan=3"}]},
+	 {items:[{name:"#L.attachedInvoice", type:"LABEL", value:"隨附發票"}]},
+	 {items:[{name:"#F.attachedInvoice", type:"SELECT" , bind:"attachedInvoice", ceap:"#form.attachedInvoice"}]}],
+	 beginService:"",
+	 closeService:""			
+	});
+}
+
+function posDataInitial(){
+vat.block.create(vnB_POS = 3, {
+	id: "vatBlock_POS", generate: false,
+	table:"cellspacing='1' class='default' border='0' cellpadding='2'",
+	rows:[  
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.posMachineCode", type:"LABEL", value:"POS機號"}]},	 
+	 {items:[{name:"#F.posMachineCode", type:"SELECT", bind:"posMachineCode", ceap:"#form.posMachineCode"}]},		 
+	 {items:[{name:"#L.casherCode", type:"LABEL", value:"收銀員代號"}]},
+	 {items:[{name:"#F.casherCode", type:"TEXT", bind:"casherCode", size:15, maxLen:15, ceap:"#form.casherCode"},
+	 		 {name:"#F.casherName", type:"TEXT", bind:"casherName", size:15, mode:"READONLY", ceap:"#form.casherName"}]},
+	 {items:[{name:"#L.departureDate", type:"LABEL", value:"出境日期"}]},
+	 {items:[{name:"#F.departureDate", type:"DATE", bind:"departureDate", size:1, ceap:"#form.departureDate"}]}]},	
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.flightNo", type:"LABEL", value:"班機代碼"}]},
+	 {items:[{name:"#F.flightNo", type:"TEXT", bind:"flightNo", size:10, maxLen:10, ceap:"#form.flightNo"}]},	 
+	 {items:[{name:"#L.passportNo", type:"LABEL", value:"護照號碼"}]},
+	 {items:[{name:"#F.passportNo", type:"TEXT", bind:"passportNo", size:20, maxLen:20, ceap:"#form.passportNo"}]},	 	 
+	 {items:[{name:"#L.ladingNo", type:"LABEL", value:"提貨單號"}]},
+	 {items:[{name:"#F.ladingNo", type:"TEXT", bind:"ladingNo", size:20, maxLen:20, ceap:"#form.ladingNo"}]}]},	 
+	 {row_style:"", cols:[
+	 {items:[{name:"#L.transactionSeqNo", type:"LABEL", value:"交易序號"}]},
+	 {items:[{name:"#F.transactionSeqNo", type:"TEXT", bind:"transactionSeqNo", size:20, maxLen:20, ceap:"#form.transactionSeqNo"}]},	 
+	 {items:[{name:"#L.salesInvoicePage", type:"LABEL", value:"Sales Invoice page"}]},
+	 {items:[{name:"#F.salesInvoicePage", type:"TEXT", bind:"salesInvoicePage", size:20, maxLen:20, ceap:"#form.salesInvoicePage"}]},
+	 {items:[{name:"#L.transactionTime", type:"LABEL", value:"交易序號"}]},
+	 {items:[{name:"#F.transactionTime", type:"TEXT", bind:"transactionTime", size:20, maxLen:20, ceap:"#form.transactionTime"}]}]
+	 }],	 	 
+		 	 
+	 beginService:"",
+	 closeService:""			
+	});
+}
+
+function paymentDataInitial(){
+    var allPaymentType = vat.bean("allPaymentType");
+    var allCurrencyCode = vat.bean("allCurrencyCode");
+    var statusTmp = document.forms[0]["#form.status"].value;
+    var orderTypeCodeTmp = document.forms[0]["#form.orderTypeCode"].value;
+    var orderNoTmp = document.forms[0]["#form.orderNo"].value;
+    var processId = document.forms[0]["#processId"].value;
+	var varCanGridDelete = false;
+	var varCanGridAppend = false;
+	var varCanGridModify = false;
+	var branchCode = document.forms[0]["#branchCode"].value;
+	var ori = "";
+	var mode1 = "";
+	var mode2 = "READONLY";
+	if(branchCode == "true"){
+		branchCode = "";
+		ori = "原幣";
+	}else{
+		mode1 = "READONLY";
+		mode2 = "HIDDEN";
+	}
+	if(orderTypeCodeTmp == "SOP"){
+	    if(statusTmp == "SAVE" || statusTmp == "UNCONFIRMED"){
+		    varCanGridDelete = true;
+		    varCanGridAppend = true;
+		    varCanGridModify = true;		
+	    }
+	}else{
+	    if((statusTmp == "SAVE" && orderNoTmp.indexOf("TMP") != -1) || ((statusTmp == "SAVE" || statusTmp == "REJECT") && processId != null && processId != 0)){
+		    varCanGridDelete = true;
+		    varCanGridAppend = true;
+		    varCanGridModify = true;		
+	    }	
+	}
+	// set column
+    vat.item.make(vnB_Detail, "indexNo", {type:"IDX" , desc:"序號"});
+	vat.item.make(vnB_Detail, "posPaymentType", {type:"SELECT", size:1, desc:"付款類型", init:allPaymentType ,eChange:"changePaymentExchangeRate()"});
+	vat.item.make(vnB_Detail, "foreignCurrencyCode", {type:"TEXT", size:1, desc:ori+"幣別", mode:"readOnly" });
+	vat.item.make(vnB_Detail, "foreignAmount", {type:"NUMB", size:8, maxLen:8, desc:ori+"金額", mask:"CCCCCCCCCCCC" ,eChange:"changePayment()"});
+	vat.item.make(vnB_Detail, "exchangeRate", {type:"NUMB", size:8, maxLen:8, desc:"匯率", mask:"CCCCCCCCCCCC" ,eChange:"changePayment()",mode:mode1});
+	vat.item.make(vnB_Detail, "localCurrencyCode", {type:"TEXT", size:1, desc:"本幣幣別", mode:"HIDDEN"});
+	vat.item.make(vnB_Detail, "localAmount", {type:"NUMB", size:8, maxLen:8, desc:"本幣金額", mode:mode2});
+	vat.item.make(vnB_Detail, "discountRate", {type:"NUMB", size:8, maxLen:4, desc:"折扣率", mask:"CCCCCCCCCCCC"});
+	vat.item.make(vnB_Detail, "payNo", {type:"TEXT", size:8, maxLen:4, desc:"付款登記"});
+	vat.item.make(vnB_Detail, "remark1", {type:"TEXT", size:80, maxLen:100, desc:"備註"});
+	vat.item.make(vnB_Detail, "posPaymentId", {type:"ROWID"});
+	vat.item.make(vnB_Detail, "isLockRecord", {type:"CHECK", desc:"鎖定", mode:"HIDDEN"});
+	vat.item.make(vnB_Detail, "isDeleteRecord", {type:"DEL", desc:"刪除"});
+	vat.item.make(vnB_Detail, "message", {type:"MSG", desc:"訊息"});
+
+	vat.block.pageLayout(vnB_Detail, {	pageSize: 10,
+	                            canGridDelete:varCanGridDelete,
+								canGridAppend:varCanGridAppend,
+								canGridModify:varCanGridModify,														
+							    beginService: "",
+								closeService: "",
+							    itemMouseinService  : "",
+								itemMouseoutService : "",
+							    appendBeforeService : "",
+							    appendAfterService  : "",
+								deleteBeforeService : "",
+								deleteAfterService  : "",
+								loadBeforeAjxService: "loadPaymentBeforeAjxService()",
+								loadSuccessAfter    : "",
+								loadFailureAfter    : "",
+								eventService        : "",   
+								saveBeforeAjxService: "savePaymentBeforeAjxService()",
+								saveSuccessAfter    : "savePaymentSuccessAfter()",
+								saveFailureAfter    : ""
+														});
+	vat.block.pageDataLoad(vnB_Detail, vnCurrentPage = 1);	
+}
+
+function loadPaymentBeforeAjxService(){
+	//alert("");
+	var processString = "process_object_name=soSalesOrderMainService&process_object_method_name=getAJAXPageDataForPayment" + 
+	                    "&headId=" + document.forms[0]["#form.headId"].value +
+	                    "&formStatus=" + document.forms[0]["#form.status"].value;
+																					
+	return processString;											
+}
+
+/*
+	SAVE PAYMENT LINE FUNCTION
+*/
+function savePaymentBeforeAjxService() {
+	var processString = "";
+	processString = "process_object_name=soSalesOrderMainService&process_object_method_name=updateAJAXPaymentPageLinesData" + "&headId=" + document.forms[0]["#form.headId"].value + "&status=" + document.forms[0]["#form.status"].value;
+	return processString;
+}
+
+/*
+	取得存檔成功後要執行的JS FUNCTION
+*/
+function savePaymentSuccessAfter() {
+    if ("saveHandler" == afterSavePaymentPageProcess) {	
+	    execSubmitAction("SAVE");
+	} else if ("submitHandler" == afterSavePaymentPageProcess) {
+	    execSubmitAction("SUBMIT");
+	} else if ("submitBgHandler" == afterSavePaymentPageProcess) {
+	    execSubmitAction("SUBMIT_BG");
+	} else if ("voidHandler" == afterSavePaymentPageProcess) {
+		execSubmitAction("VOID");
+	} else if ("copyHandler" == afterSavePaymentPageProcess) {
+		executeCommandHandler("main", "copyHandler");
+	} else if ("executeImport" == afterSavePaymentPageProcess) {
+	    importFormData();
+	}
+
+	afterSavePaymentPageProcess = "";
+}
+
+/*
+	頁面初始化
+*/
+function formDataInitial(){
+    if(document.forms[0]["#formId"].value != "[binding]"){       
+        vat.bean().vatBeanOther =
+        {
+          formId : document.forms[0]["#formId"].value
+        };      
+        vat.bean.init(function(){
+		return "process_object_name=soSalesOrderMainAction&process_object_method_name=performInitial"; 
+        },{other: true});
+    }
+}
+
+function exportFormData(){
+    var url = "/erp/jsp/ExportFormData.jsp" + 
+              "?exportBeanName=SO_ITEM" + 
+              "&fileType=XLS" + 
+              "&processObjectName=soSalesOrderMainService" + 
+              "&processObjectMethodName=findSoSalesOrderHeadById" + 
+              "&gridFieldName=soSalesOrderItems" + 
+              "&arguments=" + document.forms[0]["#form.headId"].value + 
+              "&parameterTypes=LONG";
+    
+    var width = "200";
+    var height = "30";
+    window.open(url, '銷貨單匯出', 'menubar=no,resizable=no,scrollbars=no,status=no,width=' + width + ',height=' + height + ',left=' + (screen.availWidth - width)/2 + ',top=' + (screen.availHeight - height)/2);
+}
+
+function importFormData(){
+	var width = "600";
+    var height = "400";
+	var returnData = window.open(
+		"/erp/fileUpload:standard:2.page" +
+		"?importBeanName=SO_ITEM" +
+		"&importFileType=XLS" +
+        "&processObjectName=soSalesOrderMainService" + 
+        "&processObjectMethodName=executeImportItems" +
+        "&arguments=" + document.forms[0]["#form.headId"].value + "{$}" + document.forms[0]["#form.vipPromotionCode"].value + "{$}" + 
+                      document.forms[0]["#form.taxType"].value + "{$}" + document.forms[0]["#form.taxRate"].value +
+        "&parameterTypes=LONG{$}STRING{$}STRING{$}DOUBLE" +
+        "&blockId=2",
+		"FileUpload",
+		'menubar=no,resizable=no,scrollbars=no,status=no,width=' + width + ',height=' + height + ',left=' + (screen.availWidth - width)/2 + ',top=' + (screen.availHeight - height)/2);
+}
+
+function execSubmitAction(actionId){
+
+    var formId = document.forms[0]["#formId"].value.replace(/^\s+|\s+$/, '');
+    var assignmentId = document.forms[0]["#assignmentId"].value.replace(/^\s+|\s+$/, '');
+    var processId = document.forms[0]["#processId"].value.replace(/^\s+|\s+$/, '');
+    var status = document.forms[0]["#form.status"].value.replace(/^\s+|\s+$/, '');
+    var employeeCode = document.forms[0]["#employeeCode"].value.replace(/^\s+|\s+$/, '');
+    var priceType = document.forms[0]["#priceType"].value.replace(/^\s+|\s+$/, '');   
+    var warehouseEmployee = document.forms[0]["#warehouseEmployee"].value.replace(/^\s+|\s+$/, '');
+    var warehouseManager = document.forms[0]["#warehouseManager"].value.replace(/^\s+|\s+$/, '');
+    var organizationCode = document.forms[0]["#organizationCode"].value.replace(/^\s+|\s+$/, '');
+    var approvalResult = "true";
+    var shopCode = document.forms[0]["#form.shopCode"].value.replace(/^\s+|\s+$/, '');
+    if(document.forms[0]["#approvalResult.result"][1].checked){
+        approvalResult = "false";
+    }
+    var approvalComment = document.forms[0]["#approvalResult.approvalComment"].value.replace(/^\s+|\s+$/, '');
+    var formStatus = status;
+    if("SAVE" == actionId){
+        formStatus = "SAVE";
+    }else if("SUBMIT" == actionId){
+        formStatus = changeFormStatus(formId, processId, status, approvalResult);
+    }else if("SUBMIT_BG" == actionId){
+        formStatus = "SIGNING";
+    }else if("VOID" == actionId){
+        formStatus = "VOID";
+    }else if("UNCONFIRMED" == actionId){
+        formStatus = "UNCONFIRMED";
+    }
+    vat.bean().vatBeanOther =
+    {
+      beforeChangeStatus : status,
+      formStatus : formStatus,
+      employeeCode : employeeCode,
+      assignmentId : assignmentId,
+      processId : processId,
+      approvalResult : approvalResult,
+      approvalComment : approvalComment,
+      priceType : priceType,
+      warehouseEmployee : warehouseEmployee,
+      warehouseManager 	: warehouseManager,
+      organizationCode 	: organizationCode,
+      shopCode			: shopCode
+    };
+    if("SUBMIT_BG" == actionId){
+        vat.block.submit(function(){return "process_object_name=soSalesOrderMainAction"+
+            "&process_object_method_name=getOrderNo";}, {bind:true, link:true, other:true});
+    }else{    
+        vat.block.submit(function(){return "process_object_name=soSalesOrderMainAction"+
+            "&process_object_method_name=performTransaction";}, {bind:true, link:true, other:true});
+    }
+}
+
+function changeFormStatus(formId, processId, status, approvalResult){
+    var formStatus = "";
+    if(formId == null || formId == "" || formId == "0" || status == "UNCONFIRMED"){
+        formStatus = "SIGNING";
+    }else if(processId != null && processId != "" && processId != 0){
+        if(status == "SAVE" || status == "REJECT"){
+            formStatus = "SIGNING";
+        }else if(status == "SIGNING"){
+            if(approvalResult == "true"){
+                formStatus = "SIGNING";
+            }else{
+                formStatus = "REJECT";
+            }
+        }  
+    }
+    return formStatus;
+}
+
+function showMessage(){
+	var width = "600";
+    var height = "400";
+	var returnData = window.open(
+		"/erp/jsp/ShowProgramLog.jsp" + 
+		"?programId=SO_SALES_ORDER" +
+		"&levelType=ERROR" +
+        "&processObjectName=soSalesOrderMainService" + 
+        "&processObjectMethodName=getIdentification" +
+        "&arguments=" + document.forms[0]["#form.headId"].value +
+        "&parameterTypes=LONG",
+		"Message",
+		'menubar=no,resizable=yes,scrollbars=yes,status=no,width=' + width + ',height=' + height + ',left=' + (screen.availWidth - width)/2 + ',top=' + (screen.availHeight - height)/2);
+}
+
+function execSubmitBgAction(){
+    vat.block.submit(function(){return "process_object_name=soSalesOrderMainAction"+
+        "&process_object_method_name=performTransactionForBackGround";}, {bind:true, link:true, other:true});
+}
+
+function execExtendItemInfo(){
+    vat.bean().vatBeanOther.processObjectName = "soSalesOrderMainService";
+    vat.bean().vatBeanOther.searchMethodName = "findSoSalesOrderHeadById";
+    vat.bean().vatBeanOther.tableType = "SO_SALES_ORDER";
+    vat.bean().vatBeanOther.searchKey = document.forms[0]["#form.headId"].value;
+    vat.bean().vatBeanOther.subEntityBeanName = "soSalesOrderItems";
+    vat.bean().vatBeanOther.itemFieldName = "itemCode";
+    vat.bean().vatBeanOther.warehouseCodeFieldName = "warehouseCode";   
+    vat.bean().vatBeanOther.declTypeFieldName = "importDeclType";
+    vat.bean().vatBeanOther.declNoFieldName = "importDeclNo";
+    vat.bean().vatBeanOther.declSeqFieldName = "importDeclSeq";
+    vat.bean().vatBeanOther.declDateFieldName = "importDeclDate";
+    vat.bean().vatBeanOther.lotFieldName = "lotNo";
+    vat.bean().vatBeanOther.qtyFieldName = "quantity";
+    vat.block.submit(function(){return "process_object_name=appExtendItemInfoService"+
+            "&process_object_method_name=executeExtendItem";}, {other:true, funcSuccess: function() {vat.block.pageRefresh(2);}});
+}
+
+function changePaymentExchangeRate() {
+    var nItemLine = vat.item.getGridLine();
+	var vPosPaymentType = vat.item.getGridValueByName("posPaymentType", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+	var vForeignCurrencyCode = vat.item.getGridValueByName("foreignCurrencyCode", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+	var vForeignAmount = vat.item.getGridValueByName("foreignAmount", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+	if(!vForeignAmount >0)
+	vForeignAmount = 0;
+    vat.ajax.XHRequest({
+	           post:"process_object_name=soSalesOrderMainService"+
+	                    "&process_object_method_name=getPostPayment"+
+	                    "&posPaymentType=" + vPosPaymentType,
+	           find: function changeExchangeRateRequestSuccess(oXHR){ 
+	           		vat.item.setGridValueByName("foreignCurrencyCode", nItemLine, vat.ajax.getValue("PaymentType", oXHR.responseText));
+	           		    vat.ajax.XHRequest({
+						post:"process_object_name=soSalesOrderMainService"+
+	                    	"&process_object_method_name=getExchangeRate"+
+	                    	"&currencyCode=" + vat.ajax.getValue("PaymentType", oXHR.responseText),
+	           			find: function changeExchangeRateRequestSuccess(oXHR){
+	           				vat.item.setGridValueByName("exchangeRate", nItemLine, vat.ajax.getValue("ExportExchangeRate", oXHR.responseText));
+	           				vat.item.setGridValueByName("localAmount", nItemLine,  vat.ajax.getValue("ExportExchangeRate", oXHR.responseText) * vForeignAmount);
+	           			}});
+	           }});
+}
+
+function changePayment(){
+	var nItemLine = vat.item.getGridLine();
+	var vForeignAmount = parseInt(vat.item.getGridValueByName("foreignAmount", nItemLine),10);
+	var vExchangeRate = vat.item.getGridValueByName("exchangeRate", nItemLine);
+	if(!vForeignAmount > 0)
+		vForeignAmount = 0;
+	vat.item.setGridValueByName("localAmount", nItemLine,  parseInt(vForeignAmount*vExchangeRate));
+}
+
+function changeCheck(){
+	if(document.forms[0]["#verification"][0].checked){
+		document.forms[0]["#form.verificationStatus"].value="Y";
+	}else{
+		document.forms[0]["#form.verificationStatus"].value="N";
+	}
+}
+
+function changeCardId(){
+	var nItemLine = vat.item.getGridLine();
+	var vUsedCardId = vat.item.getGridValueByName("usedCardId", nItemLine).replace(/^\s+|\s+$/, '').toUpperCase();
+	vat.item.setGridValueByName("usedCardId", nItemLine, vUsedCardId);
+	vat.ajax.XHRequest({
+	    post:"process_object_name=soSalesOrderMainService"+
+	             "&process_object_method_name=getCardId"+
+	             "&brandCode=" + document.forms[0]["#form.brandCode"].value+
+	             "&usedCardId=" + vUsedCardId,
+	    find: function changeExchangeRateRequestSuccess(oXHR){ 
+	    		vat.item.setGridValueByName("usedIdentification", nItemLine, vat.ajax.getValue("usedIdentification", oXHR.responseText));
+	    		vat.item.setGridValueByName("usedCardType", nItemLine,  vat.ajax.getValue("usedCardType", oXHR.responseText));
+    }});
+}
+
+
+function changeCardIdAdvance(){
+	var vUsedCardId = document.forms[0]["#usedCardId"].value.replace(/^\s+|\s+$/, '').toUpperCase();
+	document.forms[0]["#usedCardId"].value = vUsedCardId ;
+	vat.ajax.XHRequest({
+	    post:"process_object_name=soSalesOrderMainService"+
+	             "&process_object_method_name=getCardId"+
+	             "&brandCode=" + document.forms[0]["#brandCode"].value+
+	             "&usedCardId=" + vUsedCardId,
+	    find: function changeExchangeRateRequestSuccess(oXHR){
+	    		document.forms[0]["#usedIdentification"].value = vat.ajax.getValue("usedIdentification", oXHR.responseText);
+	    		document.forms[0]["#usedCardType"].value = vat.ajax.getValue("usedCardType", oXHR.responseText);
+    }});
+}

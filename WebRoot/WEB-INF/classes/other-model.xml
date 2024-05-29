@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+    
+    <!-- Service Bean -->
+	<bean id="reverterService" class="tw.com.tm.erp.hbm.service.ReverterService">
+	</bean>
+	<bean id="ommChannelTXFService" class="tw.com.tm.erp.hbm.service.OmmChannelTXFService"/>
+	<bean id="ommChannelService" class="tw.com.tm.erp.hbm.service.OmmChannelService"/>
+	<bean id="dbcInformationTablesService" class="tw.com.tm.erp.hbm.service.DbcInformationTablesService"/>
+	<bean id="exportService" class="tw.com.tm.erp.hbm.service.ExportService"/>
+	<bean id="dbfExportData" class="tw.com.tm.erp.exportdb.DbfExportData">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>	
+    <bean id="posDUService" class="tw.com.tm.erp.hbm.service.PosDUService">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- Action Bean -->
+	<bean id="ommChannelAction" class="tw.com.tm.erp.action.OmmChannelAction"/>
+    <bean id="reverterAction" class="tw.com.tm.erp.action.ReverterAction"/>
+    <bean id="exportAction" class="tw.com.tm.erp.action.ExportAction"/>
+    <bean id="posDUAction" class="tw.com.tm.erp.action.PosDUAction">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	<!-- DAO Bean 
+	<bean id="reverterModDAO" class="tw.com.tm.erp.dao.ReverterModDAO"/>-->
+	<!-- DAO Bean -->
+	<bean id="ommChannelDAO" class="tw.com.tm.erp.hbm.dao.OmmChannelDAO"/>
+	<bean id="ommChannelConfigDAO" class="tw.com.tm.erp.hbm.dao.OmmChannelConfigDAO"/>
+	<bean id="ommChannelTXFHeadDAO" class="tw.com.tm.erp.hbm.dao.OmmChannelTXFHeadDAO"/>
+	<bean id="ommChannelTXFLineDAO" class="tw.com.tm.erp.hbm.dao.OmmChannelTXFLineDAO"/>
+	<bean id="dbcInformationTablesDAO" class="tw.com.tm.erp.hbm.dao.DbcInformationTablesDAO"/>
+	<bean id="dbcInformationColumnsDAO" class="tw.com.tm.erp.hbm.dao.DbcInformationColumnsDAO"/>
+	<bean id="posControlDAO" class="tw.com.tm.erp.hbm.dao.PosControlDAO"/>
+	
+</beans>

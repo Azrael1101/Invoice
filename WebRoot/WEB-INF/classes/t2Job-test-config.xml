@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+    
+     <!-- ======================測試發信===================================== -->
+    <bean id="T2SoResend" class="org.springframework.scheduling.quartz.CronTriggerBean" > 
+         <property name="jobDetail" ref="TestMailBean"/>
+         <property name="cronExpression" value="0 0/30 * * * ?"/>
+    </bean>
+    <bean id="TestResendJob" class="tw.com.tm.erp.batch.ResendJob"/>
+    <bean id="TestMailBean" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+        <property name="targetObject" ref="TestResendJob"/> 
+        <property name="targetMethod" value="updateSalesOrderQty"/> 
+        <property name="concurrent" value="true"/> 
+    </bean>
+     <!-- ======================================================-->
+     
+    <bean id="t2SchedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+        <property name="triggers">
+            <list>
+				<ref bean="T2SoResend"/>
+            </list>
+        </property>
+    </bean> 
+</beans>

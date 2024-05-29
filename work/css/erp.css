@@ -1,0 +1,172 @@
+body,table,th,td,p,span,input {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+table.default {
+	border: 1px solid #990000;
+  width: 100%;
+  background-color: #FFFFFF;
+}
+table.default tr {
+	line-height: 24px;
+}
+table.default th {
+	font-size: 14px;
+	font-weight: bold;
+	color:#FFFFFF;
+	line-height: 26px;
+	background-color: #990000;
+	border: 1px solid #990000;
+}
+table.default td {
+	border: 1px solid #990000;	
+}
+table.defaultNone {
+	border:0 hidden #FFFFFF;
+	width: 100%;
+}
+table.defaultNone th {
+	border:0 hidden #FFFFFF;
+}
+table.defaultNone td {
+	border:0 hidden #FFFFFF;
+}
+
+input.defaultField {
+	height: 22px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+}
+input.defaultFieldItemCode {
+	height: 22px;
+	width: 120px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+}
+input.defaultFieldRight {
+	height: 22px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+	text-align: right
+}
+
+input.defaultFieldCenter {
+	height: 22px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+	text-align: center
+}
+
+input.defaultFieldReadOnly {
+	height: 22px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+	background-color: #efefef;
+}
+
+input.defaultFieldRightReadOnly {
+	height: 22px;
+	border: 1px solid #999999;
+	padding-top: 3px;
+	background-color: #efefef;
+	text-align: right;
+}
+
+input.defaultFieldNoBorder {
+	height: 22px;
+	border: 0px solid #FFFFFF;
+	padding-top: 3px;
+}
+input.defaultFieldNoBorder {
+	height: 22px;
+	border: 0px solid #FFFFFF;
+	padding-top: 3px;
+}
+width: 1px;
+table.brown {
+	border: 1px solid #990000;
+	background-color: #FFFFFF;
+}
+table.brown tr {
+	line-height: 24px;
+}
+table.brown th {
+	font-size: 14px;
+	font-weight: bold;
+	color:#FFFFFF;
+	line-height: 26px;
+	background-color: #990000;
+	border: 1px solid #990000;
+}
+table.brown td {
+	border: 1px solid #990000;	
+}
+table.none {
+	border:0 hidden #FFFFFF;
+}
+table.none th {
+	border:0 hidden #FFFFFF;
+}
+table.none td {
+	border:0 hidden #FFFFFF;
+}
+span.bold {
+	font-weight: bold;
+}
+.brownTableTitle {
+	font-size: 14px;
+	font-weight: bold;
+	color:#FFFFFF;
+	line-height: 26px;
+	background-color: #990000;
+	border: 1px solid #990000;
+}
+input.long {
+	height: 22px;
+	width: 240px;
+	border: 1px solid #000000;
+	padding-top: 3px;
+}
+input.middle {
+	height: 22px;
+	width: 120px;
+	border: 1px solid #000000;
+	padding-top: 3px;
+}
+input.short {
+	height: 22px;
+	width: 40px;
+	border: 1px solid #000000;
+	padding-top: 3px;
+}
+input.none {
+	height: 14px;
+	border: 0px hidden #FFFFFF;
+}
+
+.showLayer{
+  background:#efefef; 
+  border:1px dotted  #00fd00;
+  position: absolute;
+  height:90px;
+  width:200px;
+  left:10px;
+  top:100px;
+  visibility:hidden;
+  z-index:1001;
+  filter:alpha(opacity=80);
+  opacity:.5;
+}
+
+.showDataLayer{
+  z-index:1000;
+}
+.columnHeaderLink {
+  color: #ffffff;
+}   
+
+.tdHidden {
+	visibility: hidden;
+}
+    
+    

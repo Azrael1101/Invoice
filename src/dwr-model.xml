@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:dwr="http://www.directwebremoting.org/schema/spring-dwr"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsdx
+    http://www.directwebremoting.org/schema/spring-dwr http://www.directwebremoting.org/schema/spring-dwr-2.0.xsd"
+    
+    default-autowire="byName" default-lazy-init="true">
+    <!-- spring-beans-2.0 <=> spring-beans -->
+    
+  <dwr:configuration>  
+
+		<dwr:create type="new" javascript="menuTree" class="tw.com.tm.erp.tree.MenuTree" >  
+	  	<dwr:include method="getMenuTree" />  
+	  	<dwr:include method="saveMenuNodes" />  
+		</dwr:create>
+		
+		<dwr:create type="new" javascript="importDataParse" class="tw.com.tm.erp.importdb.ImportDataParse" >  
+	  	<dwr:include method="getListFilesByPage" />
+	  	<dwr:include method="getListFiles" />    
+	  	<dwr:include method="deleteListFiles" />
+	  	<dwr:include method="getImportPath" />
+	  	<dwr:include method="T2PosImport" />
+	  	<dwr:include method="T2PosImportMazu" />
+		</dwr:create>
+		
+		<dwr:convert type="bean" class="tw.com.tm.erp.tree.MenuNode"></dwr:convert>
+		<dwr:convert type="bean" class="tw.com.tm.erp.tree.ExtNode"></dwr:convert>
+		<dwr:convert type="bean" class="tw.com.tm.erp.tree.FunctionObject"></dwr:convert>
+		<dwr:convert type="bean" class="tw.com.tm.erp.tree.FunctionNode"></dwr:convert>  
+		<dwr:signatures>
+			<![CDATA[
+			  import java.util.List;
+			  import tw.com.tm.erp.tree.MenuTree;
+			  import tw.com.tm.erp.tree.ExtNode;
+			  import tw.com.tm.erp.tree.FunctionNode;
+			  MenuTree.saveMenuNodes(String brandCode, String groupCode, String loginCode, String[] menuIds, List<FunctionNode> functionNodes );
+		  ]]>
+		</dwr:signatures>
+
+	</dwr:configuration>
+  
+</beans> 

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+    
+    <!-- DAO Bean -->
+	<bean id="fiExchangeRateDAO" class="tw.com.tm.erp.hbm.dao.FiExchangeRateDAO"/>
+	<bean id="fiBankDAO" class="tw.com.tm.erp.hbm.dao.FiBankDAO"/>	
+	<bean id="fiInvoiceHeadDAO" class="tw.com.tm.erp.hbm.dao.FiInvoiceHeadDAO"/>
+	<bean id="fiInvoiceLineDAO" class="tw.com.tm.erp.hbm.dao.FiInvoiceLineDAO"/>	
+  	<bean id="fiBudgetHeadDAO" class="tw.com.tm.erp.hbm.dao.FiBudgetHeadDAO"/>	
+	<bean id="fiBudgetLineDAO" class="tw.com.tm.erp.hbm.dao.FiBudgetLineDAO"/>	
+	<bean id="fiBudgetModHeadDAO" class="tw.com.tm.erp.hbm.dao.FiBudgetModHeadDAO"/>
+    <bean id="fiBudgetModLineDAO" class="tw.com.tm.erp.hbm.dao.FiBudgetModLineDAO"/>
+  	
+    <!-- Service Bean -->
+    <bean id="fiInvoiceHeadService" class="tw.com.tm.erp.hbm.service.FiInvoiceHeadService"/>
+    <bean id="fiInvoiceLineService" class="tw.com.tm.erp.hbm.service.FiInvoiceLineService"/>
+    <bean id="fiBudgetHeadService" class="tw.com.tm.erp.hbm.service.FiBudgetHeadService"/>    
+    <bean id="fiBudgetLineService" class="tw.com.tm.erp.hbm.service.FiBudgetLineService"/>
+    <bean id="fiInvoiceHeadMainService" class="tw.com.tm.erp.hbm.service.FiInvoiceHeadMainService"/>
+    <bean id="fiInvoiceLineMainService" class="tw.com.tm.erp.hbm.service.FiInvoiceLineMainService"/>
+    <bean id="fiBudgetModHeadService" class="tw.com.tm.erp.hbm.service.FiBudgetModHeadService"/>   
+    <bean id="fiBudgetModAction" class="tw.com.tm.erp.action.FiBudgetModAction"/>
+    <!-- Action Bean -->
+    <bean id="fiInvoiceMainAction" class="tw.com.tm.erp.action.FiInvoiceMainAction"/>
+    <bean id="fiBudgetHeadAction" class="tw.com.tm.erp.action.FiBudgetHeadAction"/>
+    
+</beans>

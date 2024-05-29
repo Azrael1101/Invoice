@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+	<!-- DataSource-->
+		<!-- <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">  -->                                
+	 	<!-- <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />                 --> 
+	 	<!-- <property name="url" value="jdbc:oracle:thin:@10.99.50.26:1521:KWEDB1"/>                    --> 
+	 	<!-- <property name="username" value="KWE_ERP" />                                                 --> 
+	 	<!-- <property name="password" value="1QAZ8IK,!@#$" />                                          --> 
+	 <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">                              
+	   		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>                                                         
+			<property name="url" value="jdbc:mysql://192.168.4.22:3306/ERP?serverTimezone=CST"/>            
+			<property name="username" value="root" />                                                                               
+		 	<property name="password" value="" />                                                           
+		
+		<!-- 初始化连接 -->
+		<property name="initialSize" value="1" />
+		<!-- 最大连接数量 -->
+  		<property name="maxActive" value="100" />
+  		<!-- 超时等待时间以毫秒为单位 -->
+  		<property name="maxWait" value="1000" />
+  		<!-- 最小空闲连接 -->
+  		<property name="minIdle" value="5" />
+  		<!-- 最大空闲连接 -->
+  		<property name="maxIdle" value="10" />
+	</bean>
+	
+	<bean id="dataSourceMySql" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://10.3.98.150:3306/pos"/>
+		<property name="username" value="root" />
+		<property name="password" value="dbadmin" />
+    </bean>
+	
+	<bean id="dataSourceFW" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver"/>
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.45.6:1433/FW"/>
+		<property name="username" value="sa" />
+		<property name="password" value="SPCIS" />
+	</bean>
+   
+	<bean id="dataSourceFD" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.45.6:1433/FD"/>
+		<property name="username" value="sa" />
+		<property name="password" value="SPCIS" />
+	</bean>
+	<bean id="dataSourceFA" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.45.6:1433/FA"/>
+		<property name="username" value="sa" />
+		<property name="password" value="SPCIS" />
+	</bean>
+	<bean id="dataSourceHD" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.45.6:1433/HD"/>
+		<property name="username" value="sa" />
+		<property name="password" value="SPCIS" />
+	</bean>	
+	<bean id="dataSourceVD" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.45.6:1433/VD"/>
+		<property name="username" value="sa" />
+		<property name="password" value="SPCIS" />
+	</bean>
+	
+	<!-- DataSource-->
+	<bean id="dataSourceT" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		 <property name="url" value="jdbc:oracle:thin:@10.1.10.17:1521:KWEDB7"/>	
+		<property name="username" value="erp" />
+		<property name="password" value="erp" />
+	</bean>
+	
+	<!-- DataSource-->
+	<bean id="dataSourceMS" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="net.sourceforge.jtds.jdbc.Driver" />
+		<property name="url" value="jdbc:jtds:sqlserver://192.168.21.6:1433/DFMS;charset=utf-8"/>
+		<property name="username" value="sa" />
+		<property name="password" value="tmdfms" />
+	</bean>
+	
+	<!-- SessionFactory -->
+	<bean id="sessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+					<!-- org.hibernate.dialect.Oracle10gDialect
+						org.hibernate.dialect.MySQLDialect
+					 -->
+				</prop>
+				<prop key="hibernate.show_sql">false</prop>
+				<prop key="hibernate.c3p0.minPoolSize">5</prop>
+				<prop key="hibernate.c3p0.maxPoolSize">10</prop>
+				<prop key="hibernate.c3p0.timeout">1000</prop>
+				<prop key="hibernate.c3p0.max_statement">100</prop>
+				<prop key="hibernate.c3p0.testConnectionOnCheckout">false</prop>
+				<prop key="hibernate.jdbc.batch_size">50</prop>
+				<prop key="hibernate.jdbc.fetch_size">100</prop>
+				<prop key="hibernate.max_fetch_depth">3</prop>
+			</props>
+		</property>
+		<property name="mappingLocations">
+			<list>
+				<value>classpath*:tw/com/tm/erp/hbm/bean/*.hbm.xml</value>
+			</list>
+		</property>		
+	</bean>
+	
+	<!-- Transaction Manager -->
+	<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="save*" read-only="false" propagation="REQUIRES_NEW" rollback-for="Exception"/>
+			<tx:method name="create*" read-only="false" propagation="REQUIRES_NEW" rollback-for="Exception"/>
+			<tx:method name="update*" read-only="false" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="modify*" read-only="false" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="delete*" read-only="false" propagation="REQUIRES_NEW" rollback-for="Exception"/>
+			<tx:method name="execute*" read-only="false" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="get*" read-only="true" rollback-for="Exception" />
+			<tx:method name="find*" read-only="true" rollback-for="Exception" />
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- AOP -->
+	<bean id="systemMonitor" class="tw.com.tm.erp.aop.SystemMonitor" />
+	<aop:config>
+		<aop:pointcut id="serviceMethods" expression="execution(* tw.com.tm.erp.hbm.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceMethods" />
+		<!-- 配置相關切面方法 -->
+		<aop:aspect ref="systemMonitor">
+			<aop:around pointcut-ref="serviceMethods" method="profileMethod" />
+		</aop:aspect>
+	</aop:config>
+	<import resource="objects-pool.xml"/>
+	<import resource="ad-model.xml"/>
+	<import resource="bu-model.xml"/>
+	<import resource="po-model.xml"/>
+	<import resource="so-model.xml"/>
+	<import resource="cm-model.xml"/>
+	<import resource="im-model.xml"/>
+	<import resource="fi-model.xml"/>
+	<import resource="wf-model.xml"/>
+	<import resource="si-model.xml"/>
+	<import resource="sr-model.xml"/>
+	<import resource="dwr-model.xml"/>
+	<import resource="other-model.xml"/>
+</beans>

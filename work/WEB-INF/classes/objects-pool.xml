@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+    
+    <!-- DAO Bean -->
+    <bean id="baseDAO" class="tw.com.tm.erp.hbm.dao.BaseDAO"/>
+    <bean id="tmpAppStockStatisticsDAO" class="tw.com.tm.erp.hbm.dao.TmpAppStockStatisticsDAO">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="tmpAjaxSearchDataDAO" class="tw.com.tm.erp.hbm.dao.TmpAjaxSearchDataDAO"/>
+    <bean id="nativeQueryDAO" class="tw.com.tm.erp.hbm.dao.NativeQueryDAO"/>    
+    <bean id="tmpExtendItemInfoDAO" class="tw.com.tm.erp.hbm.dao.TmpExtendItemInfoDAO">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="tmpImportPosItemDAO" class="tw.com.tm.erp.hbm.dao.TmpImportPosItemDAO"/>
+    <bean id="tmpImportPosPaymentDAO" class="tw.com.tm.erp.hbm.dao.TmpImportPosPaymentDAO"/>
+	<bean id="appSoPostingDAO" class="tw.com.tm.erp.hbm.dao.AppSoPostingDAO">
+	    <property name="dataSource" ref="dataSource"/>
+    </bean>
+	<bean id="ceapProcessDAO" class="tw.com.tm.erp.hbm.dao.CeapProcessDAO">
+	    <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="jobCheckingDAO" class="tw.com.tm.erp.hbm.dao.JobCheckingDAO">
+	    <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <bean id="islandExportDAO" class="tw.com.tm.erp.hbm.dao.IslandExportDAO"/>
+    
+    <bean id="posExportDAO" class="tw.com.tm.erp.hbm.dao.PosExportDAO">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    <!-- Service Bean -->
+	<bean id="mailService" class="tw.com.tm.erp.hbm.service.MailService"/>
+	<bean id="importDBService" class="tw.com.tm.erp.hbm.service.ImportDBService"/>
+	<bean id="systemService" class="tw.com.tm.erp.hbm.service.SystemService"/>
+	<bean id="exportDBService" class="tw.com.tm.erp.hbm.service.ExportDBService"/>
+	<bean id="tmpAppStockStatisticsService" class="tw.com.tm.erp.utils.sp.TmpAppStockStatisticsService"/>
+	<bean id="tmpAjaxSearchDataService" class="tw.com.tm.erp.hbm.service.TmpAjaxSearchDataService"/>
+	<bean id="appGetSaleItemInfoService" class="tw.com.tm.erp.utils.sp.AppGetSaleItemInfoService">
+	    <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="tmpImportPosItemService" class="tw.com.tm.erp.hbm.service.TmpImportPosItemService"/>
+    <bean id="tmpImportPosPaymentService" class="tw.com.tm.erp.hbm.service.TmpImportPosPaymentService"/>
+    <bean id="ceapProcessService" class="tw.com.tm.erp.hbm.service.CeapProcessService"/>
+    <bean id="appExtendItemInfoService" class="tw.com.tm.erp.utils.sp.AppExtendItemInfoService"/>
+    <bean id="appExtendItemStorageInfoService" class="tw.com.tm.erp.utils.sp.AppExtendItemStorageInfoService"/>
+    <bean id="t2PosImportData" class="tw.com.tm.erp.importdb.T2PosImportData"/>
+    <bean id="t2PosImportDataMazu" class="tw.com.tm.erp.importdb.T2PosImportDataMazu"/>
+    <bean id="dailyBalanceManager" class="tw.com.tm.erp.balance.DailyBalanceManager"/>
+    <bean id="dailyBalanceMainManager" class="tw.com.tm.erp.balance.DailyBalanceMainManager"/>
+    <bean id="dailyCloseManager" class="tw.com.tm.erp.close.DailyCloseManager"/>
+    <bean id="dailyCloseMainManager" class="tw.com.tm.erp.close.DailyCloseMainManager"/>    
+    <bean id="dailyCloseValidationManager" class="tw.com.tm.erp.closevalidation.DailyCloseValidationManager"/>   
+    <bean id="monthlyCloseManager" class="tw.com.tm.erp.close.MonthlyCloseManager"/>
+    <bean id="monthlyCloseMainManager" class="tw.com.tm.erp.close.MonthlyCloseMainManager"/>
+    <bean id="monthlyCloseValidationManager" class="tw.com.tm.erp.closevalidation.MonthlyCloseValidationManager"/>
+    <bean id="monthlyBalanceManager" class="tw.com.tm.erp.balance.MonthlyBalanceManager"/>
+    <bean id="monthlyBalanceMainManager" class="tw.com.tm.erp.balance.MonthlyBalanceMainManager"/>
+    <bean id="monthlyBalanceValidationManager" class="tw.com.tm.erp.closevalidation.MonthlyBalanceValidationManager"/>
+    <bean id="monthlyBalanceProcessor" class="tw.com.tm.erp.balance.MonthlyBalanceProcessor">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    
+    
+	<bean id="monthlyBalanceMainProcessor" class="tw.com.tm.erp.balance.MonthlyBalanceMainProcessor">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <bean id="declarationDataParse" class="tw.com.tm.erp.utils.DeclarationDataParse" scope="prototype"/>
+    <bean id="employeeDataParse" class="tw.com.tm.erp.utils.EmployeeDataParse" scope="prototype"/>
+    <bean id="t2PosIslandParse" class="tw.com.tm.erp.utils.T2PosIslandParse" scope="prototype"/>
+    
+    <bean id="jobCheckingService" class="tw.com.tm.erp.utils.sp.JobCheckingService"/>
+    
+    <!-- aciton bean -->
+    <bean id="gerenateBarCodeAction" class="tw.com.tm.erp.action.GerenateBarCodeAction"/>
+    
+    <!-- import data -->
+    <bean id="fTPFubonImportData" class="tw.com.tm.erp.importdb.FTPFubonImportData"/>
+     <!-- export data -->
+    <bean id="cmTransactionExportData" class="tw.com.tm.erp.exportdb.CmTransactionExportData"/> 
+    <bean id="fPGoodsExportData" class="tw.com.tm.erp.exportdb.FPGoodsExportData"/> 
+    <bean id="fTPFubonExportData" class="tw.com.tm.erp.exportdb.FTPFubonExportData"/>   
+    <bean id="checkExportData" class="tw.com.tm.erp.exportdb.CheckExportData"/>   
+    
+</beans>

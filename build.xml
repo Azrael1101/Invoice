@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="erp" basedir="." default="copyLibs">
+	<!-- set global properties for this build -->
+	<property name="jboss.path" value="D:\Java\Tomcat_9.0" />
+	<property name="jboss.app" value="erp_dev_20210702" />
+	<property name="src.dir" value="src"/>
+	<property name="web.dir" value="WebRoot"/>
+	<property name="lib.dir" value="${web.dir}/WEB-INF/lib"/>
+	<property name="servlet.lib" value="${jboss.path}/server/ceap/lib"/>
+	<target name="init">
+		<!-- Create the time stamp -->
+		<tstamp>
+			<format property="build.tstamp" pattern="yyyy/MM/dd HH:mm:ss" />
+		</tstamp>
+		<echo   message="Start Build.xml at ${build.tstamp}"/>
+	</target>
+	
+	<target name="delete" depends="init">
+		<delete>
+			<fileset dir="${web.dir}/WEB-INF/classes" >
+			    <include name="**/*.*"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<target name="compile" depends="delete" description="compile the source ">
+		<!-- Compile the java code from src into WebRoot/WEB-INF/classes -->
+		<javac encoding="UTF-8" srcdir="${src.dir}" destdir="${web.dir}/WEB-INF/classes"
+		target="1.8" debug="true" deprecation="false" optimize="false" failonerror="true" fork="true" memoryinitialsize="512m" memorymaximumsize="1024m">
+			<classpath>
+				<fileset dir="${lib.dir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="copyXML" depends="compile" description="copy files">
+		<!-- copy non-java file from src into WebRoot/WEB-INF/classes -->
+		<copy todir="${web.dir}/WEB-INF/classes" overwrite="true">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+				<include name="**/*.properties"/>
+				<include name="**/*.ftl"/>
+				<include name="**/*.dbf"/>
+				<exclude name="**/*.java"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="copy" depends="copyXML" description="copy files">
+		<!-- 複製整個WebRoot裡面的資料到 <JBoss path>/webapps/erp_dev_20201030 裡面 -->
+		<copy todir="/Users/lukelyu/TM/workspace/${jboss.app}/${web.dir}" overwrite="true">
+			<fileset dir="${web.dir}"/>
+		</copy>
+	</target>
+	
+	<target name="copyClass" depends="copy" description="copy class files">
+		<!-- 複製classes裡面的檔案到 <JBoss path>/server/ceap/deploy/wf_engine.ear/APP-INF/classes 裡面 -->
+		<copy todir="/Users/lukelyu/TM/workspace/${jboss.app}/work" overwrite="true">
+			<fileset dir="${web.dir}"/>
+		</copy>
+	</target>
+	
+	<target name="copyLibs" depends="copyClass" description="copy jar files">
+		<!-- 解壓縮 ceap.lib.zip 檔案到 <JBoss path>/server/ceap/lib 下面 -->
+		
+    </target>
+</project>

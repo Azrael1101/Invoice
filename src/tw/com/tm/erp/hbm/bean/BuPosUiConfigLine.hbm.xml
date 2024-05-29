@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tw.com.tm.erp.hbm.bean.BuPosUiConfigLine" table="BU_POS_UI_CONFIG_LINE" schema="ERP">
+        <id name="sysSno" type="java.lang.Long">
+            <column name="SYS_SNO" />
+        </id>
+        <property name="pSysSno" type="java.lang.Long">
+            <column name="P_SYS_SNO"  />
+        </property>
+        <property name="displayCode" type="java.lang.String">
+            <column name="DISPLAY_CODE"  />
+        </property>
+        <property name="displayName" type="java.lang.String">
+            <column name="DISPLAY_NAME"  />
+        </property>
+        <property name="inputType" type="java.lang.String">
+            <column name="INPUT_TYPE"  />
+        </property>     
+        <property name="inputColumn" type="java.lang.String">
+            <column name="INPUT_COLUMN"  />
+        </property>
+        <property name="isShowData" type="java.lang.String">
+            <column name="IS_SHOW_DATA"  />
+        </property>
+        <property name="showInputData" type="java.lang.String">
+            <column name="SHOW_INPUT_DATA"  />
+        </property>
+		<property name="showTable" type="java.lang.String">
+            <column name="SHOW_TABLE"  />
+        </property>
+        <property name="keyColumn" type="java.lang.String">
+            <column name="KEY_COLUMN"  />
+        </property>
+        <property name="showColumn" type="java.lang.String">
+            <column name="SHOW_COLUMN"  />
+        </property>
+        <property name="position" type="java.lang.String">
+            <column name="POSITION"  />
+        </property>
+        <property name="merge" type="java.lang.String">
+            <column name="Merge"  />
+        </property>
+        <property name="indexNo" type="java.lang.Long">
+            <column name="INDEX_NO"  />
+        </property>
+    </class>
+</hibernate-mapping>

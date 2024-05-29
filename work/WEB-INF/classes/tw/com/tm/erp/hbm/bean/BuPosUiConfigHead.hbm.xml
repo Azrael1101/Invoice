@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tw.com.tm.erp.hbm.bean.BuPosUiConfigHead" table="BU_POS_UI_CONFIG_HEAD" schema="ERP">
+         <id name="sysSno" type="java.lang.Long">
+            <column name="SYS_SNO" />
+        </id>
+        <property name="versionCode" type="java.lang.String">
+            <column name="VERSION_CODE"  />
+        </property>
+        <property name="versionName" type="java.lang.String">
+            <column name="VERSION_NAME"  />
+        </property>
+        <property name="version" type="java.lang.String">
+            <column name="VERSION"  />
+        </property>
+        <property name="posMachineCode" type="java.lang.String">
+            <column name="POS_MACHINE_CODE"  />
+        </property>     
+        <property name="lastUpdatedBy" type="java.lang.String">
+            <column name="LAST_UPDATED_BY"  />
+        </property>
+        <property name="lastUpdateDate" type="java.util.Date">
+            <column name="LAST_UPDATED_DATE"  />
+        </property>
+        <list name="buPosUiConfigLines" inverse="false" lazy="false" cascade="all">
+            <key>
+                <column name="SYS_SNO"  not-null="true" />
+            </key>
+             <list-index column="INDEX_NO" base="1"/>
+            <one-to-many class="tw.com.tm.erp.hbm.bean.BuPosUiConfigLine" />
+        </list>
+    </class>
+</hibernate-mapping>

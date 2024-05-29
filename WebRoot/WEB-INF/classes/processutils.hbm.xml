@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping SYSTEM "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd">
+<hibernate-mapping>
+  <class name="tw.com.tm.erp.utils.processutils.value.assignPerson" table="Assign_Person">
+    <cache usage="read-write"/>
+    <id name="id" type="long" column="id" length="20">
+      <generator class="native">
+        <param name="sequence">Assign_Person_Seq</param>
+      </generator>
+    </id>
+    <property name="assignCode" type="string" length="60" column="ASSIGN_CODE"/>
+    <property name="partyType" type="string" length="20" column="PARTY_TYPE"/>
+    <property name="seqOrder" type="integer" column="SEQ_ORDER"/>
+    <property name="assignType" type="string" length="20" column="ASSIGN_TYPE"/>
+    <property name="processId" type="long" column="PROCESS_ID"/>
+    <property name="domain" type="string" length="60" column="ASSIGN_DOMAIN"/>
+  </class>
+  <class name="tw.com.tm.erp.utils.processutils.value.approvalResult" table="APPROVAL_RESULT">
+    <cache usage="read-write"/>
+    <id name="id" type="long" column="id" length="20">
+      <generator class="native">
+        <param name="sequence">ApprovalResult_Seq</param>
+      </generator>
+    </id>
+    <property name="processId" type="long" column="PROCESS_ID"/>
+    <property name="formName" type="string" length="20" column="FORM_NAME"/>
+    <property name="nodeName" type="string" length="20" column="NODE_NAME"/>
+    <property name="activityId" type="long" column="ACTIVITY_ID"/>
+    <property name="approver" type="string" length="50" column="APPROVER"/>
+    <property name="dateTime" type="date" column="DATE_TIME"/>
+    <property name="result" type="string" length="10" column="RESULT"/>
+    <property name="memo" type="string" length="255" column="MEMO"/>
+    <property name="approvalType" type="string" length="20" column="APPROVAL_TYPE"/>
+  </class>
+</hibernate-mapping>

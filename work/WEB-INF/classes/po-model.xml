@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+    
+    <!-- DAO Bean -->
+    <bean id="poBudgetHeadDAO" class="tw.com.tm.erp.hbm.dao.PoBudgetHeadDAO"/>
+    <bean id="poBudgetLineDAO" class="tw.com.tm.erp.hbm.dao.PoBudgetLineDAO"/>
+    <bean id="poPurchaseOrderHeadDAO" class="tw.com.tm.erp.hbm.dao.PoPurchaseOrderHeadDAO"/>
+    <bean id="poPurchaseOrderLineDAO" class="tw.com.tm.erp.hbm.dao.PoPurchaseOrderLineDAO"/>
+    <bean id="poVerificationSheetDAO" class="tw.com.tm.erp.hbm.dao.PoVerificationSheetDAO"/>
+    
+    <!-- Service Bean -->
+    <bean id="poEosService" class="tw.com.tm.erp.hbm.service.PoEosService"/>
+    <bean id="poBudgetHeadService" class="tw.com.tm.erp.hbm.service.PoBudgetHeadService"/>
+    <bean id="poBudgetLineService" class="tw.com.tm.erp.hbm.service.PoBudgetLineService"/>    
+    <bean id="poPurchaseOrderHeadService" class="tw.com.tm.erp.hbm.service.PoPurchaseOrderHeadService"/>
+    <bean id="poPurchaseOrderLineService" class="tw.com.tm.erp.hbm.service.PoPurchaseOrderLineService"/>
+    <bean id="poVerificationSheetService" class="tw.com.tm.erp.hbm.service.PoVerificationSheetService"/>
+    <bean id="poPurchaseOrderHeadMainService" class="tw.com.tm.erp.hbm.service.PoPurchaseOrderHeadMainService"/>
+    <bean id="poPurchaseOrderLineMainService" class="tw.com.tm.erp.hbm.service.PoPurchaseOrderLineMainService"/>
+    
+    <!-- Action Bean -->
+      <bean id="poEosAction" class="tw.com.tm.erp.action.PoEosAction"/>
+    <bean id="poPurchaseAction" class="tw.com.tm.erp.action.PoPurchaseAction"/>
+    <bean id="poPurchaseMainAction" class="tw.com.tm.erp.action.PoPurchaseMainAction"/>
+</beans>

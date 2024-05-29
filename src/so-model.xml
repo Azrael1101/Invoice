@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="
+    http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+    default-autowire="byName" default-lazy-init="true">
+    
+    <!-- DAO Bean -->
+    <bean id="soSalesOrderHeadDAO" class="tw.com.tm.erp.hbm.dao.SoSalesOrderHeadDAO"/>
+    <bean id="soSalesOrderItemDAO" class="tw.com.tm.erp.hbm.dao.SoSalesOrderItemDAO"/>
+    <bean id="soSalesOrderPaymentDAO" class="tw.com.tm.erp.hbm.dao.SoSalesOrderPaymentDAO"/>
+    <bean id="soPostingTallyDAO" class="tw.com.tm.erp.hbm.dao.SoPostingTallyDAO"/>
+    <bean id="soShopDailyHeadDAO" class="tw.com.tm.erp.hbm.dao.SoShopDailyHeadDAO"/>
+    <bean id="soShopDailyCompetitorDAO" class="tw.com.tm.erp.hbm.dao.SoShopDailyCompetitorDAO"/>
+    <bean id="soDeliveryHeadDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryHeadDAO"/>
+    <bean id="soDeliveryLineDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryLineDAO"/>
+    <bean id="soDeliveryMoveHeadDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryMoveHeadDAO"/>
+    <bean id="soDeliveryMoveLineDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryMoveLineDAO"/>
+    <bean id="soDeliveryLogDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryLogDAO"/>
+    <bean id="soDeliveryBlackListDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryBlackListDAO"/>
+    <bean id="soDeliveryInventoryHeadDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryInventoryHeadDAO"/>
+    <bean id="soDeliveryInventoryLineDAO" class="tw.com.tm.erp.hbm.dao.SoDeliveryInventoryLineDAO"/>
+    <bean id="soParallelTestDAO" class="tw.com.tm.erp.hbm.dao.SoParallelTestDAO"/>
+    <bean id="soDepartmentOrderHeadDAO" class="tw.com.tm.erp.hbm.dao.SoDepartmentOrderHeadDAO"/>
+    <bean id="soSalesOrderDetailViewDAO" class="tw.com.tm.erp.hbm.dao.SoSalesOrderDetailViewDAO"/>
+    <bean id="snsBonusPointSettingDAO" class="tw.com.tm.erp.hbm.dao.SnsBonusPointSettingDAO"/>
+    <bean id="transactionDAO" class="tw.com.tm.erp.hbm.dao.TransactionDAO"/>
+    <bean id="posMachineNumberControllerDAO" class="tw.com.tm.erp.hbm.dao.PosMachineNumberControllerDAO"/>
+    <bean id="saleDAO" class="tw.com.tm.erp.hbm.dao.SaleDAO"/>
+    <bean id="saleHeadTableDAO" class="tw.com.tm.erp.hbm.dao.SaleHeadTableDAO"/>
+    <!-- Service Bean -->
+    <bean id="soSalesOrderService" class="tw.com.tm.erp.hbm.service.SoSalesOrderService"/>
+    <bean id="soSalesOrderMainService" class="tw.com.tm.erp.hbm.service.SoSalesOrderMainService"/>
+    <bean id="soSalesOrderPaymentService" class="tw.com.tm.erp.hbm.service.SoSalesOrderPaymentService"/>
+    <bean id="soPostingTallyService" class="tw.com.tm.erp.hbm.service.SoPostingTallyService"/>
+    <bean id="soShopDailyHeadService" class="tw.com.tm.erp.hbm.service.SoShopDailyHeadService"/>
+    <bean id="soShopDailyCompetitorService" class="tw.com.tm.erp.hbm.service.SoShopDailyCompetitorService"/>
+    <bean id="soShopDailyHeadMainService" class="tw.com.tm.erp.hbm.service.SoShopDailyHeadMainService"/>
+    <bean id="posImportDataService" class="tw.com.tm.erp.hbm.service.PosImportDataService"/>
+    <bean id="soDeliveryService" class="tw.com.tm.erp.hbm.service.SoDeliveryService"/>
+    <bean id="soDeliveryMoveService" class="tw.com.tm.erp.hbm.service.SoDeliveryMoveService"/>
+    <bean id="soDeliveryBlackListService" class="tw.com.tm.erp.hbm.service.SoDeliveryBlackListService"/>
+    <bean id="soDeliveryInventoryService" class="tw.com.tm.erp.hbm.service.SoDeliveryInventoryService"/>
+    <bean id="soParallelTestService" class="tw.com.tm.erp.hbm.service.SoParallelTestService"/>
+    <bean id="soDepartmentOrderService" class="tw.com.tm.erp.hbm.service.SoDepartmentOrderService"/>
+    <bean id="transactionService" class="tw.com.tm.erp.hbm.service.TransactionService"/> 
+    <bean id="posMachineNumberService" class="tw.com.tm.erp.hbm.service.PosMachineNumberService"/>
+    <!-- Action Bean -->
+    <bean id="soParallelTestAction" class="tw.com.tm.erp.action.SoParallelTestAction"/>
+    <bean id="soSalesOrderAction" class="tw.com.tm.erp.action.SoSalesOrderAction"/>
+    <bean id="soSalesOrderMainAction" class="tw.com.tm.erp.action.SoSalesOrderMainAction"/>
+    <bean id="soDeliveryAction" class="tw.com.tm.erp.action.SoDeliveryAction"/>
+    <bean id="soDeliveryMoveAction" class="tw.com.tm.erp.action.SoDeliveryMoveAction"/>
+    <bean id="soSalesOrderReturnAction" class="tw.com.tm.erp.action.SoSalesOrderReturnAction"/>
+    <bean id="soSalesOrderReturnMainAction" class="tw.com.tm.erp.action.SoSalesOrderReturnMainAction"/>
+    <bean id="soShopDailyAction" class="tw.com.tm.erp.action.SoShopDailyAction"/>
+    <bean id="soPostingTallyAction" class="tw.com.tm.erp.action.SoPostingTallyAction"/>
+    <bean id="posImportDataAction" class="tw.com.tm.erp.action.PosImportDataAction"/>
+    <bean id="soDeliveryInventoryAction" class="tw.com.tm.erp.action.SoDeliveryInventoryAction"/>
+    <bean id="soDepartmentOrderAction" class="tw.com.tm.erp.action.SoDepartmentOrderAction"/>
+</beans>

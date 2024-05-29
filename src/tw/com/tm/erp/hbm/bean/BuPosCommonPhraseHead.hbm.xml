@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="tw.com.tm.erp.hbm.bean.BuPosCommonPhraseHead" table="BU_POS_COMMON_PHRASE_HEAD" schema="ERP">
+        <id name="sysSno" type="java.lang.String">
+            <column name="SYS_SNO" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="NAME"  />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="DESCRIPTION"  />
+        </property>
+        <property name="type" type="java.lang.String">
+            <column name="TYPE"  />
+        </property>        
+        <property name="enable" type="java.lang.String">
+            <column name="ENABLE"  />
+        </property>
+        <property name="reserve1" type="java.lang.String">
+            <column name="RESERVE1" />
+        </property>
+        <property name="reserve2" type="java.lang.String">
+            <column name="RESERVE2" />
+        </property>
+        <property name="reserve3" type="java.lang.String">
+            <column name="RESERVE3" />
+        </property>
+        <property name="reserve4" type="java.lang.String">
+            <column name="RESERVE4" />
+        </property>
+        <property name="reserve5" type="java.lang.String">
+            <column name="RESERVE5" />
+        </property>
+        <property name="createdBy" type="java.lang.String">
+            <column name="CREATED_BY"  />
+        </property>
+        <property name="creationDate" type="java.util.Date">
+            <column name="CREATION_DATE"  />
+        </property>
+        <property name="lastUpdatedBy" type="java.lang.String">
+            <column name="LAST_UPDATED_BY"  />
+        </property>
+        <property name="lastUpdateDate" type="java.util.Date">
+            <column name="LAST_UPDATE_DATE"  />
+        </property>
+        <list name="buPosCommonPhraseLines" inverse="false" lazy="false" cascade="all">
+            <key>
+                <column name="SYS_SNO"  not-null="true" />
+            </key>
+             <list-index column="INDEX_NO" base="1"/>
+            <one-to-many class="tw.com.tm.erp.hbm.bean.BuPosCommonPhraseLine" />
+        </list>
+    </class>
+</hibernate-mapping>
